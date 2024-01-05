@@ -6,12 +6,10 @@
 # IP-CIDR6: 0
 # TOTAL: 0
 
-
 # >DOMAIN
-DOMAIN,zh.zlibrary-china.se
 
 # >DOMAIN-KEYWORD
-
+DOMAIN-KEYWORD,zlib
 
 # >DOMAIN-SUFFIX
 
