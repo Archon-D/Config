@@ -4,9 +4,10 @@
 # UPDATED: 2024-4-12 16:26:10
 # DOMAIN: 2
 # DOMAIN-KEYWORD: 0
-# DOMAIN-SUFFIX: 0
+# DOMAIN-SUFFIX: 1
 # IP-CIDR: 0
 # IP-CIDR6: 0
-# TOTAL: 2
+# TOTAL: 3
 DOMAIN,aistudio.google.com
 DOMAIN,www.bing.com
+DOMAIN-SUFFIX,coze.com
