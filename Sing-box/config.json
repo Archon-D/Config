@@ -1,263 +1,61 @@
 {
     "log": {
-        "disabled": false,
-        "level": "info",
-        "output": "box.log",
-        "timestamp": true
+      "level": "info",
+      "timestamp": true
     },
-    "dns": {
-        "servers": [
-            {
-                "tag": "dns_block",
-                "address": "rcode://success"
-            },
-            {
-                "tag": "dns_direct",
-                "address": [
-                    "h3://223.5.5.5/dns-query",
-                    "https://1.12.12.12/dns-query"
-                ],
-                "detour": "DIRECT"
-            },
-            {
-                "tag": "dns_proxy",
-                "address": [
-                    "h3://8.8.8.8/dns-query",
-                    "h3://1.1.1.1/dns-query"
-                ]
-            },
-            {
-                "tag": "dns_fakeip",
-                "address": "fakeip"
-            }
-        ],
-        "rules": [
-            {
-                "outbound": "any",
-                "server": "dns_direct"
-            },
-            {
-                "clash_mode": "Direct",
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_direct"
-            },
-            {
-                "clash_mode": "Global",
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_proxy"
-            },
-            {
-                "rule_set": [
-                    "Advertising"
-                ],
-                "server": "dns_block"
-            },
-            {
-                "rule_set": [
-                    "ChinaMax",
-                    "Direct-diy",
-                    "Apple"
-                ],
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_direct"
-            },
-            {
-                "rule_set": [
-                    "Emby",
-                    "OpenAI",
-                    "Gemini",
-                    "Copilot",
-                    "AI-diy",
-                    "GitHub",
-                    "Google",
-                    "Twitter",
-                    "Facebook",
-                    "PayPal",
-                    "Telegram",
-                    "Steam",
-                    "GlobalMedia"
-                ],
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_fakeip"
-            }
-        ],
-        "final": "dns_direct",
-        "strategy": "prefer_ipv4",
-        "disable_cache": false,
-        "disable_expire": false,
-        "independent_cache": true,
-        "reverse_mapping": true,
-        "client_subnet": "",
-        "fakeip": {
-            "enabled": true,
-            "inet4_range": "198.18.0.0/15",
-            "inet6_range": "fc00::/18"
-        }
+    "experimental": {
+      "clash_api": {
+        "external_controller": "127.0.0.1:20123",
+        "external_ui": "",
+        "secret": "ID_tw9mhie6",
+        "external_ui_download_url": "",
+        "default_mode": "rule"
+      },
+      "cache_file": {
+        "enabled": false,
+        "store_fakeip": false,
+        "store_rdrc": false
+      }
     },
     "inbounds": [
-        {
-            "type": "mixed",
-            "tag": "mixed-in",
-            "listen": "0.0.0.0",
-            "listen_port": 2080
+      {
+        "type": "mixed",
+        "listen": "127.0.0.1",
+        "listen_port": 20122,
+        "sniff": true,
+        "sniff_override_destination": false,
+        "domain_strategy": "prefer_ipv4",
+        "tcp_fast_open": false,
+        "tcp_multi_path": false,
+        "udp_fragment": false
+      },
+      {
+        "type": "tun",
+        "interface_name": "TUN",
+        "inet4_address": "172.19.0.1/30",
+        "inet6_address": "fdfe:dcba:9876::1/126",
+        "mtu": 9000,
+        "auto_route": true,
+        "strict_route": false,
+        "endpoint_independent_nat": false,
+        "stack": "system",
+        "platform": {
+          "http_proxy": {
+            "enabled": true,
+            "server": "127.0.0.1",
+            "server_port": 20122
+          }
         },
-        {
-            "type": "tun",
-            "tag": "tun-in",
-            "inet4_address": "172.19.0.1/30",
-            "auto_route": true,
-            "strict_route": true,
-            "stack": "mixed",
-            "sniff": true
-        }
+        "sniff": true,
+        "sniff_override_destination": false,
+        "domain_strategy": "prefer_ipv4"
+      }
     ],
     "outbounds": [
-        { "tag": "🚀 手动切换", "type": "selector", "providers": [ "98k" ], "includes": [".*"] },
-        { "tag": "风控", "type": "selector", "use_all_providers": true, "includes": [ "^(?=.*(?:港|台|日本|韩|坡|美|HK|US|TW|JP|KR|SG|Hong|Tai|Japan|Korea|Singapore|States))(?!.*(?:Plus|Base|直连)).*$" ] },
-        { "tag": "💬 AI", "type": "selector", "use_all_providers": true, "includes": ["(美|US|日本|新加坡|(?i)States|American)"] },
-        { "tag": "📲 电报消息", "type": "selector", "outbounds": [ "🇸🇬 狮城节点", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换" ] },
-        { "tag": "🌍 国外网站", "type": "selector", "outbounds": [ "🇸🇬 狮城节点", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换" ] },
-        { "tag": "📢 谷歌服务", "type": "selector", "outbounds": [ "🇭🇰 香港节点", "🇸🇬 狮城节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换" ] },
-        { "tag": "🎯 EMBY", "type": "selector", "outbounds": [ "DIRECT", "🇸🇬 狮城节点", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换" ] },
-        { "tag": "🍎 苹果服务", "type": "selector", "outbounds": [ "DIRECT", "🇸🇬 狮城节点", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换" ] },
-        { "tag": "🎥 国际媒体", "type": "selector", "outbounds": [ "🇸🇬 狮城节点", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换" ] },
-        { "tag": "🎮 游戏平台", "type": "selector", "outbounds": [ "DIRECT", "🇸🇬 狮城节点", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换" ] },
-        { "tag": "🛑 广告拦截", "type": "selector", "outbounds": [ "REJECT", "DIRECT" ] },
-        { "tag": "🐟 漏网之鱼", "type": "selector", "outbounds": [ "🇸🇬 狮城节点", "🇭🇰 香港节点", "🇨🇳 台湾节点", "🇯🇵 日本节点", "🇺🇲 美国节点", "🇰🇷 韩国节点", "特殊节点", "🚀 手动切换", "DIRECT" ] },
-        { "tag": "🎯 全球直连", "type": "selector", "outbounds": [ "DIRECT", "🚀 手动切换" ] },
-        { "tag": "REJECT", "type": "block" },
-        { "tag": "DIRECT", "type": "direct" },
-        { "tag": "GLOBAL", "type": "selector", "outbounds": [ "DIRECT", "REJECT", "🇭🇰 香港节点", "🆓 免费节点", "🇹🇼 台湾节点", "🇯🇵 日本节点", "🇸🇬 新加坡节点", "🇺🇸 美国节点" ] },
-        { "tag": "dns-out", "type": "dns" },
-        { "tag": "🇭🇰 香港节点", "type": "urltest", "tolerance": 50, "providers": [ "98k"], "includes": [ "^(?=.*(?:港|HK|hk|Hong Kong|HongKong|hongkong))(?!.*(?:日本|美|韩|新|台|5x|Plus|IPLC|Base|故障)).*(?=专线).*$" ] },
-        { "tag": "🇯🇵 日本节点", "type": "urltest", "tolerance": 50, "providers": [ "98k"], "includes": [ "^(?=.*(?:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan))(?!.*(?:港|美|韩|新|台|Plus|IPLC|Base|故障)).*(?=专线).*$" ] },
-        { "tag": "🇺🇲 美国节点", "type": "urltest", "tolerance": 50, "providers": [ "98k"], "includes": [ "^(?=.*(?:美|US|States|American))(?!.*(?:港|台|日|韩|新|Plus|IPLC|Base|故障)).*(?=专线).*$" ] },
-        { "tag": "🇨🇳 台湾节点", "type": "urltest", "tolerance": 50, "providers": [ "98k"], "includes": [ "^(?=.*(?:台|新北|彰化|TW|Taiwan))(?!.*(?:港|美|日|韩|新|Plus|IPLC|Base|故障)).*(?=专线).*$" ] },
-        { "tag": "🇸🇬 狮城节点", "type": "urltest", "tolerance": 50, "providers": [ "98k"], "includes": [ "^(?=.*(?:新加坡|坡|狮城|SG|Singapore))(?!.*(?:港|美|日|韩|台|IPLC|Plus|Base|故障)).*(?=专线).*$" ] },
-        { "tag": "🇰🇷 韩国节点", "type": "urltest", "tolerance": 50, "providers": [ "98k"], "includes": [ "^(?=.*(?:KR|Korea|KOR|首尔|韩|韓))(?!.*(?:港|美|日|新|台|Plus|IPLC|Base|故障)).*(?=专线).*$" ] },
-        { "tag": "特殊节点", "type": "urltest", "tolerance": 50, "providers": [ "98k"], "includes": [ "^(?!.*(港|台|日本|韩|坡|美|HK|US|TW|JP|KR|SG|Hong|Tai|Japan|Korea|Singapore|States|剩余|套餐|官网|Plus))" ] },
-        {
-          "tag": "🆓 免费节点",
-          "type": "vless",
-          "server": "example.com",
-          "server_port": 443,
-          "uuid": "{uuid}",
-          "network": "tcp",
-          "tls": { "enabled": true, "server_name": "example.com", "insecure": false },
-          "transport": { "type": "ws", "path": "/?ed=2048", "headers": { "Host": "example.com" } }
-        },
-
+      
     ],
     "route": {
-        "geoip": {},
-        "geosite": {},
-        "rules": [
-            {
-                "protocol": [
-                    "dns"
-                ],
-                "outbound": "dns-out"
-            },
-            {
-                "clash_mode": "Direct",
-                "outbound": "DIRECT"
-            },
-            {
-                "clash_mode": "Global",
-                "outbound": "GLOBAL"
-            },
-            {
-                "rule_set": [
-                    "Advertising"
-                ],
-                "outbound": "🛑 广告拦截"
-            },
-            {
-                "rule_set": [
-                    "Lan",
-                    "Direct-diy"
-                ],
-                "outbound": "🎯 全球直连"
-            },
-            {
-                "rule_set": [
-                    "OpenAI",
-                    "Gemini",
-                    "Copilot",
-                    "AI-diy"
-                ],
-                "outbound": "💬 AI"
-            },
-            {
-                "rule_set": [
-                    "Steam"
-                ],
-                "outbound": "🎮 游戏平台"
-            },
-            {
-                "rule_set": [
-                    "Emby"
-                ],
-                "outbound": "🎯 EMBY"
-            },
-            {
-                "rule_set": [
-                    "GitHub",
-                    "Twitter"
-                ],
-                "outbound": "🌍 国外网站"
-            },
-            {
-                "rule_set": [
-                    "Telegram"
-                ],
-                "outbound": "📲 电报消息"
-            },
-            {
-                "rule_set": [
-                    "Google"
-                ],
-                "outbound": "📢 谷歌服务"
-            },
-            {
-                "rule_set": [
-                    "GlobalMedia"
-                ],
-                "outbound": "🎥 国际媒体"
-            },
-            {
-                "rule_set": [
-                    "Apple"
-                ],
-                "outbound": "🍎 苹果服务"
-            },
-            {
-                "rule_set": [
-                    "Facebook",
-                    "PayPal"
-                ],
-                "outbound": "风控"
-            },
-            {
-                "rule_set": [
-                    "ChinaMax"
-                ],
-                "outbound": "🎯 全球直连"
-            }
-        ],
-        "rule_set": [
+      "rule_set": [
             {
                 "tag": "ChinaMax",
                 "type": "remote",
@@ -365,19 +163,174 @@
                 "type": "remote",
                 "format": "source",
                 "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Netflix.json"
-            },
-            {
-                "tag": "Direct-diy",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Direct.json"
             }
         ],
-        "final": "🐟 漏网之鱼",
-        "auto_detect_interface": false,
-        "override_android_vpn": false,
-        "default_interface": "en0",
-        "default_mark": 233
+      "rules": [
+        {
+          "rule_set": "Lan",
+          "outbound": "🎯 全球直连"
+        },
+        {
+          "rule_set": "Advertising",
+          "outbound": "🛑 全球拦截"
+        },
+        {
+          "rule_set": "OpenAI",
+          "outbound": "💬 AI"
+        },
+        {
+          "rule_set": "Gemini",
+          "outbound": "💬 AI"
+        },
+        {
+          "rule_set": "Copilot",
+          "outbound": "💬 AI"
+        },
+        {
+          "rule_set": "AI-diy",
+          "outbound": "💬 AI"
+        },
+        {
+          "rule_set": "Telegram",
+          "outbound": "📲 电报消息"
+        },
+        {
+          "rule_set": "GitHub",
+          "outbound": "🌍 国外网站"
+        },
+        {
+          "rule_set": "Google",
+          "outbound": "📢 谷歌服务"
+        },
+        {
+          "rule_set": "GlobalMedia",
+          "outbound": "🎥 国际媒体"
+        },
+        {
+          "rule_set": "ChinaMax",
+          "outbound": "🎯 全球直连"
+        },
+        {
+          "rule_set": "Emby",
+          "outbound": "🎯 EMBY"
+        },
+        {
+          "rule_set": "Twitter",
+          "outbound": "🌍 国外网站"
+        },
+        {
+          "rule_set": "Apple",
+          "outbound": "🍎 苹果服务"
+        },
+        {
+          "rule_set": "Facebook",
+          "outbound": "风控"
+        },
+        {
+          "rule_set": "PayPal",
+          "outbound": "风控"
+        },
+        {
+          "rule_set": "Steam",
+          "outbound": "🎮 游戏平台"
+        }
+      ],
+      "final": "🐟 漏网之鱼",
+      "auto_detect_interface": true
     },
-    "experimental": {}
-}
+    "dns": {
+      "servers": [
+        {
+          "tag": "remote-dns",
+          "address": "tls://8.8.8.8",
+          "address_resolver": "remote-resolver-dns",
+          "detour": "风控"
+        },
+        {
+          "tag": "local-dns",
+          "address": "https://223.5.5.5/dns-query",
+          "address_resolver": "resolver-dns",
+          "detour": "direct"
+        },
+        {
+          "tag": "resolver-dns",
+          "address": "223.5.5.5",
+          "detour": "direct"
+        },
+        {
+          "tag": "remote-resolver-dns",
+          "address": "8.8.8.8",
+          "detour": "风控"
+        },
+        {
+          "tag": "fakeip-dns",
+          "address": "fakeip"
+        },
+        {
+          "tag": "block",
+          "address": "rcode://success"
+        }
+      ],
+      "disable_cache": false,
+      "disable_expire": false,
+      "independent_cache": false,
+      "rules": [
+        {
+          "outbound": "any",
+          "disable_cache": true,
+          "server": "local-dns"
+        },
+        {
+          "type": "logical",
+          "mode": "and",
+          "rules": [
+            {
+              "domain_suffix": [
+                ".lan",
+                ".localdomain",
+                ".example",
+                ".invalid",
+                ".localhost",
+                ".test",
+                ".local",
+                ".home.arpa",
+                ".msftconnecttest.com",
+                ".msftncsi.com"
+              ],
+              "invert": true
+            },
+            {
+              "query_type": [
+                "A",
+                "AAAA"
+              ]
+            }
+          ],
+          "server": "fakeip-dns"
+        },
+        {
+          "clash_mode": "direct",
+          "server": "local-dns"
+        },
+        {
+          "clash_mode": "global",
+          "server": "remote-dns"
+        },
+        {
+          "rule_set": "GEOSITE-CN",
+          "server": "local-dns"
+        },
+        {
+          "rule_set": "GEOLOCATION-!CN",
+          "server": "remote-dns"
+        }
+      ],
+      "fakeip": {
+        "enabled": true,
+        "inet4_range": "198.18.0.1/16",
+        "inet6_range": "fc00::/18"
+      },
+      "final": "local-dns",
+      "strategy": "prefer_ipv4"
+    }
+  }
