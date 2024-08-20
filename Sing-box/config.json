@@ -1,336 +1,372 @@
 {
-    "log": {
-      "level": "info",
-      "timestamp": true
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "127.0.0.1:20123",
+      "external_ui": "",
+      "secret": "ID_tw9mhie6",
+      "external_ui_download_url": "",
+      "default_mode": "rule"
     },
-    "experimental": {
-      "clash_api": {
-        "external_controller": "127.0.0.1:20123",
-        "external_ui": "",
-        "secret": "ID_tw9mhie6",
-        "external_ui_download_url": "",
-        "default_mode": "rule"
-      },
-      "cache_file": {
-        "enabled": false,
-        "store_fakeip": false,
-        "store_rdrc": false
-      }
-    },
-    "inbounds": [
-      {
-        "type": "mixed",
-        "listen": "127.0.0.1",
-        "listen_port": 20122,
-        "sniff": true,
-        "sniff_override_destination": false,
-        "domain_strategy": "prefer_ipv4",
-        "tcp_fast_open": false,
-        "tcp_multi_path": false,
-        "udp_fragment": false
-      },
-      {
-        "type": "tun",
-        "interface_name": "TUN",
-        "inet4_address": "172.19.0.1/30",
-        "inet6_address": "fdfe:dcba:9876::1/126",
-        "mtu": 9000,
-        "auto_route": true,
-        "strict_route": false,
-        "endpoint_independent_nat": false,
-        "stack": "system",
-        "platform": {
-          "http_proxy": {
-            "enabled": true,
-            "server": "127.0.0.1",
-            "server_port": 20122
-          }
-        },
-        "sniff": true,
-        "sniff_override_destination": false,
-        "domain_strategy": "prefer_ipv4"
-      }
-    ],
-    "outbounds": [
-      
-    ],
-    "route": {
-      "rule_set": [
-            {
-                "tag": "ChinaMax",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/ChinaMax.json"
-            },
-            {
-                "tag": "Lan",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Lan.json"
-            },
-            {
-                "tag": "Advertising",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Advertising.json"
-            },
-            {
-                "tag": "OpenAI",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/OpenAI.json"
-            },
-            {
-                "tag": "Gemini",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Gemini.json"
-            },
-            {
-                "tag": "AI-diy",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/AI.json"
-            },
-            {
-                "tag": "Copilot",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Copilot.json"
-            },
-            {
-                "tag": "Google",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Google.json"
-            },
-            {
-                "tag": "Telegram",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Telegram.json"
-            },
-            {
-                "tag": "Apple",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Apple.json"
-            },
-            {
-                "tag": "Emby",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Emby.json"
-            },
-            {
-                "tag": "GitHub",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/GitHub.json"
-            },
-            {
-                "tag": "Twitter",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Twitter.json"
-            },
-            {
-                "tag": "Steam",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Steam.json"
-            },
-            {
-                "tag": "PayPal",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/PayPal.json"
-            },
-            {
-                "tag": "Facebook",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Facebook.json"
-            },
-            {
-                "tag": "GlobalMedia",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/GlobalMedia.json"
-            },
-            {
-                "tag": "Netflix",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Netflix.json"
-            }
-        ],
-      "rules": [
-        {
-          "rule_set": "Lan",
-          "outbound": "🎯 全球直连"
-        },
-        {
-          "rule_set": "Advertising",
-          "outbound": "🛑 全球拦截"
-        },
-        {
-          "rule_set": "OpenAI",
-          "outbound": "💬 AI"
-        },
-        {
-          "rule_set": "Gemini",
-          "outbound": "💬 AI"
-        },
-        {
-          "rule_set": "Copilot",
-          "outbound": "💬 AI"
-        },
-        {
-          "rule_set": "AI-diy",
-          "outbound": "💬 AI"
-        },
-        {
-          "rule_set": "Telegram",
-          "outbound": "📲 电报消息"
-        },
-        {
-          "rule_set": "GitHub",
-          "outbound": "🌍 国外网站"
-        },
-        {
-          "rule_set": "Google",
-          "outbound": "📢 谷歌服务"
-        },
-        {
-          "rule_set": "GlobalMedia",
-          "outbound": "🎥 国际媒体"
-        },
-        {
-          "rule_set": "ChinaMax",
-          "outbound": "🎯 全球直连"
-        },
-        {
-          "rule_set": "Emby",
-          "outbound": "🎯 EMBY"
-        },
-        {
-          "rule_set": "Twitter",
-          "outbound": "🌍 国外网站"
-        },
-        {
-          "rule_set": "Apple",
-          "outbound": "🍎 苹果服务"
-        },
-        {
-          "rule_set": "Facebook",
-          "outbound": "风控"
-        },
-        {
-          "rule_set": "PayPal",
-          "outbound": "风控"
-        },
-        {
-          "rule_set": "Steam",
-          "outbound": "🎮 游戏平台"
-        }
-      ],
-      "final": "🐟 漏网之鱼",
-      "auto_detect_interface": true
-    },
-    "dns": {
-      "servers": [
-        {
-          "tag": "remote-dns",
-          "address": "tls://8.8.8.8",
-          "address_resolver": "remote-resolver-dns",
-          "detour": "风控"
-        },
-        {
-          "tag": "local-dns",
-          "address": "https://223.5.5.5/dns-query",
-          "address_resolver": "resolver-dns",
-          "detour": "direct"
-        },
-        {
-          "tag": "resolver-dns",
-          "address": "223.5.5.5",
-          "detour": "direct"
-        },
-        {
-          "tag": "remote-resolver-dns",
-          "address": "8.8.8.8",
-          "detour": "风控"
-        },
-        {
-          "tag": "fakeip-dns",
-          "address": "fakeip"
-        },
-        {
-          "tag": "block",
-          "address": "rcode://success"
-        }
-      ],
-      "disable_cache": false,
-      "disable_expire": false,
-      "independent_cache": false,
-      "rules": [
-        {
-          "outbound": "any",
-          "disable_cache": true,
-          "server": "local-dns"
-        },
-        {
-          "type": "logical",
-          "mode": "and",
-          "rules": [
-            {
-              "domain_suffix": [
-                ".lan",
-                ".localdomain",
-                ".example",
-                ".invalid",
-                ".localhost",
-                ".test",
-                ".local",
-                ".home.arpa",
-                ".msftconnecttest.com",
-                ".msftncsi.com"
-              ],
-              "invert": true
-            },
-            {
-              "query_type": [
-                "A",
-                "AAAA"
-              ]
-            }
-          ],
-          "server": "fakeip-dns"
-        },
-        {
-          "clash_mode": "direct",
-          "server": "local-dns"
-        },
-        {
-          "clash_mode": "global",
-          "server": "remote-dns"
-        },
-        {
-          "rule_set": "GEOSITE-CN",
-          "server": "local-dns"
-        },
-        {
-          "rule_set": "GEOLOCATION-!CN",
-          "server": "remote-dns"
-        }
-      ],
-      "fakeip": {
-        "enabled": true,
-        "inet4_range": "198.18.0.1/16",
-        "inet6_range": "fc00::/18"
-      },
-      "final": "local-dns",
-      "strategy": "prefer_ipv4"
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true,
+      "store_rdrc": false
     }
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "listen": "127.0.0.1",
+      "listen_port": 20122,
+      "sniff": true,
+      "sniff_override_destination": false,
+      "domain_strategy": "prefer_ipv4",
+      "tcp_fast_open": false,
+      "tcp_multi_path": false,
+      "udp_fragment": false
+    },
+    {
+      "type": "tun",
+      "interface_name": "TUN",
+      "inet4_address": "172.19.0.1/30",
+      "inet6_address": "fdfe:dcba:9876::1/126",
+      "mtu": 1500,
+      "auto_route": true,
+      "strict_route": true,
+      "endpoint_independent_nat": true,
+      "stack": "system",
+      "platform": {
+        "http_proxy": {
+          "enabled": true,
+          "server": "127.0.0.1",
+          "server_port": 20122
+        }
+      },
+      "sniff": true,
+      "sniff_override_destination": false,
+      "domain_strategy": "prefer_ipv4"
+    }
+  ],
+  "outbounds": [],
+  "route": {
+      "rule_set": [
+      {
+        "tag": "Direct-diy",
+        "type": "local",
+        "format": "source",
+        "path": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Direct.json"
+      },
+      {
+        "tag": "ChinaMax",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/ChinaMax.json"
+      },
+      {
+        "tag": "Lan",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Lan.json"
+      },
+      {
+        "tag": "Advertising",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Advertising.json"
+      },
+      {
+        "tag": "Ali",
+        "type": "remote",
+        "format": "source",
+        "path": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Alibaba.json"
+      },
+      {
+        "tag": "OpenAI",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/OpenAI.json"
+      },
+      {
+        "tag": "Gemini",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Gemini.json"
+      },
+      {
+        "tag": "AI-diy",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/AI.json"
+      },
+      {
+        "tag": "Copilot",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Copilot.json"
+      },
+      {
+        "tag": "Google",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Google.json"
+      },
+      {
+        "tag": "Telegram",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Telegram.json"
+      },
+      {
+        "tag": "Apple",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Apple.json"
+      },
+      {
+        "tag": "Emby",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Emby.json"
+      },
+      {
+        "tag": "GitHub",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/GitHub.json"
+      },
+      {
+        "tag": "Twitter",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Twitter.json"
+      },
+      {
+        "tag": "Steam",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Steam.json"
+      },
+      {
+        "tag": "PayPal",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/PayPal.json"
+      },
+      {
+        "tag": "Facebook",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Facebook.json"
+      },
+      {
+        "tag": "GlobalMedia",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/GlobalMedia.json"
+      },
+      {
+        "tag": "Netflix",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Netflix.json"
+      },
+      {
+        "tag": "GEOLOCATION-!CN",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
+        "download_detour": "🎯 全球直连"
+      }
+    ],
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
+        "rule_set": "Direct-diy",
+        "outbound": "🎯 全球直连"
+      },
+      {
+        "rule_set": "Lan",
+        "outbound": "🎯 全球直连"
+      },
+      {
+        "rule_set": "Advertising",
+        "outbound": "🛑 全球拦截"
+      },
+      {
+        "rule_set": "Ali",
+        "outbound": "🎯 全球直连"
+      },
+      {
+        "rule_set": "OpenAI",
+        "outbound": "💬 AI"
+      },
+      {
+        "rule_set": "Gemini",
+        "outbound": "💬 AI"
+      },
+      {
+        "rule_set": "Copilot",
+        "outbound": "💬 AI"
+      },
+      {
+        "rule_set": "AI-diy",
+        "outbound": "💬 AI"
+      },
+      {
+        "rule_set": "Telegram",
+        "outbound": "📲 电报消息"
+      },
+      {
+        "rule_set": "GitHub",
+        "outbound": "🌍 国外网站"
+      },
+      {
+        "rule_set": "Google",
+        "outbound": "📢 谷歌服务"
+      },
+      {
+        "rule_set": "GlobalMedia",
+        "outbound": "🎥 国际媒体"
+      },
+      {
+        "rule_set": "ChinaMax",
+        "outbound": "🎯 全球直连"
+      },
+      {
+        "rule_set": "Emby",
+        "outbound": "🎯 EMBY"
+      },
+      {
+        "rule_set": "Twitter",
+        "outbound": "🌍 国外网站"
+      },
+      {
+        "rule_set": "Apple",
+        "outbound": "🍎 苹果服务"
+      },
+      {
+        "rule_set": "Facebook",
+        "outbound": "风控"
+      },
+      {
+        "rule_set": "PayPal",
+        "outbound": "风控"
+      },
+      {
+        "rule_set": "Steam",
+        "outbound": "🎮 游戏平台"
+      },
+      {
+        "clash_mode": "direct",
+        "outbound": "🎯 全球直连"
+      },
+      {
+        "clash_mode": "global",
+        "outbound": "🚀 节点选择"
+      }
+    ],
+    "final": "🐟 漏网之鱼",
+    "auto_detect_interface": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "remote-dns",
+        "address": "tls://8.8.8.8",
+        "address_resolver": "remote-resolver-dns"
+      },
+      {
+        "tag": "local-dns",
+        "address": "https://223.5.5.5/dns-query",
+        "address_resolver": "resolver-dns",
+        "detour": "direct"
+      },
+      {
+        "tag": "resolver-dns",
+        "address": "223.5.5.5",
+        "detour": "direct"
+      },
+      {
+        "tag": "remote-resolver-dns",
+        "address": "8.8.8.8"
+      },
+      {
+        "tag": "fakeip-dns",
+        "address": "fakeip"
+      },
+      {
+        "tag": "block",
+        "address": "rcode://success"
+      }
+    ],
+    "disable_cache": false,
+    "disable_expire": false,
+    "independent_cache": false,
+    "rules": [
+      {
+        "outbound": "any",
+        "disable_cache": true,
+        "server": "local-dns"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "domain_suffix": [
+              ".lan",
+              ".localdomain",
+              ".example",
+              ".invalid",
+              ".localhost",
+              ".test",
+              ".local",
+              ".home.arpa",
+              ".msftconnecttest.com",
+              ".msftncsi.com"
+            ],
+            "invert": true
+          },
+          {
+            "query_type": [
+              "A",
+              "AAAA"
+            ]
+          }
+        ],
+        "server": "fakeip-dns"
+      },
+      {
+        "clash_mode": "direct",
+        "server": "local-dns"
+      },
+      {
+        "clash_mode": "global",
+        "server": "remote-dns"
+      },
+      {
+        "rule_set": "GEOLOCATION-!CN",
+        "server": "remote-dns"
+      },
+      {
+        "rule_set": "GEOLOCATION-!CN",
+        "invert": true,
+        "server": "local-dns"
+      }
+    ],
+    "fakeip": {
+      "enabled": true,
+      "inet4_range": "198.18.0.1/16",
+      "inet6_range": "fc00::/18"
+    },
+    "final": "remote-dns",
+    "strategy": "prefer_ipv4"
   }
+}
