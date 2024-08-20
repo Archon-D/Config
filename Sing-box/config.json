@@ -58,7 +58,7 @@
         "tag": "Direct-diy",
         "type": "local",
         "format": "source",
-        "path": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Direct.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Direct.json"
       },
       {
         "tag": "ChinaMax",
@@ -82,7 +82,7 @@
         "tag": "Ali",
         "type": "remote",
         "format": "source",
-        "path": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Alibaba.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Alibaba.json"
       },
       {
         "tag": "OpenAI",
