@@ -56,7 +56,7 @@
       "rule_set": [
       {
         "tag": "Direct-diy",
-        "type": "local",
+        "type": "remote",
         "format": "source",
         "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Direct.json"
       },
