@@ -60,121 +60,121 @@
         "tag": "Direct-diy",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Direct.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Direct.json"
       },
       {
         "tag": "ChinaMax",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/ChinaMax.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/ChinaMax.json"
       },
       {
         "tag": "Lan",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Lan.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Lan.json"
       },
       {
         "tag": "Advertising",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Advertising.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Advertising.json"
       },
       {
         "tag": "Ali",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Alibaba.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Alibaba.json"
       },
       {
         "tag": "OpenAI",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/OpenAI.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/OpenAI.json"
       },
       {
         "tag": "Gemini",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Gemini.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Gemini.json"
       },
       {
         "tag": "AI-diy",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/AI.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/AI.json"
       },
       {
         "tag": "Copilot",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Copilot.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Copilot.json"
       },
       {
         "tag": "Google",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Google.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Google.json"
       },
       {
         "tag": "Telegram",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Telegram.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Telegram.json"
       },
       {
         "tag": "Apple",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Apple.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Apple.json"
       },
       {
         "tag": "Emby",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Emby.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Emby.json"
       },
       {
         "tag": "GitHub",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/GitHub.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/GitHub.json"
       },
       {
         "tag": "Twitter",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Twitter.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Twitter.json"
       },
       {
         "tag": "Steam",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Steam.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Steam.json"
       },
       {
         "tag": "PayPal",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/PayPal.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/PayPal.json"
       },
       {
         "tag": "Facebook",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Facebook.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Facebook.json"
       },
       {
         "tag": "GlobalMedia",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/GlobalMedia.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/GlobalMedia.json"
       },
       {
         "tag": "Netflix",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/sing-box-geosite/main/rule/Netflix.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/rule/Netflix.json"
       },
       {
         "tag": "GEOLOCATION-!CN",
