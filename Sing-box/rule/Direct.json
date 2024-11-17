@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "acl4ssr-sub.github.io",
+        "zh.zlibrary-china.se"
+      ]
+    },
+    {
+      "domain_keyword": [
+        "5kfz",
+        "seu"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "lagx.link",
+        "rocotime.com"
+      ]
+    }
+  ],
+  "version": 1
+}
