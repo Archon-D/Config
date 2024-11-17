@@ -3,6 +3,8 @@ name: Config Update
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'Sing-box/links.txt'  
   workflow_dispatch:
   schedule:
     - cron: '0 12 * * *'
