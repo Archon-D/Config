@@ -29,8 +29,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install pandas requests pyyaml
     - name: Run script
-      run: python ../main.py
-      working-directory: ./rule/
+      run: python ../Rule_Convert.py
+      working-directory: ./Sing-box/rule/
     - name: Commit and push config.json
       run: |
         git config --global user.email "action@github.com"
