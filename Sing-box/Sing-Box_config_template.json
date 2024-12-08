@@ -74,11 +74,7 @@
     {
       "tag": "💬 AI",
       "type": "selector",
-      "outbounds": [
-       "🇺🇲 美国ENET",
-       "🇸🇬 狮城ENET",
-       "🇯🇵 日本ENET" 
-      ]
+      "outbounds": ["🇺🇲 美国ENET", "🇸🇬 狮城ENET", "🇯🇵 日本ENET"]
     },
     {
       "tag": "🎥 国际媒体",
@@ -141,11 +137,7 @@
     {
       "tag": "风控",
       "type": "selector",
-      "outbounds": [
-        "🇺🇲 美国ENET",
-       "🇸🇬 狮城ENET",
-       "🇯🇵 日本ENET"
-      ]
+      "outbounds": ["🇺🇲 美国ENET", "🇸🇬 狮城ENET", "🇯🇵 日本ENET"]
     },
     {
       "tag": "🎮 游戏平台",
@@ -164,20 +156,14 @@
     {
       "tag": "🍎 苹果服务",
       "type": "selector",
-      "outbounds": [
-        "🎯 全球直连",
-        "HK|香港节点",
-        "USA|美国节点",
-        "🚀 节点选择"
-        
-      ]
+      "outbounds": ["🎯 全球直连", "HK|香港节点", "USA|美国节点", "🚀 节点选择"]
     },
     {
       "tag": "🎯 EMBY",
       "type": "selector",
       "outbounds": [
         "🎯 全球直连",
-        "经济节点", 
+        "经济节点",
         "HK|香港节点",
         "USA|美国节点",
         "JP|日本节点",
@@ -196,15 +182,13 @@
         "🎯 全球直连",
         "USA|美国节点",
         "JP|日本节点",
-        "SG|狮城节点",
+        "SG|狮城节点"
       ]
     },
     {
       "tag": "🇯🇵 日本ENET",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -212,9 +196,7 @@
     {
       "tag": "🇸🇬 狮城ENET",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -222,9 +204,7 @@
     {
       "tag": "🇺🇲 美国ENET",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -232,9 +212,7 @@
     {
       "tag": "SP|特殊节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -242,9 +220,7 @@
     {
       "tag": "KR|韩国节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -252,9 +228,7 @@
     {
       "tag": "SG|狮城节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -262,9 +236,7 @@
     {
       "tag": "CN|台湾节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -272,9 +244,7 @@
     {
       "tag": "USA|美国节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -282,9 +252,7 @@
     {
       "tag": "JP|日本节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -292,9 +260,7 @@
     {
       "tag": "HK|香港节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -302,9 +268,7 @@
     {
       "tag": "经济节点",
       "type": "urltest",
-      "outbounds": [
-        
-      ],
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
       "tolerance": 150
@@ -628,10 +592,7 @@
         "server": "remote-dns"
       },
       {
-        "rule_set": [
-        "Privacy",
-        "Advertising"
-        ],
+        "rule_set": ["Privacy", "Advertising"],
         "server": "block"
       },
       {
