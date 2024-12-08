@@ -457,11 +457,11 @@
       },
       {
         "rule_set": "Privacy",
-        "outbound": "reject"
+        "outbound": "block"
       },
       {
         "rule_set": "Advertising",
-        "outbound": "reject"
+        "outbound": "block"
       },
       {
         "rule_set": "Ali",
