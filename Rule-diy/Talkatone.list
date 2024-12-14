@@ -1,14 +1,13 @@
-# 去广告
-DOMAIN-SUFFIX,ads.inmobi.com
-DOMAIN-SUFFIX,tappx.com
-DOMAIN-SUFFIX,criteo.com
-DOMAIN-SUFFIX,pubmatic.com
-DOMAIN-SUFFIX,smaato.net
-DOMAIN-SUFFIX,amazon-adsystem.com
-DOMAIN-KEYWORD,googleads
-DOMAIN-SUFFIX,adsappier.com
-DOMAIN-SUFFIX,appier.net
-DOMAIN-SUFFIX,appiersig.com
+# NAME: AI
+# AUTHOR: AD
+# REPO: https://github.com/
+# UPDATED: 2024-12-10 11:50:10
+# DOMAIN: 0
+# DOMAIN-KEYWORD: 0
+# DOMAIN-SUFFIX: 10
+# IP-CIDR: 4
+# IP-CIDR6: 0
+# TOTAL: 14
 
 # 让登录更容易
 DOMAIN-SUFFIX,mobilefuse.com
