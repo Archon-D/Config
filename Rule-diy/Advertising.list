@@ -1,0 +1,19 @@
+# NAME: Advertising
+# AUTHOR: AD
+# REPO: https://github.com/
+# DOMAIN: 0
+# DOMAIN-KEYWORD: 0
+# DOMAIN-SUFFIX: 10
+# IP-CIDR: 0
+# IP-CIDR6: 0
+# TOTAL: 10
+DOMAIN-SUFFIX,ads.inmobi.com
+DOMAIN-SUFFIX,tappx.com
+DOMAIN-SUFFIX,criteo.com
+DOMAIN-SUFFIX,pubmatic.com
+DOMAIN-SUFFIX,smaato.net
+DOMAIN-SUFFIX,amazon-adsystem.com
+DOMAIN-KEYWORD,googleads
+DOMAIN-SUFFIX,adsappier.com
+DOMAIN-SUFFIX,appier.net
+DOMAIN-SUFFIX,appiersig.com
