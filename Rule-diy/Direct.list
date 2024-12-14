@@ -2,12 +2,11 @@
 # AUTHOR: AD
 # REPO: https://github.com/
 # UPDATED: 2024-4-12 16:27:00
-# DOMAIN: 2
+# DOMAIN: 1
 # DOMAIN-KEYWORD: 0
-# DOMAIN-SUFFIX: 2
+# DOMAIN-SUFFIX: 1
 # IP-CIDR: 0
 # IP-CIDR6: 0
-# TOTAL: 4
-DOMAIN,zh.zlibrary-china.se
+# TOTAL: 2
 DOMAIN,acl4ssr-sub.github.io
-DOMAIN-SUFFIX,rocotime.com
+DOMAIN-SUFFIX,edu.cn
