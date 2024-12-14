@@ -2,13 +2,12 @@
   "rules": [
     {
       "domain": [
-        "acl4ssr-sub.github.io",
-        "zh.zlibrary-china.se"
+        "acl4ssr-sub.github.io"
       ]
     },
     {
       "domain_suffix": [
-        "rocotime.com"
+        "edu.cn"
       ]
     }
   ],
