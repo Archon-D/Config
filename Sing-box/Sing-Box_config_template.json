@@ -286,6 +286,18 @@
   "route": {
     "rule_set": [
       {
+        "tag": "GoogleVoice",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/GoogleVoice.json"
+      },
+      {
+        "tag": "Talkatone",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Talkatone.json"
+      },
+      {
         "tag": "Direct-diy",
         "type": "remote",
         "format": "source",
@@ -461,6 +473,26 @@
         "action": "reject"
       },
       {
+        "rule_set": "Talkatone",
+        "outbound": "风控"
+      },
+      {
+        "rule_set": "GoogleVoice",
+        "outbound": "风控"
+      },
+      {
+        "rule_set": "Facebook",
+        "outbound": "风控"
+      },
+      {
+        "rule_set": "PayPal",
+        "outbound": "风控"
+      },
+      {
+        "rule_set": "TikTok",
+        "outbound": "风控"
+      },
+      {
         "rule_set": "Ali",
         "outbound": "🎯 全球直连"
       },
@@ -515,18 +547,6 @@
       {
         "rule_set": "Apple",
         "outbound": "🍎 苹果服务"
-      },
-      {
-        "rule_set": "Facebook",
-        "outbound": "风控"
-      },
-      {
-        "rule_set": "PayPal",
-        "outbound": "风控"
-      },
-      {
-        "rule_set": "TikTok",
-        "outbound": "风控"
       },
       {
         "rule_set": "Steam",
