@@ -297,6 +297,12 @@
   "route": {
     "rule_set": [
       {
+        "tag": "GoogleVoice",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/GoogleVoice.json"
+      },
+      {
         "tag": "Talkatone",
         "type": "remote",
         "format": "source",
@@ -468,6 +474,10 @@
       {
         "rule_set": "Advertising",
         "outbound": "block"
+      },
+      {
+        "rule_set": "GoogleVoice",
+        "outbound": "风控"
       },
       {
         "rule_set": "Talkatone",
