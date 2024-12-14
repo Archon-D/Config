@@ -328,6 +328,12 @@
         "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Advertising.json"
       },
       {
+        "tag": "Advertising_diy",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.json"
+      },
+      {
         "tag": "Ali",
         "type": "remote",
         "format": "source",
@@ -466,6 +472,10 @@
       },
       {
         "rule_set": "Privacy",
+        "action": "reject"
+      },
+      {
+        "rule_set": "Advertising",
         "action": "reject"
       },
       {
