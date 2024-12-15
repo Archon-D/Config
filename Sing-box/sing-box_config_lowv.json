@@ -345,12 +345,6 @@
         "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.json"
       },
       {
-        "tag": "Ali",
-        "type": "remote",
-        "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Alibaba.json"
-      },
-      {
         "tag": "OpenAI",
         "type": "remote",
         "format": "source",
@@ -474,18 +468,6 @@
         "outbound": "🎯 全球直连"
       },
       {
-        "rule_set": "Privacy",
-        "outbound": "block"
-      },
-      {
-        "rule_set": "Advertising",
-        "outbound": "block"
-      },
-      {
-        "rule_set": "Advertising_diy",
-        "outbound": "block"
-      },
-      {
         "rule_set": "GoogleVoice",
         "outbound": "风控"
       },
@@ -504,10 +486,6 @@
       {
         "rule_set": "TikTok",
         "outbound": "风控"
-      },
-      {
-        "rule_set": "Ali",
-        "outbound": "🎯 全球直连"
       },
       {
         "rule_set": "OpenAI",
@@ -534,16 +512,16 @@
         "outbound": "📲 电报消息"
       },
       {
-        "rule_set": "GitHub",
-        "outbound": "🌍 国外网站"
+        "rule_set": "GlobalMedia",
+        "outbound": "🎥 国际媒体"
       },
       {
         "rule_set": "Google",
         "outbound": "📢 谷歌服务"
       },
       {
-        "rule_set": "GlobalMedia",
-        "outbound": "🎥 国际媒体"
+        "rule_set": "GitHub",
+        "outbound": "🌍 国外网站"
       },
       {
         "rule_set": "ChinaMax",
@@ -564,6 +542,18 @@
       {
         "rule_set": "Steam",
         "outbound": "🎮 游戏平台"
+      },
+      {
+        "rule_set": "Privacy",
+        "outbound": "block"
+      },
+      {
+        "rule_set": "Advertising",
+        "outbound": "block"
+      },
+      {
+        "rule_set": "Advertising_diy",
+        "outbound": "block"
       },
       {
         "clash_mode": "direct",
