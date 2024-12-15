@@ -471,18 +471,6 @@
         "outbound": "🎯 全球直连"
       },
       {
-        "rule_set": "Privacy",
-        "action": "reject"
-      },
-      {
-        "rule_set": "Advertising",
-        "action": "reject"
-      },
-      {
-        "rule_set": "Advertising",
-        "action": "reject"
-      },
-      {
         "rule_set": "Talkatone",
         "outbound": "风控"
       },
@@ -535,10 +523,6 @@
         "outbound": "🌍 国外网站"
       },
       {
-        "rule_set": "Google",
-        "outbound": "📢 谷歌服务"
-      },
-      {
         "rule_set": "GlobalMedia",
         "outbound": "🎥 国际媒体"
       },
@@ -559,8 +543,24 @@
         "outbound": "🍎 苹果服务"
       },
       {
+        "rule_set": "Google",
+        "outbound": "📢 谷歌服务"
+      },
+      {
         "rule_set": "Steam",
         "outbound": "🎮 游戏平台"
+      },
+      {
+        "rule_set": "Privacy",
+        "action": "reject"
+      },
+      {
+        "rule_set": "Advertising",
+        "action": "reject"
+      },
+      {
+        "rule_set": "Advertising_diy",
+        "action": "reject"
       },
       {
         "clash_mode": "direct",
