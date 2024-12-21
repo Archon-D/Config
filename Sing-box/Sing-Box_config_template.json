@@ -193,7 +193,7 @@
     },
     {
       "tag": "🇯🇵 日本HQ",
-      "type": "urltest",
+      "type": "selector",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
@@ -201,7 +201,7 @@
     },
     {
       "tag": "🇸🇬 狮城HQ",
-      "type": "urltest",
+      "type": "selector",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
@@ -209,7 +209,7 @@
     },
     {
       "tag": "🇺🇲 美国HQ",
-      "type": "urltest",
+      "type": "selector",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
@@ -338,12 +338,6 @@
         "type": "remote",
         "format": "source",
         "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.json"
-      },
-      {
-        "tag": "Ali",
-        "type": "remote",
-        "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Alibaba.json"
       },
       {
         "tag": "OpenAI",
@@ -495,10 +489,6 @@
       {
         "rule_set": "TikTok",
         "outbound": "风控"
-      },
-      {
-        "rule_set": "Ali",
-        "outbound": "🎯 全球直连"
       },
       {
         "rule_set": "OpenAI",
