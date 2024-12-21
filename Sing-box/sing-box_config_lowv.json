@@ -197,15 +197,17 @@
     {
       "tag": "🇯🇵 日本HQ",
       "type": "selector",
-      "outbounds": [],
+      "outbounds": []
     },
     {
       "tag": "🇸🇬 狮城HQ",
       "type": "selector",
+      "outbounds": []
     },
     {
       "tag": "🇺🇲 美国HQ",
       "type": "selector",
+      "outbounds": []
     },
     {
       "tag": "SP|特殊节点",
