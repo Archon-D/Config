@@ -75,15 +75,15 @@
         "USA|美国节点",
         "KR|韩国节点",
         "SP|特殊节点",
-        "🇺🇲 美国ENET",
-        "🇸🇬 狮城ENET",
-        "🇯🇵 日本ENET"
+        "🇺🇲 美国HQ",
+        "🇸🇬 狮城HQ",
+        "🇯🇵 日本HQ"
       ]
     },
     {
       "tag": "💬 AI",
       "type": "selector",
-      "outbounds": ["🇺🇲 美国ENET", "🇸🇬 狮城ENET", "🇯🇵 日本ENET"]
+      "outbounds": ["🇺🇲 美国HQ", "🇸🇬 狮城HQ", "🇯🇵 日本HQ"]
     },
     {
       "tag": "🎥 国际媒体",
@@ -146,7 +146,7 @@
     {
       "tag": "风控",
       "type": "selector",
-      "outbounds": ["🇺🇲 美国ENET", "🇸🇬 狮城ENET", "🇯🇵 日本ENET"]
+      "outbounds": ["🇺🇲 美国HQ", "🇸🇬 狮城HQ", "🇯🇵 日本HQ"]
     },
     {
       "tag": "🎮 游戏平台",
@@ -195,7 +195,7 @@
       ]
     },
     {
-      "tag": "🇯🇵 日本ENET",
+      "tag": "🇯🇵 日本HQ",
       "type": "urltest",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
@@ -203,7 +203,7 @@
       "tolerance": 150
     },
     {
-      "tag": "🇸🇬 狮城ENET",
+      "tag": "🇸🇬 狮城HQ",
       "type": "urltest",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
@@ -211,7 +211,7 @@
       "tolerance": 150
     },
     {
-      "tag": "🇺🇲 美国ENET",
+      "tag": "🇺🇲 美国HQ",
       "type": "urltest",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
