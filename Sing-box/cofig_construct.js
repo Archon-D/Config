@@ -29,25 +29,25 @@ config.outbounds.map(i => {
     i.outbounds.push(...getTags(proxies, /^(?!.*(港|台|日本|韩|坡|美|HK|US|TW|JP|KR|SG|Hong|Tai|Japan|Korea|Singapore|States|L|Game|HQ)).*$/))
   }
   if (['KR|韩国节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=.*(?:新加坡|坡|狮城|SG|Singapore))(?!.*(?:港|美|日|韩|台|Game|HQ)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:新加坡|坡|狮城|SG|Singapore))(?!.*(?:港|美|日|韩|台|Game|HQ)).*$/))
   }
   if (['SG|狮城节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=.*(?:KR|Korea|KOR|首尔|韩|韓))(?!.*(?:港|美|日|新|台|Game|HQ)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:KR|Korea|KOR|首尔|韩|韓))(?!.*(?:港|美|日|新|台|Game|HQ)).*$/))
   }
   if (['CN|台湾节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=.*(?:台|新北|彰化|TW|Taiwan))(?!.*(?:港|美|日|韩|新|Game|HQ)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:台|新北|彰化|TW|Taiwan))(?!.*(?:港|美|日|韩|新|Game|HQ)).*$/))
   }
   if (['USA|美国节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=.*(?:美|US|States|American))(?!.*(?:港|台|日|韩|新|Game|HQ)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:美|US|States|American))(?!.*(?:港|台|日|韩|新|Game|HQ)).*$/))
   }
   if (['JP|日本节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=.*(?:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan))(?!.*(?:港|美|韩|新|台|Game|HQ)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan))(?!.*(?:港|美|韩|新|台|Game|HQ)).*$/))
   }
   if (['HK|香港节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=.*(?:港|HK|hk|Hong Kong|HongKong|hongkong))(?!.*(?:日本|美|韩|新|台|Game|HQ)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:港|HK|hk|Hong Kong|HongKong|hongkong))(?!.*(?:日本|美|韩|新|台|Game|HQ)).*$/))
   }
   if (['经济节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=.*(?:ECO))(?!.*(?:HQ|98K)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=.*(?:ECO))(?!.*(?:HQ|SN)).*$/))
   }
 })
 
