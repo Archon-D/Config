@@ -196,7 +196,7 @@
     },
     {
       "tag": "🇯🇵 日本HQ",
-      "type": "urltest",
+      "type": "selector",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
@@ -204,7 +204,7 @@
     },
     {
       "tag": "🇸🇬 狮城HQ",
-      "type": "urltest",
+      "type": "selector",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
@@ -212,7 +212,7 @@
     },
     {
       "tag": "🇺🇲 美国HQ",
-      "type": "urltest",
+      "type": "selector",
       "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "300s",
