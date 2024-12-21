@@ -194,26 +194,17 @@
     {
       "tag": "🇯🇵 日本HQ",
       "type": "selector",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
+      "outbounds": []
     },
     {
       "tag": "🇸🇬 狮城HQ",
       "type": "selector",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
+      "outbounds": []
     },
     {
       "tag": "🇺🇲 美国HQ",
       "type": "selector",
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
+      "outbounds": []
     },
     {
       "tag": "SP|特殊节点",
