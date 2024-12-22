@@ -2,7 +2,7 @@
   "log": {
     "disabled": false,
     "level": "info",
-    "output": "box.log",
+    "output": "",
     "timestamp": true
   },
   "experimental": {
@@ -31,13 +31,6 @@
       "tag": "tun-in",
       "interface_name": "以太网",
       "address": ["172.18.0.1/30", "fdfe:dcba:9876::1/126"],
-      "platform": {
-        "http_proxy": {
-          "enabled": true,
-          "server": "127.0.0.1",
-          "server_port": 20122
-        }
-      },
       "mtu": 9000,
       "auto_route": true,
       "strict_route": true,
@@ -57,13 +50,15 @@
       "listen_port": 20122,
       "tcp_fast_open": false,
       "tcp_multi_path": false,
-      "udp_fragment": false
+      "udp_fragment": false,
+      "users": []
     }
   ],
   "outbounds": [
     {
       "tag": "🚀 节点选择",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": [
         "SG|狮城节点",
         "HK|香港节点",
@@ -74,94 +69,96 @@
         "SP|特殊节点",
         "🇺🇲 美国HQ",
         "🇸🇬 狮城HQ",
-        "🇯🇵 日本HQ"
+        "🇯🇵 日本HQ",
+        "🎯 全球直连"
       ]
     },
     {
       "tag": "💬 AI",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": ["🇺🇲 美国HQ", "🇸🇬 狮城HQ", "🇯🇵 日本HQ"]
+    },
+    {
+      "tag": "风控",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "outbounds": ["🇸🇬 狮城HQ", "🇺🇲 美国HQ", "🇯🇵 日本HQ"]
     },
     {
       "tag": "🎥 国际媒体",
       "type": "selector",
+      "interrupt_exist_connections": false,
       "outbounds": [
-        "🚀 节点选择",
+        "SG|狮城节点",
         "HK|香港节点",
         "JP|日本节点",
         "USA|美国节点",
         "CN|台湾节点",
-        "SG|狮城节点",
         "KR|韩国节点",
         "SP|特殊节点",
-        "经济节点"
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "📲 电报消息",
       "type": "selector",
+      "interrupt_exist_connections": false,
       "outbounds": [
-        "🚀 节点选择",
         "SG|狮城节点",
         "HK|香港节点",
         "JP|日本节点",
         "USA|美国节点",
         "CN|台湾节点",
         "KR|韩国节点",
-        "SP|特殊节点",
-        "经济节点"
+        "经济节点",
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "🌍 国外网站",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": [
-        "🚀 节点选择",
+        "SG|狮城节点",
         "USA|美国节点",
         "HK|香港节点",
         "JP|日本节点",
-        "SG|狮城节点",
         "KR|韩国节点",
         "CN|台湾节点",
-        "SP|特殊节点"
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "📢 谷歌服务",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": [
-        "🚀 节点选择",
-        "HK|香港节点",
         "USA|美国节点",
+        "HK|香港节点",
         "JP|日本节点",
         "CN|台湾节点",
         "SG|狮城节点",
         "KR|韩国节点",
-        "SP|特殊节点"
+        "🚀 节点选择"
       ]
-    },
-    {
-      "tag": "风控",
-      "type": "selector",
-      "outbounds": ["🇺🇲 美国HQ", "🇸🇬 狮城HQ", "🇯🇵 日本HQ"]
     },
     {
       "tag": "🎮 游戏平台",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": [
         "🎯 全球直连",
-        "🚀 节点选择",
+        "Game",
         "HK|香港节点",
-        "JP|日本节点",
-        "USA|美国节点",
-        "CN|台湾节点",
-        "SG|狮城节点",
-        "KR|韩国节点"
+        "🚀 节点选择"
+        
       ]
     },
     {
       "tag": "🍎 苹果服务",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": ["🎯 全球直连", "HK|香港节点", "USA|美国节点", "🚀 节点选择"]
     },
     {
@@ -170,14 +167,7 @@
       "outbounds": [
         "🎯 全球直连",
         "经济节点",
-        "HK|香港节点",
-        "USA|美国节点",
-        "JP|日本节点",
-        "CN|台湾节点",
-        "SG|狮城节点",
-        "KR|韩国节点",
-        "SP|特殊节点",
-        "🚀 节点选择"
+        "🎥 国际媒体"
       ]
     },
     {
@@ -189,6 +179,17 @@
         "USA|美国节点",
         "JP|日本节点",
         "SG|狮城节点"
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "Game",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "3m",
+      "tolerance": 150,
+      "interrupt_exist_connections": true,
+      "outbounds": [
+
       ]
     },
     {
@@ -271,17 +272,18 @@
       "tolerance": 150
     },
     {
-      "tag": "🎯 全球直连",
-      "type": "selector",
-      "outbounds": ["direct"]
-    },
-    {
       "type": "direct",
-      "tag": "direct"
+      "tag": "🎯 全球直连"
     }
   ],
   "route": {
     "rule_set": [
+      {
+        "tag": "emby",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/emby.json"
+      },
       {
         "tag": "GoogleVoice",
         "type": "remote",
@@ -442,6 +444,10 @@
     ],
     "rules": [
       {
+        "action": "sniff",
+        "inbound": "tun-in"
+      },
+      {
         "protocol": "dns",
         "action": "hijack-dns"
       },
@@ -451,109 +457,134 @@
         "strategy": "prefer_ipv4"
       },
       {
-        "action": "sniff"
-      },
-      {
+        "action": "route",         
         "rule_set": "Direct-diy",
         "outbound": "🎯 全球直连"
       },
       {
+        "action": "route",         
         "rule_set": "Lan",
         "outbound": "🎯 全球直连"
       },
       {
+        "action": "route",         
         "rule_set": "Talkatone",
         "outbound": "风控"
       },
       {
+        "action": "route",         
         "rule_set": "GoogleVoice",
         "outbound": "风控"
       },
       {
+        "action": "route",         
         "rule_set": "Facebook",
         "outbound": "风控"
       },
       {
+        "action": "route",         
         "rule_set": "PayPal",
         "outbound": "风控"
       },
       {
+        "action": "route",         
         "rule_set": "TikTok",
         "outbound": "风控"
       },
       {
+        "action": "route",         
         "rule_set": "OpenAI",
         "outbound": "💬 AI"
       },
       {
+        "action": "route",         
         "rule_set": "Claude",
         "outbound": "💬 AI"
       },
       {
+        "action": "route",         
         "rule_set": "Gemini",
         "outbound": "💬 AI"
       },
       {
+        "action": "route",         
         "rule_set": "Copilot",
         "outbound": "💬 AI"
       },
       {
+        "action": "route",         
         "rule_set": "AI-diy",
         "outbound": "💬 AI"
       },
       {
-        "rule_set": "Telegram",
-        "outbound": "📲 电报消息"
-      },
-      {
-        "rule_set": "GitHub",
-        "outbound": "🌍 国外网站"
-      },
-      {
-        "rule_set": "GlobalMedia",
-        "outbound": "🎥 国际媒体"
-      },
-      {
-        "rule_set": "ChinaMax",
-        "outbound": "🎯 全球直连"
-      },
-      {
-        "rule_set": "Emby",
-        "outbound": "🎯 EMBY"
-      },
-      {
-        "rule_set": "Twitter",
-        "outbound": "🌍 国外网站"
-      },
-      {
-        "rule_set": "Apple",
-        "outbound": "🍎 苹果服务"
-      },
-      {
+        "action": "route",         
         "rule_set": "Google",
         "outbound": "📢 谷歌服务"
       },
       {
+        "action": "route",         
+        "rule_set": "Telegram",
+        "outbound": "📲 电报消息"
+      },
+      {
+        "action": "route",         
+        "rule_set": "GitHub",
+        "outbound": "🌍 国外网站"
+      },
+      {
+        "action": "route",
+        "rule_set": "emby",
+        "outbound": "🎯 EMBY"
+      },
+      {
+        "action": "route",         
+        "rule_set": "Emby",
+        "outbound": "🎯 EMBY"
+      },
+      {
+        "action": "route",         
+        "rule_set": "GlobalMedia",
+        "outbound": "🎥 国际媒体"
+      },
+      {
+        "action": "route",         
+        "rule_set": "ChinaMax",
+        "outbound": "🎯 全球直连"
+      },
+      {
+        "action": "route",         
+        "rule_set": "Twitter",
+        "outbound": "🌍 国外网站"
+      },
+      {
+        "action": "route",         
+        "rule_set": "Apple",
+        "outbound": "🍎 苹果服务"
+      },
+      {
+        "action": "route",         
         "rule_set": "Steam",
         "outbound": "🎮 游戏平台"
       },
-      {
+      {         
         "rule_set": "Privacy",
         "action": "reject"
       },
-      {
+      {       
         "rule_set": "Advertising",
         "action": "reject"
       },
-      {
+      {     
         "rule_set": "Advertising_diy",
         "action": "reject"
       },
       {
+        "action": "route",
         "clash_mode": "direct",
         "outbound": "🎯 全球直连"
       },
       {
+        "action": "route",
         "clash_mode": "global",
         "outbound": "🚀 节点选择"
       }
@@ -573,12 +604,12 @@
         "tag": "local-dns",
         "address": "https://223.5.5.5/dns-query",
         "address_resolver": "resolver-dns",
-        "detour": "direct"
+        "detour": "🎯 全球直连"
       },
       {
         "tag": "resolver-dns",
         "address": "223.5.5.5",
-        "detour": "direct"
+        "detour": "🎯 全球直连"
       },
       {
         "tag": "remote-resolver-dns",
@@ -596,21 +627,20 @@
     ],
     "rules": [
       {
+        "action": "route",
         "outbound": "any",
         "disable_cache": true,
         "server": "local-dns"
       },
       {
-        "clash_mode": "direct",
-        "server": "local-dns"
+        "action": "reject",
+        "rule_set": "Advertising",
+        "method": "drop"
       },
       {
-        "clash_mode": "global",
-        "server": "remote-dns"
-      },
-      {
-        "rule_set": ["Privacy", "Advertising"],
-        "server": "block"
+        "action": "reject",
+        "rule_set": "Privacy",
+        "method": "drop"
       },
       {
         "type": "logical",
@@ -640,6 +670,16 @@
       },
       {
         "rule_set": "GEOLOCATION-!CN",
+        "server": "remote-dns"
+      },
+      {
+        "action": "route",
+        "clash_mode": "direct",
+        "server": "local-dns"
+      },
+      {
+        "action": "route",
+        "clash_mode": "global",
         "server": "remote-dns"
       }
     ],
