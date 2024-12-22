@@ -387,16 +387,10 @@
         "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Emby.json"
       },
       {
-        "tag": "GitHub",
+        "tag": "Proxy",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/GitHub.json"
-      },
-      {
-        "tag": "Twitter",
-        "type": "remote",
-        "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Twitter.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Proxy.json"
       },
       {
         "tag": "Steam",
@@ -527,11 +521,6 @@
         "outbound": "📲 电报消息"
       },
       {
-        "action": "route",         
-        "rule_set": "GitHub",
-        "outbound": "🌍 国外网站"
-      },
-      {
         "action": "route",
         "rule_set": "emby",
         "outbound": "🎯 EMBY"
@@ -553,11 +542,6 @@
       },
       {
         "action": "route",         
-        "rule_set": "Twitter",
-        "outbound": "🌍 国外网站"
-      },
-      {
-        "action": "route",         
         "rule_set": "Apple",
         "outbound": "🍎 苹果服务"
       },
@@ -565,6 +549,11 @@
         "action": "route",         
         "rule_set": "Steam",
         "outbound": "🎮 游戏平台"
+      },
+      {
+        "action": "route",         
+        "rule_set": "Proxy",
+        "outbound": "🌍 国外网站"
       },
       {         
         "rule_set": "Privacy",
