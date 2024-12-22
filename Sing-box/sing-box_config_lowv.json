@@ -2,7 +2,7 @@
   "log": {
     "disabled": false,
     "level": "info",
-    "output": "box.log",
+    "output": "",
     "timestamp": true
   },
   "experimental": {
@@ -10,7 +10,7 @@
       "external_controller": "127.0.0.1:20123",
       "external_ui": "",
       "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
-      "external_ui_download_detour": "outbound-select",
+      "external_ui_download_detour": "🚀 节点选择",
       "secret": "ID_g637rrfj",
       "default_mode": "rule",
       "access_control_allow_origin": ["*"],
@@ -31,13 +31,6 @@
       "tag": "tun-in",
       "interface_name": "以太网",
       "address": ["172.18.0.1/30", "fdfe:dcba:9876::1/126"],
-      "platform": {
-        "http_proxy": {
-          "enabled": true,
-          "server": "127.0.0.1",
-          "server_port": 20122
-        }
-      },
       "mtu": 9000,
       "auto_route": true,
       "strict_route": true,
@@ -55,18 +48,17 @@
       "tag": "mixd-in",
       "listen": "127.0.0.1",
       "listen_port": 20122,
-      "sniff": true,
-      "sniff_override_destination": false,
-      "domain_strategy": "prefer_ipv4",
       "tcp_fast_open": false,
       "tcp_multi_path": false,
       "udp_fragment": false
+      "users": []
     }
   ],
   "outbounds": [
     {
       "tag": "🚀 节点选择",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": [
         "SG|狮城节点",
         "HK|香港节点",
@@ -77,34 +69,35 @@
         "SP|特殊节点",
         "🇺🇲 美国HQ",
         "🇸🇬 狮城HQ",
-        "🇯🇵 日本HQ"
+        "🇯🇵 日本HQ",
+        "🎯 全球直连"
       ]
     },
     {
       "tag": "💬 AI",
       "type": "selector",
-      "outbounds": ["🇺🇲 美国HQ", "🇸🇬 狮城HQ", "🇯🇵 日本HQ"]
+      "interrupt_exist_connections": true,
+      "outbounds": ["🇸🇬 狮城HQ", "🇺🇲 美国HQ", "🇯🇵 日本HQ"]
     },
     {
       "tag": "🎥 国际媒体",
       "type": "selector",
+      "interrupt_exist_connections": false,
       "outbounds": [
-        "🚀 节点选择",
         "HK|香港节点",
         "JP|日本节点",
         "USA|美国节点",
         "CN|台湾节点",
         "SG|狮城节点",
         "KR|韩国节点",
-        "SP|特殊节点",
-        "经济节点"
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "📲 电报消息",
       "type": "selector",
+      "interrupt_exist_connections": false,
       "outbounds": [
-        "🚀 节点选择",
         "SG|狮城节点",
         "HK|香港节点",
         "JP|日本节点",
@@ -112,74 +105,69 @@
         "CN|台湾节点",
         "KR|韩国节点",
         "SP|特殊节点",
-        "经济节点"
+        "经济节点",
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "🌍 国外网站",
       "type": "selector",
+      "interrupt_exist_connections": false,
       "outbounds": [
-        "🚀 节点选择",
+        "SG|狮城节点",
         "USA|美国节点",
         "HK|香港节点",
         "JP|日本节点",
-        "SG|狮城节点",
         "KR|韩国节点",
         "CN|台湾节点",
-        "SP|特殊节点"
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "📢 谷歌服务",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": [
-        "🚀 节点选择",
-        "HK|香港节点",
         "USA|美国节点",
+        "HK|香港节点",
         "JP|日本节点",
         "CN|台湾节点",
         "SG|狮城节点",
         "KR|韩国节点",
-        "SP|特殊节点"
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "风控",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": ["🇺🇲 美国HQ", "🇸🇬 狮城HQ", "🇯🇵 日本HQ"]
     },
     {
       "tag": "🎮 游戏平台",
       "type": "selector",
+      "interrupt_exist_connections": false,
       "outbounds": [
         "🎯 全球直连",
-        "🚀 节点选择",
         "HK|香港节点",
-        "JP|日本节点",
-        "USA|美国节点",
-        "CN|台湾节点",
-        "SG|狮城节点",
-        "KR|韩国节点"
+        "Game",
+        "🚀 节点选择"
       ]
     },
     {
       "tag": "🍎 苹果服务",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": ["🎯 全球直连", "HK|香港节点", "USA|美国节点", "🚀 节点选择"]
     },
     {
       "tag": "🎯 EMBY",
       "type": "selector",
+      "interrupt_exist_connections": true,
       "outbounds": [
         "🎯 全球直连",
         "经济节点",
-        "HK|香港节点",
-        "USA|美国节点",
-        "JP|日本节点",
-        "CN|台湾节点",
-        "SG|狮城节点",
-        "KR|韩国节点",
-        "SP|特殊节点",
+        🎥 国际媒体,
         "🚀 节点选择"
       ]
     },
@@ -208,6 +196,17 @@
       "tag": "🇺🇲 美国HQ",
       "type": "selector",
       "outbounds": []
+    },
+    {
+      "type": "urltest",
+      "tag": "Game",
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "3m",
+      "tolerance": 150,
+      "interrupt_exist_connections": true,
+      "outbounds": [
+
+      ]
     },
     {
       "tag": "SP|特殊节点",
