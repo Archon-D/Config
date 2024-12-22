@@ -50,7 +50,7 @@
       "listen_port": 20122,
       "tcp_fast_open": false,
       "tcp_multi_path": false,
-      "udp_fragment": false
+      "udp_fragment": false,
       "users": []
     }
   ],
@@ -167,7 +167,7 @@
       "outbounds": [
         "🎯 全球直连",
         "经济节点",
-        🎥 国际媒体,
+        "🎥 国际媒体",
         "🚀 节点选择"
       ]
     },
