@@ -49,6 +49,9 @@ config.outbounds.map(i => {
   if (['经济节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^ECO.*$/))
   }
+  if (['经济节点'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^.*Game.*$/))
+  }
 })
 
 config.outbounds.forEach(outbound => {
