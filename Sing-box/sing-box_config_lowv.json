@@ -395,16 +395,10 @@
         "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Emby.json"
       },
       {
-        "tag": "GitHub",
+        "tag": "Proxy",
         "type": "remote",
         "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/GitHub.json"
-      },
-      {
-        "tag": "Twitter",
-        "type": "remote",
-        "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Twitter.json"
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Proxy.json"
       },
       {
         "tag": "Steam",
@@ -516,10 +510,6 @@
         "outbound": "📢 谷歌服务"
       },
       {
-        "rule_set": "GitHub",
-        "outbound": "🌍 国外网站"
-      },
-      {
         "rule_set": "ChinaMax",
         "outbound": "🎯 全球直连"
       },
@@ -528,16 +518,16 @@
         "outbound": "🎯 EMBY"
       },
       {
-        "rule_set": "Twitter",
-        "outbound": "🌍 国外网站"
-      },
-      {
         "rule_set": "Apple",
         "outbound": "🍎 苹果服务"
       },
       {
         "rule_set": "Steam",
         "outbound": "🎮 游戏平台"
+      },
+      {
+        "rule_set": "Proxy",
+        "outbound": "🌍 国外网站"
       },
       {
         "rule_set": "Privacy",
