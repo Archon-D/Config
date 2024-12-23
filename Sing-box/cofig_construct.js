@@ -7,8 +7,8 @@ const compatible_outbound = {
 let compatible
 let config = JSON.parse($files[0])
 let proxies = await produceArtifact({
-  name,
-  type: /^1$|col/i.test(type) ? 'collection' : 'subscription',
+  name: 'All',
+  type: 'collection',///^1$|col/i.test(type) ? 'collection' : 'subscription',
   platform: 'sing-box',
   produceType: 'internal',
 })
@@ -16,7 +16,7 @@ let proxies = await produceArtifact({
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
-  if (['🇯🇵 日本HQ'].includes(i.tag)) {
+   if (['🇯🇵 日本HQ'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=HQ.*(?:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan))(?!.*(?:港|美|韩|新|台|Game)).*$/))
   }
   if (['🇸🇬 狮城HQ'].includes(i.tag)) {
@@ -28,29 +28,29 @@ config.outbounds.map(i => {
   if (['SP|特殊节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^SN(?!.*(港|台|日本|韩|坡|美|HK|US|TW|JP|KR|SG|Hong|Tai|Japan|Korea|Singapore|States|Game)).*$/))
   }
-  if (['KR|韩国节点'].includes(i.tag)) {
+  if (['🇰🇷 韩国节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:KR|Korea|KOR|首尔|韩|韓))(?!.*(?:港|美|日|新|台|Game)).*$/))
   }
-  if (['SG|狮城节点'].includes(i.tag)) {
+  if (['🇸🇬 狮城节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:新加坡|坡|狮城|SG|Singapore))(?!.*(?:港|美|日|韩|台|Game)).*$/))
   }
-  if (['CN|台湾节点'].includes(i.tag)) {
+  if (['🇨🇳 台湾节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:台|新北|彰化|TW|Taiwan))(?!.*(?:港|美|日|韩|新|Game)).*$/))
   }
-  if (['USA|美国节点'].includes(i.tag)) {
+  if (['🇺🇲 美国节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:美|US|States|American))(?!.*(?:港|台|日|韩|新|Game)).*$/))
   }
-  if (['JP|日本节点'].includes(i.tag)) {
+  if (['🇯🇵 日本节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan))(?!.*(?:港|美|韩|新|台|Game)).*$/))
   }
-  if (['HK|香港节点'].includes(i.tag)) {
+  if (['🇭🇰 香港节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:港|HK|hk|Hong Kong|HongKong|hongkong))(?!.*(?:日本|美|韩|新|台|Game)).*$/))
   }
   if (['经济节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^ECO.*$/))
   }
-  if (['经济节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^.*Game.*$/))
+  if (['Game'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /.*Game.*/))
   }
 })
 
