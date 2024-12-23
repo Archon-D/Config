@@ -29,10 +29,10 @@ config.outbounds.map(i => {
     i.outbounds.push(...getTags(proxies, /^SN(?!.*(港|台|日本|韩|坡|美|HK|US|TW|JP|KR|SG|Hong|Tai|Japan|Korea|Singapore|States|Game)).*$/))
   }
   if (['KR|韩国节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:新加坡|坡|狮城|SG|Singapore))(?!.*(?:港|美|日|韩|台|Game)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:KR|Korea|KOR|首尔|韩|韓))(?!.*(?:港|美|日|新|台|Game)).*$/))
   }
   if (['SG|狮城节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:KR|Korea|KOR|首尔|韩|韓))(?!.*(?:港|美|日|新|台|Game)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:新加坡|坡|狮城|SG|Singapore))(?!.*(?:港|美|日|韩|台|Game)).*$/))
   }
   if (['CN|台湾节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:台|新北|彰化|TW|Taiwan))(?!.*(?:港|美|日|韩|新|Game)).*$/))
