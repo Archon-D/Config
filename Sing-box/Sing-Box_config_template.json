@@ -690,7 +690,9 @@
             {
                 "action": "route",
                 "server": "System-DNS",
-                "rule_set": "Direct-diy"
+                "domain_suffix": [
+                          ".cn"         //内网域名后缀
+                    ],
             },
             {
                 "action": "route",
