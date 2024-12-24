@@ -648,31 +648,36 @@
     "dns": {
         "servers": [
             {
-                "tag": "remote-dns",
-                "address": "tls://8.8.8.8",
-                "address_resolver": "remote-resolver-dns",
+                "tag": "Remote-DNS",
+                "address": "https://8.8.8.8/dns-query",
+                "address_resolver": "Remote-Resolver",
                 "detour": "🚀 节点选择",
                 "strategy": "prefer_ipv4"
             },
             {
-                "tag": "local-dns",
+                "tag": "Local-DNS",
                 "address": "https://223.5.5.5/dns-query",
-                "address_resolver": "resolver-dns",
+                "address_resolver": "Local-Resolver",
                 "detour": "🎯 全球直连",
                 "strategy": "prefer_ipv4"
             },
             {
-                "tag": "resolver-dns",
+                "tag": "Local-Resolver",
                 "address": "223.5.5.5",
                 "detour": "🎯 全球直连"
             },
             {
-                "tag": "remote-resolver-dns",
+                "tag": "Remote-Resolver",
                 "address": "8.8.8.8",
                 "detour": "🚀 节点选择"
             },
             {
-                "tag": "fakeip-dns",
+                "tag": "System-DNS",
+                "address": "dhcp://auto",
+                "detour": "🎯 全球直连"
+            },
+            {
+                "tag": "FakeIP",
                 "address": "fakeip"
             }
         ],
@@ -680,29 +685,35 @@
             {
                 "action": "route",
                 "outbound": "any",
-                "server": "local-dns"
+                "server": "Local-DNS"
             },
             {
                 "action": "route",
-                "server": "fakeip-dns",
+                "server": "System-DNS",
+                "rule_set": "Direct-diy"
+            },
+            {
+                "action": "route",
+                "server": "FakeIP",
                 "inbound": [
                     "tun-in",
                     "mixed-in"
                 ]
             },
             {
+                "action": "route",
                 "rule_set": "GEOLOCATION-!CN",
-                "server": "remote-dns"
+                "server": "Remote-DNS"
             },
             {
                 "action": "route",
                 "clash_mode": "direct",
-                "server": "local-dns"
+                "server": "Local-DNS"
             },
             {
                 "action": "route",
                 "clash_mode": "global",
-                "server": "remote-dns"
+                "server": "Remote-DNS"
             }
         ],
         "fakeip": {
@@ -710,7 +721,7 @@
             "inet4_range": "198.18.0.0/15",
             "inet6_range": "fc00::/18"
         },
-        "final": "local-dns",
+        "final": "Local-DNS",
         "disable_cache": false,
         "disable_expire": false,
         "independent_cache": false,
