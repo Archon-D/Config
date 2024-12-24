@@ -493,17 +493,11 @@
         ],
         "rules": [
             {
-                "action": "sniff",
-                "inbound": "tun-in"
+                "action": "sniff"
             },
             {
                 "protocol": "dns",
                 "action": "hijack-dns"
-            },
-            {
-                "inbound": "mixed-in",
-                "action": "resolve",
-                "strategy": "prefer_ipv4"
             },
             {
                 "action": "route",
@@ -611,10 +605,10 @@
                 "outbound": "📢 谷歌服务"
             },
             {
-          "action": "route",
-          "rule_set": "Microsoft",
-          "outbound": "Ⓜ️ 微软服务"
-        },
+                "action": "route",
+                "rule_set": "Microsoft",
+                "outbound": "Ⓜ️ 微软服务"
+            },
             {
                 "action": "route",
                 "rule_set": "Apple",
@@ -680,10 +674,6 @@
             {
                 "tag": "fakeip-dns",
                 "address": "fakeip"
-            },
-            {
-                "tag": "block",
-                "address": "rcode://success"
             }
         ],
         "rules": [
@@ -693,43 +683,12 @@
                 "server": "local-dns"
             },
             {
-                "action": "reject",
-                "rule_set": "Advertising",
-                "method": "drop"
-            },
-            {
-                "action": "reject",
-                "rule_set": "Privacy",
-                "method": "drop"
-            },
-            {
-                "type": "logical",
-                "mode": "and",
-                "rules": [
-                    {
-                        "domain_suffix": [
-                            ".lan",
-                            ".localdomain",
-                            ".example",
-                            ".invalid",
-                            ".localhost",
-                            ".test",
-                            ".local",
-                            ".home.arpa",
-                            ".msftconnecttest.com",
-                            ".msftncsi.com",
-                            ".edu.cn"
-                        ],
-                        "invert": true
-                    },
-                    {
-                        "query_type": [
-                            "A",
-                            "AAAA"
-                        ]
-                    }
-                ],
-                "server": "fakeip-dns"
+                "action": "route",
+                "server": "fakeip-dns",
+                "inbound": [
+                    "tun-in",
+                    "mixed-in"
+                ]
             },
             {
                 "rule_set": "GEOLOCATION-!CN",
