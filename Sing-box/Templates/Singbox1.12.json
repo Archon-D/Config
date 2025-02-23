@@ -643,7 +643,8 @@
       },
       {
         "action": "route",
-        "server": "Local-DNS",
+        "server": "Remote-DNS",
+        "invert":"true",
         "rule_set": [
           "Direct-diy",
           "Microsoft",
