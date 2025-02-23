@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'Sing-box/links.txt'  
+      - 'Sing-box/RulesList.txt'  
       - 'Rule-diy/**'
   workflow_dispatch:
   schedule:
-    - cron: '0 12 * * *'
+    - cron: '0 12 * * 1'
 
 jobs:
   build:
