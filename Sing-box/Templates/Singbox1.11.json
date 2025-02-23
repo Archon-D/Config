@@ -671,7 +671,7 @@
             },
             {
                 "tag": "Local_SP-DNS",
-                "address": "172.19.2.1",
+                "address": "dhcp",
                 "detour": "🎯 全球直连"
             },
             {
