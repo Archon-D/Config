@@ -659,12 +659,6 @@
         ]
       },
       {
-        "action": "reject",
-        "method": "default",
-        "no_drop": false,
-        "rule_set": ["Advertising_diy", "Advertising", "Privacy"]
-      },
-      {
         "action": "route",
         "clash_mode": "direct",
         "server": "Local-DNS"
