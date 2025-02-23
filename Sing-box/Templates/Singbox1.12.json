@@ -589,12 +589,16 @@
         "tag": "Local-Resolver",
         "type": "https",
         "server": "223.5.5.5",
+        "server_port": 443,
+        "path": "/dns-query",
         "detour": "Direct"
       },
       {
         "tag": "Remote-Resolver",
         "type": "https",
         "server": "8.8.8.8",
+        "server_port": 443,
+        "path": "/dns-query",
         "detour": "Proxy"
       },
       {
