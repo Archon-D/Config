@@ -643,8 +643,13 @@
       },
       {
         "action": "route",
-        "rule_set": "GEOLOCATION-!CN",
-        "server": "Remote-DNS"
+        "server": "Local-DNS",
+        "rule_set": [
+          "Direct-diy",
+          "Microsoft",
+          "ChinaMax",
+          "Apple"
+        ]
       },
       {
         "action": "reject",
