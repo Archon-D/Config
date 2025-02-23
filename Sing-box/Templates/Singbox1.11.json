@@ -325,16 +325,28 @@
     "route": {
         "rule_set": [
             {
+                "tag": "Direct-diy",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Direct.json"
+            },
+            {
+                "tag": "AI-diy",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/AI.json"
+            },
+            {
+                "tag": "Advertising_diy",
+                "type": "remote",
+                "format": "source",
+                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.json"
+            },
+            {
                 "tag": "Microsoft",
                 "type": "remote",
                 "format": "source",
                 "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Microsoft.json"
-            },
-            {
-                "tag": "emby",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/emby.json"
             },
             {
                 "tag": "GoogleVoice",
@@ -347,12 +359,6 @@
                 "type": "remote",
                 "format": "source",
                 "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Talkatone.json"
-            },
-            {
-                "tag": "Direct-diy",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Direct.json"
             },
             {
                 "tag": "ChinaMax",
@@ -379,12 +385,6 @@
                 "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Advertising.json"
             },
             {
-                "tag": "Advertising_diy",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.json"
-            },
-            {
                 "tag": "OpenAI",
                 "type": "remote",
                 "format": "source",
@@ -401,12 +401,6 @@
                 "type": "remote",
                 "format": "source",
                 "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Gemini.json"
-            },
-            {
-                "tag": "AI-diy",
-                "type": "remote",
-                "format": "source",
-                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/AI.json"
             },
             {
                 "tag": "Copilot",
@@ -580,11 +574,6 @@
             },
             {
                 "action": "route",
-                "rule_set": "emby",
-                "outbound": "🎯 EMBY"
-            },
-            {
-                "action": "route",
                 "rule_set": "Emby",
                 "outbound": "🎯 EMBY"
             },
@@ -681,7 +670,7 @@
                 "detour": "🚀 节点选择"
             },
             {
-                "tag": "Campus-DNS",
+                "tag": "Local_SP-DNS",
                 "address": "172.19.2.1",
                 "detour": "🎯 全球直连"
             },
@@ -698,7 +687,7 @@
             },
             {
                 "action": "route",
-                "server": "Campus-DNS",
+                "server": "Local_SP-DNS",
                 "domain_suffix": [
                       "edu.cn"
                 ]
