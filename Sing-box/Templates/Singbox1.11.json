@@ -11,7 +11,7 @@
             "external_ui": "",
             "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
             "external_ui_download_detour": "🎯 全球直连",
-            "secret": "ID_g637rrfj",
+            "secret": "ID_g637rrjj",
             "default_mode": "rule",
             "access_control_allow_origin": [
                 "*"
@@ -654,7 +654,7 @@
         "final": "🐟 漏网之鱼",
         "auto_detect_interface": true
     },
-    "dns": {
+"dns": {
         "servers": [
             {
                 "tag": "Remote-DNS",
@@ -681,8 +681,8 @@
                 "detour": "🚀 节点选择"
             },
             {
-                "tag": "System-DNS",
-                "address": "dhcp://auto",
+                "tag": "Campus-DNS",
+                "address": "172.19.2.1",
                 "detour": "🎯 全球直连"
             },
             {
@@ -698,10 +698,10 @@
             },
             {
                 "action": "route",
-                "server": "System-DNS",
+                "server": "Campus-DNS",
                 "domain_suffix": [
-                          ".cn"         //内网域名后缀
-                    ],
+                      "edu.cn"
+                ]
             },
             {
                 "action": "route",
