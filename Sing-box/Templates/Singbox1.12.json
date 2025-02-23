@@ -570,29 +570,31 @@
       {
         "tag": "Remote-DNS",
         "type": "https",
-        "address": "https://8.8.8.8/dns-query",
-        "address_resolver": "Remote-Resolver",
-        "detour": "Proxy",
-        "strategy": "prefer_ipv4"
+        "server": "dns.google",
+        "server_port": 443,
+        "path": "/dns-query",
+        "domain_resolver": "Remote-Resolver",
+        "detour": "Proxy"
       },
       {
         "tag": "Local-DNS",
-        "address": "https://223.5.5.5/dns-query",
         "type": "https",
-        "address_resolver": "Local-Resolver",
-        "detour": "Direct",
-        "strategy": "prefer_ipv4"
+        "server": "dns.alidns.com",
+        "server_port": 443,
+        "path": "/dns-query",
+        "domain_resolver": "Local-Resolver",
+        "detour": "Direct"
       },
       {
         "tag": "Local-Resolver",
         "type": "https",
-        "address": "223.5.5.5",
+        "server": "223.5.5.5",
         "detour": "Direct"
       },
       {
         "tag": "Remote-Resolver",
         "type": "https",
-        "address": "8.8.8.8",
+        "server": "8.8.8.8",
         "detour": "Proxy"
       },
       {
@@ -613,8 +615,8 @@
         "type":"logical",
         "mode":"or",
         "rules":[
-          "package_name": ["com.seu.campus"],
-          "domain_suffix": ["edu.cn"]
+          {"package_name": ["com.seu.campus"]},
+          {"domain_suffix": ["edu.cn"]}
         ],
         "server": "Local_SP-DNS"
       },
@@ -638,13 +640,13 @@
           "PayPal",
           "Facebook",
           "GlobalMedia",
-          "Netflix",
+          "Netflix"
         ]
       },
       {
         "action": "route",
         "server": "Remote-DNS",
-        "invert":"true",
+        "invert":true,
         "rule_set": [
           "Direct-diy",
           "Microsoft",
