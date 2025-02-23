@@ -1,1 +1,673 @@
-
+{
+  "log": {
+    "disabled": false,
+    "level": "info",
+    "output": "",
+    "timestamp": true
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "127.0.0.1:20123",
+      "external_ui": "",
+      "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
+      "external_ui_download_detour": "Direct",
+      "secret": "ID_g637rrjj",
+      "default_mode": "rule",
+      "access_control_allow_origin": ["*"],
+      "access_control_allow_private_network": false
+    },
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "cache_id": "",
+      "store_fakeip": true,
+      "store_rdrc": false,
+      "rdrc_timeout": "7d"
+    }
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "interface_name": "以太网",
+      "address": ["172.18.0.1/30", "fdfe:dcba:9876::1/126"],
+      "mtu": 9000,
+      "auto_route": true,
+      "strict_route": true,
+      "route_address": ["0.0.0.0/1", "128.0.0.0/1", "::/1", "8000::/1"],
+      "endpoint_independent_nat": false,
+      "stack": "mixed"
+    },
+    {
+      "type": "mixed",
+      "tag": "mixd-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20122,
+      "tcp_fast_open": false,
+      "tcp_multi_path": false,
+      "udp_fragment": false,
+      "users": []
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "Proxy",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "🇸🇬 狮城节点",
+      "outbounds": [
+        "🇸🇬 狮城节点",
+        "🇭🇰 香港节点",
+        "🇨🇳 台湾节点",
+        "🇯🇵 日本节点",
+        "🇺🇲 美国节点",
+        "🇰🇷 韩国节点",
+        "SP|特殊节点",
+        "🇺🇲 美国HQ",
+        "🇸🇬 狮城HQ",
+        "🇯🇵 日本HQ",
+        "经济节点",
+        "Direct"
+      ]
+    },
+    {
+      "tag": "💬 AI",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "🇸🇬 狮城HQ",
+      "outbounds": ["🇸🇬 狮城HQ", "🇺🇲 美国HQ", "🇯🇵 日本HQ"]
+    },
+    {
+      "tag": "风控",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "🇺🇲 美国HQ",
+      "outbounds": ["🇸🇬 狮城HQ", "🇺🇲 美国HQ", "🇯🇵 日本HQ"]
+    },
+    {
+      "tag": "🎥 国际媒体",
+      "type": "selector",
+      "interrupt_exist_connections": false,
+      "default": "🇸🇬 狮城节点",
+      "outbounds": [
+        "🇸🇬 狮城节点",
+        "🇭🇰 香港节点",
+        "🇯🇵 日本节点",
+        "🇺🇲 美国节点",
+        "🇨🇳 台湾节点",
+        "🇰🇷 韩国节点",
+        "SP|特殊节点",
+        "Proxy"
+      ]
+    },
+    {
+      "tag": "📲 电报消息",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "🇸🇬 狮城节点",
+      "outbounds": [
+        "🇸🇬 狮城节点",
+        "🇭🇰 香港节点",
+        "🇯🇵 日本节点",
+        "🇺🇲 美国节点",
+        "🇨🇳 台湾节点",
+        "🇰🇷 韩国节点",
+        "经济节点",
+        "Proxy"
+      ]
+    },
+    {
+      "tag": "🌍 国外网站",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "🇸🇬 狮城节点",
+      "outbounds": [
+        "🇸🇬 狮城节点",
+        "🇺🇲 美国节点",
+        "🇭🇰 香港节点",
+        "🇯🇵 日本节点",
+        "🇰🇷 韩国节点",
+        "🇨🇳 台湾节点",
+        "Proxy"
+      ]
+    },
+    {
+      "tag": "📢 谷歌服务",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "🇸🇬 狮城节点",
+      "outbounds": [
+        "🇺🇲 美国节点",
+        "🇭🇰 香港节点",
+        "🇯🇵 日本节点",
+        "🇨🇳 台湾节点",
+        "🇸🇬 狮城节点",
+        "🇰🇷 韩国节点",
+        "Proxy"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Ⓜ️ 微软服务",
+      "interrupt_exist_connections": true,
+      "default": "Direct",
+      "outbounds": ["Direct", "🇭🇰 香港节点", "🇸🇬 狮城节点", "Proxy"]
+    },
+    {
+      "tag": "🍎 苹果服务",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "Direct",
+      "outbounds": ["Direct", "🇭🇰 香港节点", "🇺🇲 美国节点", "Proxy"]
+    },
+    {
+      "tag": "🎯 EMBY",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "经济节点",
+      "outbounds": ["Direct", "经济节点", "🎥 国际媒体"]
+    },
+    {
+      "tag": "🎮 游戏平台",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "Direct",
+      "outbounds": ["Direct", "Game", "🇭🇰 香港节点", "Proxy"]
+    },
+    {
+      "tag": "🐟 漏网之鱼",
+      "type": "selector",
+      "interrupt_exist_connections": true,
+      "default": "Proxy",
+      "outbounds": [
+        "Proxy",
+        "Direct",
+        "🇺🇲 美国节点",
+        "🇯🇵 日本节点",
+        "🇸🇬 狮城节点"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Game",
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "tag": "🇯🇵 日本HQ",
+      "type": "urltest",
+      "interrupt_exist_connections": true,
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇸🇬 狮城HQ",
+      "type": "urltest",
+      "interrupt_exist_connections": true,
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇺🇲 美国HQ",
+      "type": "urltest",
+      "interrupt_exist_connections": true,
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "SP|特殊节点",
+      "type": "urltest",
+      "interrupt_exist_connections": true,
+      "outbounds": [],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇰🇷 韩国节点",
+      "type": "urltest",
+      "outbounds": [],
+      "interrupt_exist_connections": true,
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇸🇬 狮城节点",
+      "type": "urltest",
+      "outbounds": [],
+      "interrupt_exist_connections": true,
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇨🇳 台湾节点",
+      "type": "urltest",
+      "outbounds": [],
+      "interrupt_exist_connections": true,
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇺🇲 美国节点",
+      "type": "urltest",
+      "outbounds": [],
+      "interrupt_exist_connections": true,
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇯🇵 日本节点",
+      "type": "urltest",
+      "outbounds": [],
+      "interrupt_exist_connections": true,
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "🇭🇰 香港节点",
+      "type": "urltest",
+      "outbounds": [],
+      "interrupt_exist_connections": true,
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "tag": "经济节点",
+      "type": "urltest",
+      "outbounds": [],
+      "interrupt_exist_connections": true,
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "300s",
+      "tolerance": 150
+    },
+    {
+      "type": "direct",
+      "tag": "Direct"
+    }
+  ],
+  "route": {
+    "rule_set": [
+      {
+        "tag": "Direct-diy",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Direct.json"
+      },
+      {
+        "tag": "AI-diy",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/AI.json"
+      },
+      {
+        "tag": "Advertising_diy",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.json"
+      },
+      {
+        "tag": "Microsoft",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Microsoft.json"
+      },
+      {
+        "tag": "GoogleVoice",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/GoogleVoice.json"
+      },
+      {
+        "tag": "Talkatone",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Talkatone.json"
+      },
+      {
+        "tag": "ChinaMax",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/ChinaMax.json"
+      },
+      {
+        "tag": "Lan",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Lan.json"
+      },
+      {
+        "tag": "Privacy",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Privacy.json"
+      },
+      {
+        "tag": "Advertising",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Advertising.json"
+      },
+      {
+        "tag": "OpenAI",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/OpenAI.json"
+      },
+      {
+        "tag": "Claude",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Claude.json"
+      },
+      {
+        "tag": "Gemini",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Gemini.json"
+      },
+      {
+        "tag": "Copilot",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Copilot.json"
+      },
+      {
+        "tag": "Google",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Google.json"
+      },
+      {
+        "tag": "Telegram",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Telegram.json"
+      },
+      {
+        "tag": "Apple",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Apple.json"
+      },
+      {
+        "tag": "Emby",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Emby.json"
+      },
+      {
+        "tag": "GitHub",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/GitHub.json"
+      },
+      {
+        "tag": "Twitter",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Twitter.json"
+      },
+      {
+        "tag": "Pixiv",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Pixiv.json"
+      },
+      {
+        "tag": "Steam",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Steam.json"
+      },
+      {
+        "tag": "PayPal",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/PayPal.json"
+      },
+      {
+        "tag": "Facebook",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Facebook.json"
+      },
+      {
+        "tag": "TikTok",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/TikTok.json"
+      },
+      {
+        "tag": "GlobalMedia",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/GlobalMedia.json"
+      },
+      {
+        "tag": "Netflix",
+        "type": "remote",
+        "format": "source",
+        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Netflix.json"
+      },
+      {
+        "tag": "GEOLOCATION-!CN",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
+        "download_detour": "Direct"
+      }
+    ],
+    "rules": [
+      {
+        "action": "sniff"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [{ "protocol": "dns" }, { "port": [53, 853] }],
+        "action": "hijack-dns"
+      },
+      {
+        "action": "route",
+        "outbound": "Direct",
+        "rule_set": ["Direct-diy", "Lan"]
+      },
+      {
+        "action": "route",
+        "outbound": "风控",
+        "rule_set": ["Talkatone", "GoogleVoice", "Facebook", "PayPal", "TikTok"]
+      },
+      {
+        "action": "route",
+        "outbound": "💬 AI",
+        "rule_set": ["OpenAI", "Claude", "Gemini", "Copilot", "AI-diy"]
+      },
+      {
+        "action": "route",
+        "rule_set": "Telegram",
+        "outbound": "📲 电报消息"
+      },
+      {
+        "action": "route",
+        "rule_set": "ChinaMax",
+        "outbound": "Direct"
+      },
+      {
+        "action": "route",
+        "rule_set": "Emby",
+        "outbound": "🎯 EMBY"
+      },
+      {
+        "action": "route",
+        "rule_set": "GlobalMedia",
+        "outbound": "🎥 国际媒体"
+      },
+      {
+        "action": "route",
+        "outbound": "🌍 国外网站",
+        "rule_set": ["GitHub", "Twitter", "Pixiv"]
+      },
+      {
+        "action": "route",
+        "rule_set": "Google",
+        "outbound": "📢 谷歌服务"
+      },
+      {
+        "action": "route",
+        "rule_set": "Microsoft",
+        "outbound": "Ⓜ️ 微软服务"
+      },
+      {
+        "action": "route",
+        "rule_set": "Apple",
+        "outbound": "🍎 苹果服务"
+      },
+      {
+        "action": "route",
+        "rule_set": "Steam",
+        "outbound": "🎮 游戏平台"
+      },
+      {
+        "action": "reject",
+        "method": "default",
+        "no_drop": false,
+        "rule_set": ["Privacy", "Advertising", "Advertising_diy"]
+      },
+      {
+        "action": "route",
+        "clash_mode": "direct",
+        "outbound": "Direct"
+      },
+      {
+        "action": "route",
+        "clash_mode": "global",
+        "outbound": "Proxy"
+      }
+    ],
+    "final": "🐟 漏网之鱼",
+    "auto_detect_interface": true,
+    "override_android_vpn": false,
+    "default_domain_resolver": {
+      "server": "Local-DNS",
+      "rewrite_tll": 60,
+      "client_subnet": "1.1.1.1"
+    }
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "Remote-DNS",
+        "type": "https",
+        "address": "https://8.8.8.8/dns-query",
+        "address_resolver": "Remote-Resolver",
+        "detour": "Proxy",
+        "strategy": "prefer_ipv4"
+      },
+      {
+        "tag": "Local-DNS",
+        "address": "https://223.5.5.5/dns-query",
+        "type": "https",
+        "address_resolver": "Local-Resolver",
+        "detour": "Direct",
+        "strategy": "prefer_ipv4"
+      },
+      {
+        "tag": "Local-Resolver",
+        "type": "https",
+        "address": "223.5.5.5",
+        "detour": "Direct"
+      },
+      {
+        "tag": "Remote-Resolver",
+        "type": "https",
+        "address": "8.8.8.8",
+        "detour": "Proxy"
+      },
+      {
+        "tag": "Local_SP-DNS",
+        "type": "dhcp",
+        "detour": "Direct"
+      },
+      {
+        "tag": "FakeIP",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      }
+    ],
+    "rules": [
+      {
+        "action": "route",
+        "type":"logical",
+        "mode":"or",
+        "rules":[
+          "package_name": ["com.seu.campus"],
+          "domain_suffix": ["edu.cn"]
+        ],
+        "server": "Local_SP-DNS"
+      },
+      {
+        "action": "route",
+        "server": "FakeIP",
+        "rule_set": [
+          "AI-diy",
+          "GoogleVoice",
+          "Talkatone",
+          "OpenAI",
+          "Claude",
+          "Gemini",
+          "Copilot",
+          "Google",
+          "Telegram",
+          "GitHub",
+          "Twitter",
+          "Pixiv",
+          "Steam",
+          "PayPal",
+          "Facebook",
+          "GlobalMedia",
+          "Netflix",
+        ]
+      },
+      {
+        "action": "route",
+        "rule_set": "GEOLOCATION-!CN",
+        "server": "Remote-DNS"
+      },
+      {
+        "action": "reject",
+        "method": "default",
+        "no_drop": false,
+        "rule_set": ["Advertising_diy", "Advertising", "Privacy"]
+      },
+      {
+        "action": "route",
+        "clash_mode": "direct",
+        "server": "Local-DNS"
+      },
+      {
+        "action": "route",
+        "clash_mode": "global",
+        "server": "Remote-DNS"
+      }
+    ],
+    "final": "Local-DNS",
+    "disable_cache": false,
+    "disable_expire": false,
+    "independent_cache": false,
+    "reverse_mapping": false,
+    "strategy": "prefer_ipv4"
+  }
+}
