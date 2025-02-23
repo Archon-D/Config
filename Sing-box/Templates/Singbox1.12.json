@@ -402,12 +402,6 @@
         "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Apple.json"
       },
       {
-        "tag": "Emby",
-        "type": "remote",
-        "format": "source",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Emby.json"
-      },
-      {
         "tag": "GitHub",
         "type": "remote",
         "format": "source",
@@ -460,6 +454,31 @@
         "type": "remote",
         "format": "source",
         "url": "https://raw.githubusercontent.com/Archon-D/My-Config/main/Sing-box/rule/Netflix.json"
+      },
+      {
+        "type": "inline",
+        "tag": "Emby",
+        "rules": [
+          {"domain": [
+            "embyplus.org"
+          ],
+          "domain_suffix": [
+            "term.wtf",
+            "emby.wtf"
+          ]}
+        ]
+      },
+      {
+        "type": "inline",
+        "tag": "emby",
+        "rules": [
+          {"domain": [
+            "lrc.xms.mx",
+          ],
+          "domain_suffix": [
+            "makifx.com"
+          ]}
+        ]
       },
       {
         "tag": "GEOLOCATION-!CN",
