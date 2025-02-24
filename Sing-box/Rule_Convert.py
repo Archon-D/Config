@@ -150,7 +150,7 @@ def parse_list_file(link, output_directory):
 
         # 使用 output_directory 拼接完整路径
         file_name = os.path.join(output_directory, f"{os.path.basename(link).split('.')[0]}.json")
-        ip_cidr_file_name = os.path.join(output_directory, f"{os.path.basename(link).split('.')[0]}_ip_cidr.json")
+        
         with open(file_name, 'w', encoding='utf-8') as output_file:
             result_rules_str = json.dumps(sort_dict(result_rules), ensure_ascii=False, indent=2)
             result_rules_str = result_rules_str.replace('\\\\', '\\')
@@ -158,15 +158,17 @@ def parse_list_file(link, output_directory):
 
         srs_path = file_name.replace(".json", ".srs")
         os.system(f"sing-box rule-set compile --output {srs_path} {file_name}")
-
-        with open(ip_cidr_file_name, 'w', encoding='utf-8') as output_file:
-            ip_cidr_rules_str = json.dumps(sort_dict(ip_cidr_rules), ensure_ascii=False, indent=2)
-            ip_cidr_rules_str = ip_cidr_rules_str.replace('\\\\', '\\')
-            output_file.write(ip_cidr_rules_str)
-
-        ip_cidr_srs_path = ip_cidr_file_name.replace(".json", ".srs")
-        os.system(f"sing-box rule-set compile --output {ip_cidr_srs_path} {ip_cidr_file_name}")
-                
+        if ip_cidr_rules["rules"]:
+            ip_cidr_file_name = os.path.join(output_directory, f"{os.path.basename(link).split('.')[0]}_ip_cidr.json")
+            with open(ip_cidr_file_name, 'w', encoding='utf-8') as output_file:
+                ip_cidr_rules_str = json.dumps(sort_dict(ip_cidr_rules), ensure_ascii=False, indent=2)
+                ip_cidr_rules_str = ip_cidr_rules_str.replace('\\\\', '\\')
+                output_file.write(ip_cidr_rules_str)
+            ip_cidr_srs_path = ip_cidr_file_name.replace(".json", ".srs")
+            os.system(f"sing-box rule-set compile --output {ip_cidr_srs_path} {ip_cidr_file_name}")
+        else:
+                    ip_cidr_file_name = None
+                    
         return file_name,ip_cidr_file_name
     except:
         print(f'获取链接出错，已跳过：{link}')
@@ -184,7 +186,8 @@ result_file_names = []
 for link in links:
     result_file_name,ip_cidr_result_file_name = parse_list_file(link, output_directory=output_dir)
     result_file_names.append(result_file_name)
-    result_file_names.append(ip_cidr_result_file_name)
+    if ip_cidr_result_file_name:
+        result_file_names.append(ip_cidr_result_file_name)
 
 # 打印生成的文件名
 # for file_name in result_file_names:
