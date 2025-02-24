@@ -44,12 +44,6 @@
         "stripe.com",
         "turn.livekit.cloud"
       ]
-    },
-    {
-      "ip_cidr": [
-        "24.199.123.28/32",
-        "64.23.132.171/32"
-      ]
     }
   ],
   "version": 1
