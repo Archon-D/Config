@@ -168,7 +168,7 @@ def parse_list_file(link, output_directory):
             ip_cidr_srs_path = ip_cidr_file_name.replace(".json", ".srs")
             os.system(f"sing-box rule-set compile --output {ip_cidr_srs_path} {ip_cidr_file_name}")
         else:
-            ip_cidr_file_name = “none”
+            ip_cidr_file_name = "none"
                     
         return file_name,ip_cidr_file_name
     except:
