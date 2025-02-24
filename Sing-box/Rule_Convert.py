@@ -168,7 +168,7 @@ def parse_list_file(link, output_directory):
             ip_cidr_srs_path = ip_cidr_file_name.replace(".json", ".srs")
             os.system(f"sing-box rule-set compile --output {ip_cidr_srs_path} {ip_cidr_file_name}")
         else:
-            ip_cidr_file_name = None
+            ip_cidr_file_name = “none”
                     
         return file_name,ip_cidr_file_name
     except:
@@ -187,7 +187,7 @@ result_file_names = []
 for link in links:
     result_file_name,ip_cidr_result_file_name = parse_list_file(link, output_directory=output_dir)
     result_file_names.append(result_file_name)
-    if ip_cidr_result_file_name:
+    if ip_cidr_result_file_name == "none":
         result_file_names.append(ip_cidr_result_file_name)
 
 # 打印生成的文件名
