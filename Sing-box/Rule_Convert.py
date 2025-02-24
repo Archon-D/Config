@@ -133,7 +133,7 @@ def parse_list_file(link, output_directory):
             elif pattern == 'domain':
                 domain_entries.extend([address.strip() for address in addresses])
             elif pattern == 'ip_cidr':
-                ip_cidr_rules["rules"].append(rule_entry)
+                ip_cidr_rules["rules"].append(ip_cidr_rules)
             else:
                 rule_entry = {pattern: [address.strip() for address in addresses]}
                 result_rules["rules"].append(rule_entry)
@@ -155,19 +155,19 @@ def parse_list_file(link, output_directory):
             result_rules_str = json.dumps(sort_dict(result_rules), ensure_ascii=False, indent=2)
             result_rules_str = result_rules_str.replace('\\\\', '\\')
             output_file.write(result_rules_str)
-
         srs_path = file_name.replace(".json", ".srs")
         os.system(f"sing-box rule-set compile --output {srs_path} {file_name}")
+                
         if ip_cidr_rules["rules"]:
             ip_cidr_file_name = os.path.join(output_directory, f"{os.path.basename(link).split('.')[0]}_ip_cidr.json")
-            with open(ip_cidr_file_name, 'w', encoding='utf-8') as output_file:
+            with open(ip_cidr_file_name, 'w', encoding='utf-8') as output_file_ip:
                 ip_cidr_rules_str = json.dumps(sort_dict(ip_cidr_rules), ensure_ascii=False, indent=2)
                 ip_cidr_rules_str = ip_cidr_rules_str.replace('\\\\', '\\')
-                output_file.write(ip_cidr_rules_str)
+                output_file_ip.write(ip_cidr_rules_str)
             ip_cidr_srs_path = ip_cidr_file_name.replace(".json", ".srs")
             os.system(f"sing-box rule-set compile --output {ip_cidr_srs_path} {ip_cidr_file_name}")
         else:
-                    ip_cidr_file_name = None
+            ip_cidr_file_name = None
                     
         return file_name,ip_cidr_file_name
     except:
