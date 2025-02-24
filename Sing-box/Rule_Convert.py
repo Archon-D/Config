@@ -123,6 +123,7 @@ def parse_list_file(link, output_directory):
         os.makedirs(output_directory, exist_ok=True)  # 创建自定义文件夹
 
         result_rules = {"version": 1, "rules": []}
+        ip_cidr_rules = {"version": 1, "rules": []}
         domain_entries = []
         for pattern, addresses in df.groupby('pattern')['address'].apply(list).to_dict().items():
             if pattern == 'domain_suffix':
@@ -131,6 +132,8 @@ def parse_list_file(link, output_directory):
                 # domain_entries.extend([address.strip() for address in addresses])  # 1.9以下的版本需要额外处理 domain_suffix
             elif pattern == 'domain':
                 domain_entries.extend([address.strip() for address in addresses])
+            elif pattern == 'ip_cidr':
+                ip_cidr_rules["rules"].append(rule_entry)
             else:
                 rule_entry = {pattern: [address.strip() for address in addresses]}
                 result_rules["rules"].append(rule_entry)
@@ -147,6 +150,7 @@ def parse_list_file(link, output_directory):
 
         # 使用 output_directory 拼接完整路径
         file_name = os.path.join(output_directory, f"{os.path.basename(link).split('.')[0]}.json")
+        ip_cidr_file_name = os.path.join(output_directory, f"{os.path.basename(link).split('.')[0]}_ip_cidr.json")
         with open(file_name, 'w', encoding='utf-8') as output_file:
             result_rules_str = json.dumps(sort_dict(result_rules), ensure_ascii=False, indent=2)
             result_rules_str = result_rules_str.replace('\\\\', '\\')
@@ -154,7 +158,16 @@ def parse_list_file(link, output_directory):
 
         srs_path = file_name.replace(".json", ".srs")
         os.system(f"sing-box rule-set compile --output {srs_path} {file_name}")
-        return file_name
+
+        with open(ip_cidr_file_name, 'w', encoding='utf-8') as output_file:
+            ip_cidr_rules_str = json.dumps(sort_dict(ip_cidr_rules), ensure_ascii=False, indent=2)
+            ip_cidr_rules_str = ip_cidr_rules_str.replace('\\\\', '\\')
+            output_file.write(ip_cidr_rules_str)
+
+        ip_cidr_srs_path = ip_cidr_file_name.replace(".json", ".srs")
+        os.system(f"sing-box rule-set compile --output {ip_cidr_srs_path} {ip_cidr_file_name}")
+                
+        return file_name,ip_cidr_file_name
     except:
         print(f'获取链接出错，已跳过：{link}')
         pass
@@ -169,8 +182,9 @@ output_dir = "./"
 result_file_names = []
 
 for link in links:
-    result_file_name = parse_list_file(link, output_directory=output_dir)
+    result_file_name,ip_cidr_result_file_name = parse_list_file(link, output_directory=output_dir)
     result_file_names.append(result_file_name)
+    result_file_names.append(ip_cidr_result_file_name)
 
 # 打印生成的文件名
 # for file_name in result_file_names:
