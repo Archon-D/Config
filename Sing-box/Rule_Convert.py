@@ -133,7 +133,8 @@ def parse_list_file(link, output_directory):
             elif pattern == 'domain':
                 domain_entries.extend([address.strip() for address in addresses])
             elif pattern == 'ip_cidr':
-                ip_cidr_rules["rules"].append(ip_cidr_rules)
+                rule_entry = {pattern: [address.strip() for address in addresses]}
+                ip_cidr_rules["rules"].append(rule_entry)
             else:
                 rule_entry = {pattern: [address.strip() for address in addresses]}
                 result_rules["rules"].append(rule_entry)
