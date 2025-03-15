@@ -2,7 +2,7 @@
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/Direct.list
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/AI.list
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/Block.list
-https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/Talkatone.list
+https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy//Talkatone/Talkatone.list
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/China_domain.list
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/Bybit.list
 #其他规则
