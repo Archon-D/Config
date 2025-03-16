@@ -3,20 +3,21 @@
 # UPDATED: 2025-3-16 21:50:10
 # DOMAIN: 4
 # DOMAIN-KEYWORD: 0
-# DOMAIN-SUFFIX: 8
+# DOMAIN-SUFFIX: 10
 # IP-CIDR: 0
 # IP-CIDR6: 0
-# TOTAL: 12
-DOMAIN,arb-mainnet.g.alchemy.com
+# TOTAL: 14
 DOMAIN,api.ipify.org
 DOMAIN,widgets.marqeta.com
 DOMAIN,i.seadn.io
-DOMAIN-SUFFIX,walletconnect.coom
+DOMAIN,rpc.ankr.com
+DOMAIN-SUFFIX,walletconnect.com
 DOMAIN-SUFFIX,isafepal.com
 DOMAIN-SUFFIX,binance.vision
 DOMAIN-SUFFIX,binance.org
 DOMAIN-SUFFIX,fiat24.com
 DOMAIN-SUFFIX,arbitrum.io
 DOMAIN-SUFFIX,web3modal.org
-DOMAIN-SUFFIX,mexc.com
-
+DOMAIN-SUFFIX,mexc.co
+DOMAIN-SUFFIX,g.alchemy.com
+DOMAIN-SUFFIX,optimism.io
