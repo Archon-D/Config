@@ -1,0 +1,15 @@
+# NAME: Talkatone
+# AUTHOR: AD
+# DOMAIN: 0
+# DOMAIN-KEYWORD: 0
+# DOMAIN-SUFFIX: 4
+# IP-CIDR: 0
+# IP-CIDR6: 0
+# TOTAL: 4
+
+DOMAIN-SUFFIX,tktn.at,PROXY
+DOMAIN-SUFFIX,tktn.be,PROXY
+# 语音留言地址，一般需要代理
+DOMAIN-SUFFIX,vm.talkatone.com,PROXY
+# 贴图服务
+DOMAIN-SUFFIX,tenor.com,PROXY
