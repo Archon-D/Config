@@ -1,842 +1,993 @@
 {
-  "log": {
-    "disabled": false,
-    "level": "info",
-    "output": "",
-    "timestamp": true
-  },
-  "experimental": {
-    "clash_api": {
-      "external_controller": "127.0.0.1:20123",
-      "external_ui": "",
-      "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
-      "external_ui_download_detour": "Direct",
-      "secret": "ID_g637rrjj",
-      "default_mode": "rule",
-      "access_control_allow_origin": ["*"],
-      "access_control_allow_private_network": false
+    "log": {
+        "disabled": false,
+        "level": "info",
+        "output": "",
+        "timestamp": true
     },
-    "cache_file": {
-      "enabled": true,
-      "path": "cache.db",
-      "cache_id": "",
-      "store_fakeip": true,
-      "store_rdrc": false,
-      "rdrc_timeout": "7d"
-    }
-  },
-  "inbounds": [
-    {
-      "type": "tun",
-      "tag": "tun-in",
-      "interface_name": "以太网",
-      "address": ["172.18.0.1/30", "fdfe:dcba:9876::1/126"],
-      "mtu": 9000,
-      "auto_route": true,
-      "strict_route": true,
-      "route_address": ["0.0.0.0/1", "128.0.0.0/1", "::/1", "8000::/1"],
-      "stack": "mixed",
-      "platform": {
-        "http_proxy": {
-          "enabled": true,
-          "server": "127.0.0.1",
-          "server_port": 7890
+    "experimental": {
+        "clash_api": {
+            "external_controller": "127.0.0.1:20123",
+            "external_ui": "",
+            "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
+            "external_ui_download_detour": "Direct",
+            "secret": "ID_g637rrjj",
+            "default_mode": "rule",
+            "access_control_allow_origin": [
+                "*"
+            ],
+            "access_control_allow_private_network": false
+        },
+        "cache_file": {
+            "enabled": true,
+            "path": "cache.db",
+            "cache_id": "",
+            "store_fakeip": true,
+            "store_rdrc": false,
+            "rdrc_timeout": "7d"
         }
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "tag": "Proxy",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "🇭🇰 香港节点",
-      "outbounds": [
-        "ISP代理",
-        "经济节点",
-        "Direct",
-        "🇸🇬 狮城节点",
-        "🇭🇰 香港节点",
-        "🇨🇳 台湾节点",
-        "🇯🇵 日本节点",
-        "🇺🇲 美国节点",
-        "🇰🇷 韩国节点",
-        "SP|特殊节点",
-        "🇺🇲 美国HQ",
-        "🇸🇬 狮城HQ",
-        "🇯🇵 日本HQ"
-      ]
     },
-    {
-      "type": "selector",
-      "tag": "ISP代理",
-      "interrupt_exist_connections": true,
-      "default": ,
-      "outbounds": []
-    },
-    {
-      "tag": "💬 AI",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "ISP代理",
-      "outbounds": ["ISP代理", "🇸🇬 狮城HQ", "🇺🇲 美国HQ", "🇯🇵 日本HQ"]
-    },
-    {
-      "tag": "风控",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "ISP代理",
-      "outbounds": ["ISP代理", "🇸🇬 狮城HQ", "🇺🇲 美国HQ", "🇯🇵 日本HQ"]
-    },
-    {
-      "tag": "加密货币",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "outbounds": []
-    },
-    {
-      "tag": "📲 电报消息",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "🇸🇬 狮城节点",
-      "outbounds": ["🇸🇬 狮城节点", "🇭🇰 香港节点", "经济节点", "Proxy"]
-    },
-    {
-      "tag": "🌍 国外网站",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "🇸🇬 狮城节点",
-      "outbounds": [
-        "🇸🇬 狮城节点",
-        "🇺🇲 美国节点",
-        "🇭🇰 香港节点",
-        "🇯🇵 日本节点",
-        "🇰🇷 韩国节点",
-        "🇨🇳 台湾节点",
-        "ISP代理",
-        "Proxy"
-      ]
-    },
-    {
-      "tag": "🎥 国际媒体",
-      "type": "selector",
-      "interrupt_exist_connections": false,
-      "default": "🇸🇬 狮城节点",
-      "outbounds": [
-        "🇸🇬 狮城节点",
-        "🇭🇰 香港节点",
-        "🇯🇵 日本节点",
-        "🇺🇲 美国节点",
-        "🇨🇳 台湾节点",
-        "ISP代理",
-        "Proxy"
-      ]
-    },
-    {
-      "tag": "📢 谷歌服务",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "ISP代理",
-      "outbounds": ["ISP代理", "🇸🇬 狮城HQ", "🇺🇲 美国HQ", "🇯🇵 日本HQ", "Proxy"]
-    },
-    {
-      "type": "selector",
-      "tag": "Ⓜ️ 微软服务",
-      "interrupt_exist_connections": true,
-      "default": "Direct",
-      "outbounds": [
-        "Direct",
-        "ISP代理",
-        "🇸🇬 狮城HQ",
-        "🇺🇲 美国HQ",
-        "🇯🇵 日本HQ",
-        "Proxy"
-      ]
-    },
-    {
-      "tag": "🍎 苹果服务",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "Direct",
-      "outbounds": [
-        "Direct",
-        "🇸🇬 狮城HQ",
-        "🇺🇲 美国HQ",
-        "🇯🇵 日本HQ",
-        "ISP代理",
-        "Proxy"
-      ]
-    },
-    {
-      "tag": "🎯 EMBY",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "经济节点",
-      "outbounds": ["Direct", "经济节点", "🎥 国际媒体"]
-    },
-    {
-      "tag": "🎮 游戏平台",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "default": "Direct",
-      "outbounds": ["Direct", "Game", "🇭🇰 香港节点", "Proxy"]
-    },
-    {
-      "type": "selector",
-      "tag": "Game",
-      "interrupt_exist_connections": true,
-      "outbounds": []
-    },
-    {
-      "tag": "🇯🇵 日本HQ",
-      "type": "urltest",
-      "interrupt_exist_connections": true,
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "🇸🇬 狮城HQ",
-      "type": "urltest",
-      "interrupt_exist_connections": true,
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "🇺🇲 美国HQ",
-      "type": "urltest",
-      "interrupt_exist_connections": true,
-      "outbounds": [],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "SP|特殊节点",
-      "type": "selector",
-      "interrupt_exist_connections": true,
-      "outbounds": []
-    },
-    {
-      "tag": "🇰🇷 韩国节点",
-      "type": "urltest",
-      "outbounds": [],
-      "interrupt_exist_connections": true,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "🇸🇬 狮城节点",
-      "type": "urltest",
-      "outbounds": [],
-      "interrupt_exist_connections": true,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "🇨🇳 台湾节点",
-      "type": "urltest",
-      "outbounds": [],
-      "interrupt_exist_connections": true,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "🇺🇲 美国节点",
-      "type": "urltest",
-      "outbounds": [],
-      "interrupt_exist_connections": true,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "🇯🇵 日本节点",
-      "type": "urltest",
-      "outbounds": [],
-      "interrupt_exist_connections": true,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "🇭🇰 香港节点",
-      "type": "urltest",
-      "outbounds": [],
-      "interrupt_exist_connections": true,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "tag": "经济节点",
-      "type": "urltest",
-      "outbounds": [],
-      "interrupt_exist_connections": true,
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "300s",
-      "tolerance": 150
-    },
-    {
-      "type": "direct",
-      "tag": "Direct"
-    },
-
-  ],
-  "route": {
-    "rule_set": [
-      {
-        "type": "inline",
-        "tag": "Emby",
-        "rules": [
-          {
-            "domain": [
-
+    "inbounds": [
+        {
+            "type": "tun",
+            "tag": "tun-in",
+            "interface_name": "以太网",
+            "address": [
+                "172.18.0.1/30",
+                "fdfe:dcba:9876::1/126"
             ],
-            "domain_suffix": []
-          }
-        ]
-      },
-      {
-        "type": "inline",
-        "tag": "emby",
-        "rules": [
-          {
-            "domain": [
-
+            "mtu": 9000,
+            "auto_route": true,
+            "strict_route": true,
+            "route_address": [
+                "0.0.0.0/1",
+                "128.0.0.0/1",
+                "::/1",
+                "8000::/1"
             ],
-            "domain_suffix": [
-
+            "stack": "mixed"
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "Proxy",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "🇭🇰 香港节点",
+            "outbounds": [
+                "静态住宅",
+                "静态ISP",
+                "经济节点",
+                "Direct",
+                "🇸🇬 狮城节点",
+                "🇭🇰 香港节点",
+                "🇨🇳 台湾节点",
+                "🇯🇵 日本节点",
+                "🇺🇲 美国节点",
+                "🇰🇷 韩国节点",
+                "SP|特殊节点",
+                "🇺🇲 美国HQ",
+                "🇸🇬 狮城HQ",
+                "🇯🇵 日本HQ"
             ]
-          }
-        ]
-      },
-      {
-        "type": "inline",
-        "tag": "SRP",
+        },
+        {
+            "type": "selector",
+            "tag": "中间节点",
+            "interrupt_exist_connections": true,
+            "outbounds": []
+        },
+        {
+            "tag": "💬 AI",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "静态住宅",
+            "outbounds": [
+                "静态住宅",
+                "🇸🇬 狮城HQ",
+                "🇺🇲 美国HQ",
+                "🇯🇵 日本HQ"
+            ]
+        },
+        {
+            "tag": "风控",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "静态住宅",
+            "outbounds": [
+                "静态住宅",
+                "🇸🇬 狮城HQ",
+                "🇺🇲 美国HQ",
+                "🇯🇵 日本HQ"
+            ]
+        },
+        {
+            "tag": "加密货币",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "outbounds": []
+        },
+        {
+            "tag": "📲 电报消息",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "🇸🇬 狮城节点",
+            "outbounds": [
+                "🇸🇬 狮城节点",
+                "🇭🇰 香港节点",
+                "经济节点",
+                "Proxy"
+            ]
+        },
+        {
+            "tag": "🌍 国外网站",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "🇸🇬 狮城节点",
+            "outbounds": [
+                "🇸🇬 狮城节点",
+                "🇺🇲 美国节点",
+                "🇭🇰 香港节点",
+                "🇯🇵 日本节点",
+                "🇰🇷 韩国节点",
+                "🇨🇳 台湾节点",
+                "静态ISP",
+                "静态住宅",
+                "Proxy"
+            ]
+        },
+        {
+            "tag": "🎥 国际媒体",
+            "type": "selector",
+            "interrupt_exist_connections": false,
+            "default": "🇸🇬 狮城节点",
+            "outbounds": [
+                "🇸🇬 狮城节点",
+                "🇭🇰 香港节点",
+                "🇯🇵 日本节点",
+                "🇺🇲 美国节点",
+                "🇨🇳 台湾节点",
+                "静态ISP",
+                "静态住宅",
+                "Proxy"
+            ]
+        },
+        {
+            "tag": "📢 谷歌服务",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "静态住宅",
+            "outbounds": [
+                "静态住宅",
+                "静态ISP",
+                "🇸🇬 狮城HQ",
+                "🇺🇲 美国HQ",
+                "🇯🇵 日本HQ",
+                "Proxy"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "Ⓜ️ 微软服务",
+            "interrupt_exist_connections": true,
+            "default": "Direct",
+            "outbounds": [
+                "Direct",
+                "静态ISP",
+                "静态住宅",
+                "🇸🇬 狮城HQ",
+                "🇺🇲 美国HQ",
+                "🇯🇵 日本HQ",
+                "Proxy"
+            ]
+        },
+        {
+            "tag": "🍎 苹果服务",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "Direct",
+            "outbounds": [
+                "Direct",
+                "🇸🇬 狮城HQ",
+                "🇺🇲 美国HQ",
+                "🇯🇵 日本HQ",
+                "静态ISP",
+                "静态住宅",
+                "Proxy"
+            ]
+        },
+        {
+            "tag": "🎯 EMBY",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "经济节点",
+            "outbounds": [
+                "Direct",
+                "经济节点",
+                "🎥 国际媒体"
+            ]
+        },
+        {
+            "tag": "🎮 游戏平台",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "Direct",
+            "outbounds": [
+                "Direct",
+                "Game",
+                "🇭🇰 香港节点",
+                "Proxy"
+            ]
+        },
+        {
+            "type": "selector",
+            "tag": "Game",
+            "interrupt_exist_connections": true,
+            "outbounds": []
+        },
+        {
+            "tag": "🇯🇵 日本HQ",
+            "type": "urltest",
+            "interrupt_exist_connections": true,
+            "outbounds": [],
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "🇸🇬 狮城HQ",
+            "type": "urltest",
+            "interrupt_exist_connections": true,
+            "outbounds": [],
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "🇺🇲 美国HQ",
+            "type": "urltest",
+            "interrupt_exist_connections": true,
+            "outbounds": [],
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "SP|特殊节点",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "outbounds": []
+        },
+        {
+            "tag": "🇰🇷 韩国节点",
+            "type": "urltest",
+            "outbounds": [],
+            "interrupt_exist_connections": true,
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "🇸🇬 狮城节点",
+            "type": "urltest",
+            "outbounds": [],
+            "interrupt_exist_connections": true,
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "🇨🇳 台湾节点",
+            "type": "urltest",
+            "outbounds": [],
+            "interrupt_exist_connections": true,
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "🇺🇲 美国节点",
+            "type": "urltest",
+            "outbounds": [],
+            "interrupt_exist_connections": true,
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "🇯🇵 日本节点",
+            "type": "urltest",
+            "outbounds": [],
+            "interrupt_exist_connections": true,
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "🇭🇰 香港节点",
+            "type": "urltest",
+            "outbounds": [],
+            "interrupt_exist_connections": true,
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "tag": "经济节点",
+            "type": "urltest",
+            "outbounds": [],
+            "interrupt_exist_connections": true,
+            "url": "https://www.gstatic.com/generate_204",
+            "interval": "300s",
+            "tolerance": 150
+        },
+        {
+            "type": "direct",
+            "tag": "Direct"
+        },
+        {
+            "type": "socks",
+            "tag": "静态ISP",
+            "server": "8.8.8.8",
+            "server_port": [?],
+            "version": "5",
+            "username": "name",
+            "password": "passwd",
+            "tcp_fast_open": true,
+            "detour": "中间节点"
+        },
+        {
+            "type": "socks",
+            "tag": "静态住宅",
+            "server": "1.1.1.1",
+            "server_port": [?],
+            "version": "5",
+            "username": "name",
+            "password": "passwd",
+            "tcp_fast_open": true,
+            "detour": "中间节点"
+        }
+    ],
+    "route": {
+        "rule_set": [
+            {
+                "type": "inline",
+                "tag": "Emby",
+                "rules": [
+                    {
+                        "domain": [
+                            
+                        ],
+                        "domain_suffix": [
+                           
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "inline",
+                "tag": "emby",
+                "rules": [
+                    {
+                        "domain": [
+                            
+                        ],
+                        "domain_suffix": [
+                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "inline",
+                "tag": "SRP",
+                "rules": [
+                    {
+                        "ip_cidr": [
+
+                        ]
+                    }
+                ]
+            },
+            {
+                "tag": "PayPal",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/PayPal.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Crypto",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cryptocurrency.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Bybit",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Bybit.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Safepal",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Safepal.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Binance",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Binance.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "OpenAI",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OpenAI.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "OpenAI_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OpenAI_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Claude",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Claude.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Gemini",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Gemini.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Copilot",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Copilot.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Copilot_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Copilot_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "AI-diy",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/AI.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Amazon",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Amazon.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Amazon_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Amazon_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Facebook",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Facebook.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Facebook_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Facebook_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "TikTok",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/TikTok.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Talkatone",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Talkatone_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "GoogleVoice",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GoogleVoice.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Telegram",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Telegram.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Telegram_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Telegram_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "GitHub",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GitHub.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Twitter",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Twitter.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Twitter_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Twitter_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Pixiv",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Pixiv.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Cloudflare",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cloudflare.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Cloudflare_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cloudflare_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "GlobalMedia",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GlobalMedia.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Netflix",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Netflix.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Netflix_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Netflix_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Google",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Google.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Google_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Google_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Apple",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Apple.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Apple_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Apple_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Microsoft",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Microsoft.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Steam",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Steam.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Direct-diy",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Direct.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "ChinaDomain",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/China_domain.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "ChinaMax",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/ChinaMax.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "ChinaMax_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/ChinaMax_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Privacy",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Privacy.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Advertising",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/AdvertisingLite.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Advertising_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/AdvertisingLite_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Advertising_diy",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Block-diy",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Block.srs",
+                "download_detour": "Direct"
+            }
+        ],
         "rules": [
-          {
-            "ip_cidr": []
-          }
-        ]
-      },
-      {
-        "tag": "Talkatone",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Talkatone_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Crypto",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cryptocurrency.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Bybit",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Bybit.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Cloudflare",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cloudflare.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Cloudflare_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cloudflare_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Direct-diy",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Direct.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "AI-diy",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/AI.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Advertising_diy",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Microsoft",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Microsoft.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "GoogleVoice",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GoogleVoice.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "ChinaMax",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/ChinaMax.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Privacy",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Privacy.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Advertising",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Advertising.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "OpenAI",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OpenAI.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Claude",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Claude.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Gemini",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Gemini.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Copilot",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Copilot.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Google",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Google.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Telegram",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Telegram.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Apple",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Apple.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "GitHub",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GitHub.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Twitter",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Twitter.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Pixiv",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Pixiv.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Steam",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Steam.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "PayPal",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/PayPal.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Facebook",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Facebook.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "TikTok",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/TikTok.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "GlobalMedia",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GlobalMedia.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Netflix",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Netflix.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "ChinaDomain",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/China_domain.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Apple_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Apple_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Copilot_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Copilot_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Facebook_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Facebook_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Google_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Google_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Netflix_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Netflix_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "OpenAI_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OpenAI_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Telegram_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Telegram_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "Twitter_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Twitter_ip_cidr.srs",
-        "download_detour": "Direct"
-      },
-      {
-        "tag": "ChinaMax_IP",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/ChinaMax_ip_cidr.srs",
-        "download_detour": "Direct"
-      }
-    ],
-    "rules": [
-      {
-        "action": "sniff"
-      },
-      {
-        "protocol": "dns",
-        "action": "hijack-dns"
-      },
-      {
-        "action": "route",
-        "outbound": "Direct",
-        "ip_is_private": true,
-        "rule_set": ["Direct-diy", "emby"]
-      },
-      {
-        "action": "route",
-        "outbound": "加密货币",
-        "rule_set": ["Bybit", "Crypto"]
-      },
-      {
-        "action": "route",
-        "outbound": "风控",
-        "rule_set": [
-          "GoogleVoice",
-          "Facebook",
-          "PayPal",
-          "TikTok",
-          "Facebook_IP",
-          "Talkatone",
-          "Talkatone_IP"
-        ]
-      },
-      {
-        "action": "route",
-        "outbound": "💬 AI",
-        "rule_set": [
-          "OpenAI",
-          "Claude",
-          "Gemini",
-          "Copilot",
-          "AI-diy",
-          "OpenAI_IP",
-          "Copilot_IP"
-        ]
-      },
-      {
-        "action": "route",
-        "rule_set": ["SRP"],
-        "outbound": "🇺🇲 美国HQ"
-      },
-      {
-        "action": "route",
-        "rule_set": ["Telegram", "Telegram_IP"],
-        "outbound": "📲 电报消息"
-      },
-      {
-        "action": "route",
-        "rule_set": "Emby",
-        "outbound": "🎯 EMBY"
-      },
-      {
-        "action": "route",
-        "rule_set": "GlobalMedia",
-        "outbound": "🎥 国际媒体"
-      },
-      {
-        "action": "route",
-        "outbound": "🌍 国外网站",
-        "rule_set": [
-          "GitHub",
-          "Twitter",
-          "Pixiv",
-          "Twitter_IP",
-          "Cloudflare",
-          "Cloudflare_IP"
-        ]
-      },
-      {
-        "action": "route",
-        "rule_set": ["Google", "Google_IP"],
-        "outbound": "📢 谷歌服务"
-      },
-      {
-        "action": "route",
-        "rule_set": "Microsoft",
-        "outbound": "Ⓜ️ 微软服务"
-      },
-      {
-        "action": "route",
-        "rule_set": ["Apple", "Apple_IP"],
-        "outbound": "🍎 苹果服务"
-      },
-      {
-        "action": "route",
-        "rule_set": "Steam",
-        "outbound": "🎮 游戏平台"
-      },
-      {
-        "action": "route",
-        "rule_set": ["ChinaDomain", "ChinaMax_IP"],
-        "outbound": "Direct"
-      },
-      {
-        "action": "reject",
-        "method": "default",
-        "no_drop": false,
-        "rule_set": ["Privacy", "Advertising", "Advertising_diy"]
-      },
-      {
-        "action": "route",
-        "clash_mode": "direct",
-        "outbound": "Direct"
-      },
-      {
-        "action": "route",
-        "clash_mode": "global",
-        "outbound": "Proxy"
-      }
-    ],
-    "final": "Proxy",
-    "auto_detect_interface": true,
-    "override_android_vpn": false,
-    "default_domain_resolver": {
-      "server": "Local-DNS",
-      "rewrite_tll": 60,
-      "client_subnet": "221.130.0.0/15"
+            {
+                "action": "sniff"
+            },
+            {
+                "protocol": "dns",
+                "action": "hijack-dns"
+            },
+            {
+                "action": "route",
+                "rule_set": [
+                    "SRP"
+                ],
+                "outbound": "中间节点"
+            },
+            {
+                "action": "route",
+                "outbound": "Direct",
+                "ip_is_private": true,
+                "rule_set": [
+                    "Direct-diy",
+                    "emby"
+                ]
+            },
+            {
+                "action": "route",
+                "outbound": "加密货币",
+                "rule_set": [
+                    "Bybit",
+                    "Crypto",
+                    "Safepal",
+                    "Binance"
+                ]
+            },
+            {
+                "action": "route",
+                "outbound": "风控",
+                "rule_set": [
+                    "PayPal",
+                    "GoogleVoice",
+                    "TikTok",
+                    "Facebook",
+                    "Facebook_IP",
+                    "Talkatone",
+                    "Talkatone_IP",
+                    "Amazon",
+                    "Amazon_IP"
+                ]
+            },
+            {
+                "action": "route",
+                "outbound": "💬 AI",
+                "rule_set": [
+                    "OpenAI",
+                    "OpenAI_IP",
+                    "Claude",
+                    "Gemini",
+                    "Copilot",
+                    "Copilot_IP",
+                    "AI-diy"
+                    
+                    
+                ]
+            },
+            {
+                "action": "route",
+                "rule_set": [
+                    "Telegram",
+                    "Telegram_IP"
+                ],
+                "outbound": "📲 电报消息"
+            },
+            {
+                "action": "route",
+                "rule_set": "Emby",
+                "outbound": "🎯 EMBY"
+            },
+            {
+                "action": "route",
+                "rule_set": "GlobalMedia",
+                "outbound": "🎥 国际媒体"
+            },
+            {
+                "action": "route",
+                "outbound": "🌍 国外网站",
+                "rule_set": [
+                    "GitHub",
+                    "Twitter",
+                    "Pixiv",
+                    "Twitter_IP",
+                    "Cloudflare",
+                    "Cloudflare_IP"
+                ]
+            },
+            {
+                "action": "route",
+                "rule_set": [
+                    "Google",
+                    "Google_IP"
+                ],
+                "outbound": "📢 谷歌服务"
+            },
+            {
+                "action": "route",
+                "rule_set": "Microsoft",
+                "outbound": "Ⓜ️ 微软服务"
+            },
+            {
+                "action": "route",
+                "rule_set": [
+                    "Apple",
+                    "Apple_IP"
+                ],
+                "outbound": "🍎 苹果服务"
+            },
+            {
+                "action": "route",
+                "rule_set": "Steam",
+                "outbound": "🎮 游戏平台"
+            },
+            {
+                "action": "route",
+                "rule_set": [
+                    "ChinaMax",
+                    "ChinaMax_IP"
+                ],
+                "outbound": "Direct"
+            },
+            {
+                "action": "reject",
+                "method": "default",
+                "no_drop": false,
+                "rule_set": [
+                    "Privacy",
+                    "Advertising",
+                    "Advertising_IP",
+                    "Advertising_diy",
+                    "Block-diy"
+                ]
+            },
+            {
+                "action": "route",
+                "clash_mode": "direct",
+                "outbound": "Direct"
+            },
+            {
+                "action": "route",
+                "clash_mode": "global",
+                "outbound": "Proxy"
+            }
+        ],
+        "final": "Proxy",
+        "auto_detect_interface": true,
+        "override_android_vpn": false,
+        "default_domain_resolver": {
+            "server": "Local-DNS",
+            "rewrite_tll": 60,
+            "client_subnet": "221.130.0.0/15"
+        }
+    },
+    "dns": {
+        "servers": [
+            {
+                "tag": "Remote-DNS",
+                "type": "https",
+                "server": "dns.google",
+                "server_port": 443,
+                "path": "/dns-query",
+                "domain_resolver": "Remote-Resolver",
+                "detour": "Proxy"
+            },
+            {
+                "tag": "Remote-Resolver",
+                "type": "tls",
+                "server": "1.1.1.1",
+                "server_port": 843,
+                "detour": "Proxy"
+            },
+            {
+                "tag": "Local-DNS",
+                "type": "https",
+                "server": "223.5.5.5",
+                "server_port": 443,
+                "path": "/dns-query",
+                "domain_resolver": "Local-Resolver",
+                "detour": "Direct"
+            },
+            {
+                "tag": "Local-Resolver",
+                "type": "tcp",
+                "server": "114.114.114.114",
+                "server_port": 53,
+                "detour": "Direct"
+            },
+            {
+                "tag": "Area-DNS",
+                "type": "dhcp"
+            },
+            {
+                "tag": "FakeIP",
+                "type": "fakeip",
+                "inet4_range": "198.18.0.0/15",
+                "inet6_range": "fc00::/18"
+            }
+        ],
+        "rules": [
+            {
+                "action": "route",
+                "domain_suffix": [
+                    "edu.cn"
+                ],
+                "network_type": [
+                    "wifi"
+                ],
+                "server": "Area-DNS"
+            },
+            {
+                "action": "route",
+                "server": "FakeIP",
+                "query_type": [
+                    "A",
+                    "AAAA"
+                ],
+                "rule_set": [
+                    "PayPal",
+                    "Crypto",
+                    "Bybit",
+                    "Safepal",
+                    "Binance",
+                    "GoogleVoice",
+                    "Facebook",
+                    "Talkatone",
+                    "Amazon",
+                    "OpenAI",
+                    "Claude",
+                    "Gemini",
+                    "Copilot",
+                    "AI-diy",
+                    "Emby",
+                    "Telegram",
+                    "GitHub",
+                    "Twitter",
+                    "Pixiv",
+                    "Steam",
+                    "GlobalMedia",
+                    "Netflix",
+                    "Cloudflare",
+                    "Google"
+                ]
+            },
+            {
+                "action": "route",
+                "server": "Local-DNS",
+                "rule_set": [
+                    "ChinaMax",
+                    "emby",
+                    "Direct-diy"
+                ]
+            },
+            {
+                "action": "route",
+                "clash_mode": "direct",
+                "server": "Local-DNS"
+            },
+            {
+                "action": "route",
+                "clash_mode": "global",
+                "server": "Remote-DNS"
+            }
+        ],
+        "final": "Remote-DNS",
+        "disable_cache": false,
+        "disable_expire": false,
+        "independent_cache": false,
+        "reverse_mapping": false,
+        "client_subnet": "221.130.0.0/15",
+        "strategy": "ipv4_only"
     }
-  },
-  "dns": {
-    "servers": [
-      {
-        "tag": "Remote-DNS",
-        "type": "https",
-        "server": "dns.google",
-        "server_port": 443,
-        "path": "/dns-query",
-        "domain_resolver": "Remote-Resolver",
-        "detour": "Proxy"
-      },
-      {
-        "tag": "Remote-Resolver",
-        "type": "tls",
-        "server": "1.1.1.1",
-        "server_port": 843,
-        "detour": "Proxy"
-      },
-      {
-        "tag": "Local-DNS",
-        "type": "https",
-        "server": "223.5.5.5",
-        "server_port": 443,
-        "path": "/dns-query",
-        "domain_resolver": "Local-Resolver",
-        "detour": "Direct"
-      },
-      {
-        "tag": "Local-Resolver",
-        "type": "tcp",
-        "server": "114.114.114.114",
-        "server_port": 53,
-        "detour": "Direct"
-      },
-      {
-        "tag": "Area-DNS",
-        "type": "dhcp"
-      },
-      {
-        "tag": "FakeIP",
-        "type": "fakeip",
-        "inet4_range": "198.18.0.0/15",
-        "inet6_range": "fc00::/18"
-      }
-    ],
-    "rules": [
-      {
-        "action": "route",
-        "domain_suffix": ["edu.cn"],
-        "network_type": ["wifi"],
-        "server": "Area-DNS"
-      },
-      {
-        "action": "route",
-        "server": "FakeIP",
-        "query_type": ["A", "AAAA"],
-        "rule_set": [
-          "AI-diy",
-          "GoogleVoice",
-          "OpenAI",
-          "Claude",
-          "Gemini",
-          "Copilot",
-          "Google",
-          "Telegram",
-          "GitHub",
-          "Twitter",
-          "Pixiv",
-          "Steam",
-          "PayPal",
-          "Facebook",
-          "GlobalMedia",
-          "Netflix",
-          "Bybit",
-          "Cloudflare",
-          "Emby",
-          "Crypto",
-          "Talkatone"
-        ]
-      },
-      {
-        "action": "route",
-        "server": "Local-DNS",
-        "rule_set": ["ChinaDomain", "emby"]
-      },
-      {
-        "action": "route",
-        "clash_mode": "direct",
-        "server": "Local-DNS"
-      },
-      {
-        "action": "route",
-        "clash_mode": "global",
-        "server": "Remote-DNS"
-      }
-    ],
-    "final": "Remote-DNS",
-    "disable_cache": false,
-    "disable_expire": false,
-    "independent_cache": false,
-    "reverse_mapping": false,
-    "client_subnet": "221.130.0.0/15",
-    "strategy": "ipv4_only"
-  }
 }
