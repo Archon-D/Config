@@ -1,0 +1,27 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "api.ipify.org",
+        "i.seadn.io",
+        "rpc.ankr.com",
+        "widgets.marqeta.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "arbitrum.io",
+        "binance.org",
+        "binance.vision",
+        "fiat24.com",
+        "g.alchemy.com",
+        "isafepal.com",
+        "mexc.co",
+        "optimism.io",
+        "walletconnect.com",
+        "web3modal.org"
+      ]
+    }
+  ],
+  "version": 1
+}
