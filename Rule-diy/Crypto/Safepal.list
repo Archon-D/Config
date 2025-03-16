@@ -1,0 +1,22 @@
+# NAME: Safepal
+# AUTHOR: AD
+# UPDATED: 2025-3-16 21:50:10
+# DOMAIN: 4
+# DOMAIN-KEYWORD: 0
+# DOMAIN-SUFFIX: 8
+# IP-CIDR: 0
+# IP-CIDR6: 0
+# TOTAL: 12
+DOMAIN,arb-mainnet.g.alchemy.com
+DOMAIN,api.ipify.org
+DOMAIN,widgets.marqeta.com
+DOMAIN,i.seadn.io
+DOMAIN-SUFFIX,walletconnect.coom
+DOMAIN-SUFFIX,isafepal.com
+DOMAIN-SUFFIX,binance.vision
+DOMAIN-SUFFIX,binance.org
+DOMAIN-SUFFIX,fiat24.com
+DOMAIN-SUFFIX,arbitrum.io
+DOMAIN-SUFFIX,web3modal.org
+DOMAIN-SUFFIX,mexc.com
+
