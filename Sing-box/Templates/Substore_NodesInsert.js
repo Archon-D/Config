@@ -26,7 +26,7 @@ config.outbounds.map(i => {
     i.outbounds.push(...getTags(proxies, /^(?=HQ.*(?:美|US|States|American))(?!.*(?:港|台|日|韩|新|Game)).*$/))
   }
   if (['SP|特殊节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^SN(?!.*(港|台|日本|韩|坡|美|HK|US|TW|JP|KR|SG|Hong|Tai|Japan|Korea|Singapore|States|Game)).*$/))
+    i.outbounds.push(...getTags(proxies, /^(?!.*(港|台|日本|韩|坡|美|HK|US|TW|JP|KR|SG|Hong|Tai|Japan|Korea|Singapore|States|Game)).*$/))
   }
   if (['🇰🇷 韩国节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:KR|Korea|KOR|首尔|韩|韓))(?!.*(?:港|美|日|新|台|Game)).*$/))
@@ -46,8 +46,14 @@ config.outbounds.map(i => {
   if (['🇭🇰 香港节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?=SN.*(?:港|HK|hk|Hong Kong|HongKong|hongkong))(?!.*(?:日本|美|韩|新|台|Game)).*$/))
   }
+  if (['加密货币'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?=.*(?:HQ))(?!.*(?:越|新|美|韩|泰|印度|马来)).*$/))
+  }
   if (['经济节点'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^ECO.*$/))
+  }
+  if (['中间节点'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?=.*(?:美|US|States|American))(?!.*(?:港|台|日|韩|新|Game)).*$/))
   }
   if (['Game'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /.*Game.*/))
