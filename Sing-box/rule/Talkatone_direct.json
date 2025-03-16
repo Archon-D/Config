@@ -1,0 +1,18 @@
+{
+  "rules": [
+    {
+      "domain_suffix": [
+        "agkn.com",
+        "cohere.com",
+        "crashlytics.com",
+        "inmobi.com",
+        "inner-active.mobi",
+        "ip-api.com",
+        "kochava.com",
+        "mobilefuse.com",
+        "talkatone.com"
+      ]
+    }
+  ],
+  "version": 1
+}
