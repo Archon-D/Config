@@ -3,26 +3,31 @@
 # REPO: https://github.com/
 # DOMAIN: 0
 # DOMAIN-KEYWORD: 0
-# DOMAIN-SUFFIX: 10
-# IP-CIDR: 4
+# DOMAIN-SUFFIX: 13
+# IP-CIDR: 8
 # IP-CIDR6: 0
-# TOTAL: 14
+# TOTAL: 21
 
-# 让登录更容易
-DOMAIN-SUFFIX,mobilefuse.com
-DOMAIN-SUFFIX,inmobi.com
-DOMAIN-SUFFIX,crashlytics.com
-DOMAIN-SUFFIX,talkatone.com
-DOMAIN-SUFFIX,kochava.com
-DOMAIN-SUFFIX,cohere.com
-DOMAIN-SUFFIX,ip-api.com
-DOMAIN-SUFFIX,agkn.com
 DOMAIN-SUFFIX,tktn.at
 DOMAIN-SUFFIX,tktn.be
-IP-CIDR,50.117.27.0/24,no-resolve
-IP-CIDR,69.46.75.0/24,no-resolve
-IP-CIDR,205.164.56.0/24,no-resolve
-IP-CIDR,63.251.124.0/24,no-resolve
+DOMAIN-SUFFIX,vm.talkatone.com
+DOMAIN-SUFFIX,tenor.com
+
+DOMAIN-SUFFIX,agkn.com
+DOMAIN-SUFFIX,cohere.com
+DOMAIN-SUFFIX,crashlytics.com
+DOMAIN-SUFFIX,inmobi.com
+DOMAIN-SUFFIX,inner-active.mobi
+DOMAIN-SUFFIX,ip-api.com
+DOMAIN-SUFFIX,kochava.com
+DOMAIN-SUFFIX,mobilefuse.com
+DOMAIN-SUFFIX,talkatone.com
+IP-CIDR,205.164.56.0/24
+IP-CIDR,216.172.154.0/24
+IP-CIDR,50.117.27.0/24
+IP-CIDR,63.251.124.0/24
+IP-CIDR,69.46.75.0/24
+
 IP-CIDR,198.24.161.0/24,no-resolve
 IP-CIDR,131.153.7.0/24,no-resolve
 IP-CIDR,104.244.53.0/24,no-resolve
