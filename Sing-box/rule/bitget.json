@@ -1,0 +1,16 @@
+{
+  "rules": [
+    {
+      "domain_suffix": [
+        "bgstatic.com",
+        "bitget.com",
+        "bitget.org",
+        "bitgetimg.com",
+        "engagelab.com",
+        "gurenla.com",
+        "theengagelab.com"
+      ]
+    }
+  ],
+  "version": 1
+}
