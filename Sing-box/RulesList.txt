@@ -44,6 +44,7 @@ https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/Crypt
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/Crypto/Safepal.list
 https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Binance/Binance.list
 https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OKX/OKX.list
+https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rule-diy/Crypto/bitget.list
 
 https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.list
 https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleFCM/GoogleFCM.list
