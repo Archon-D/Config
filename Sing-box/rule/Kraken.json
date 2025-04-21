@@ -1,0 +1,19 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "api.sardine.ai",
+        "api.smooch.io",
+        "kraken.zendesk.com",
+        "p.sardine.ai"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "kraken.com",
+        "phraseapp.com"
+      ]
+    }
+  ],
+  "version": 1
+}
