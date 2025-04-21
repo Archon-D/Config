@@ -1,9 +1,10 @@
 # NAME: Binance
 # UPDATED: 2025-04-21 17:04:00
 # DOMAIN: 33
-# DOMAIN-SUFFIX: 44
-# TOTAL: 77
+# DOMAIN-SUFFIX: 45
+# TOTAL: 78
 
+DOMAIN-SUFFIX,mokexapp.io
 DOMAIN-SUFFIX,binance.com
 DOMAIN-SUFFIX,binance.me
 DOMAIN-SUFFIX,binancecnt.com
