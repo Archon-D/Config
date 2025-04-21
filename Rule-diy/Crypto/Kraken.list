@@ -1,0 +1,11 @@
+# NAME: Kraken
+# DOMAIN: 4
+# DOMAIN-SUFFIX: 2
+# TOTAL: 6
+
+DOMAIN-SUFFIX,kraken.com
+DOMAIN-SUFFIX,phraseapp.com
+DOMAIN,kraken.zendesk.com
+DOMAIN,api.sardine.ai
+DOMAIN,api.smooch.io
+DOMAIN,p.sardine.ai
