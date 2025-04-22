@@ -53,12 +53,8 @@
             "tag": "Proxy",
             "type": "selector",
             "interrupt_exist_connections": true,
-            "default": "🇭🇰 香港节点",
+            "default": "🇸🇬 狮城节点",
             "outbounds": [
-                "静态住宅",
-                "静态ISP",
-                "经济节点",
-                "Direct",
                 "🇸🇬 狮城节点",
                 "🇭🇰 香港节点",
                 "🇨🇳 台湾节点",
@@ -66,9 +62,12 @@
                 "🇺🇲 美国节点",
                 "🇰🇷 韩国节点",
                 "SP|特殊节点",
+                "静态住宅",
                 "🇺🇲 美国HQ",
                 "🇸🇬 狮城HQ",
-                "🇯🇵 日本HQ"
+                "🇯🇵 日本HQ",
+                "经济节点",
+                "Direct"
             ]
         },
         {
@@ -105,7 +104,8 @@
             "tag": "加密货币",
             "type": "selector",
             "interrupt_exist_connections": true,
-            "outbounds": []
+            "outbounds": [
+            ]
         },
         {
             "tag": "📲 电报消息",
@@ -131,7 +131,6 @@
                 "🇯🇵 日本节点",
                 "🇰🇷 韩国节点",
                 "🇨🇳 台湾节点",
-                "静态ISP",
                 "静态住宅",
                 "Proxy"
             ]
@@ -147,7 +146,6 @@
                 "🇯🇵 日本节点",
                 "🇺🇲 美国节点",
                 "🇨🇳 台湾节点",
-                "静态ISP",
                 "静态住宅",
                 "Proxy"
             ]
@@ -159,7 +157,6 @@
             "default": "静态住宅",
             "outbounds": [
                 "静态住宅",
-                "静态ISP",
                 "🇸🇬 狮城HQ",
                 "🇺🇲 美国HQ",
                 "🇯🇵 日本HQ",
@@ -173,7 +170,6 @@
             "default": "Direct",
             "outbounds": [
                 "Direct",
-                "静态ISP",
                 "静态住宅",
                 "🇸🇬 狮城HQ",
                 "🇺🇲 美国HQ",
@@ -185,13 +181,12 @@
             "tag": "🍎 苹果服务",
             "type": "selector",
             "interrupt_exist_connections": true,
-            "default": "Direct",
+            "default": "静态住宅",
             "outbounds": [
                 "Direct",
                 "🇸🇬 狮城HQ",
                 "🇺🇲 美国HQ",
                 "🇯🇵 日本HQ",
-                "静态ISP",
                 "静态住宅",
                 "Proxy"
             ]
@@ -211,7 +206,7 @@
             "tag": "🎮 游戏平台",
             "type": "selector",
             "interrupt_exist_connections": true,
-            "default": "Direct",
+            "default": "🇭🇰 香港节点",
             "outbounds": [
                 "Direct",
                 "Game",
@@ -314,12 +309,9 @@
         },
         {
             "tag": "经济节点",
-            "type": "urltest",
+            "type": "selector",
             "outbounds": [],
-            "interrupt_exist_connections": true,
-            "url": "https://www.gstatic.com/generate_204",
-            "interval": "300s",
-            "tolerance": 150
+          "interrupt_exist_connections": true
         },
         {
             "type": "direct",
@@ -327,23 +319,12 @@
         },
         {
             "type": "socks",
-            "tag": "静态ISP",
-            "server": "8.8.8.8",
-            "server_port": [?],
-            "version": "5",
-            "username": "name",
-            "password": "passwd",
-            "tcp_fast_open": true,
-            "detour": "中间节点"
-        },
-        {
-            "type": "socks",
             "tag": "静态住宅",
-            "server": "1.1.1.1",
-            "server_port": [?],
+            "server": "",
+            "server_port": ,
             "version": "5",
-            "username": "name",
-            "password": "passwd",
+            "username": "",
+            "password": "",
             "tcp_fast_open": true,
             "detour": "中间节点"
         }
@@ -359,7 +340,7 @@
                             
                         ],
                         "domain_suffix": [
-                           
+                            
                         ]
                     }
                 ]
@@ -384,7 +365,7 @@
                 "rules": [
                     {
                         "ip_cidr": [
-
+                            
                         ]
                     }
                 ]
@@ -411,6 +392,13 @@
                 "download_detour": "Direct"
             },
             {
+                "tag": "Kraken",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Kraken.srs",
+                "download_detour": "Direct"
+            },
+            {
                 "tag": "Safepal",
                 "type": "remote",
                 "format": "binary",
@@ -422,6 +410,20 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Binance.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Bitget",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Bitget.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "OKX",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OKX.srs",
                 "download_detour": "Direct"
             },
             {
@@ -502,6 +504,27 @@
                 "download_detour": "Direct"
             },
             {
+                "tag": "Instagram",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Instagram.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Whatsapp",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Whatsapp.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Whatsapp_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Whatsapp_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
                 "tag": "TikTok",
                 "type": "remote",
                 "format": "binary",
@@ -516,10 +539,31 @@
                 "download_detour": "Direct"
             },
             {
+                "tag": "Talkatone_reject",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone_reject.srs",
+                "download_detour": "Direct"
+            },
+            {
                 "tag": "Talkatone_IP",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Oracle",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Oracle.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "eBay",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/eBay.srs",
                 "download_detour": "Direct"
             },
             {
@@ -579,6 +623,27 @@
                 "download_detour": "Direct"
             },
             {
+                "tag": "Notion",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Notion.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Discord",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Discord.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Wikipedia",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Wikipedia.srs",
+                "download_detour": "Direct"
+            },
+            {
                 "tag": "Cloudflare_IP",
                 "type": "remote",
                 "format": "binary",
@@ -618,6 +683,20 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Google_ip_cidr.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "GoogleFCM",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GoogleFCM.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "GoogleFCM_IP",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GoogleFCM_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
@@ -733,8 +812,20 @@
                 "ip_is_private": true,
                 "rule_set": [
                     "Direct-diy",
-                    "emby"
+                    "emby",
+                    "Notion"
                 ]
+            },
+            {
+                "action": "route",
+                "outbound": "加密货币",
+                "package_name": [
+                    "com.bybit.app",
+                    "com.binance.dev",
+                    "io.safepal.wallet",
+                    "com.okinc.okex.gp",
+                    "com.bitget.exchange"
+                  ]
             },
             {
                 "action": "route",
@@ -743,8 +834,24 @@
                     "Bybit",
                     "Crypto",
                     "Safepal",
-                    "Binance"
+                    "Binance",
+                    "Bitget",
+                    "OKX",
+                    "Kraken"
                 ]
+            },
+            {
+                "action": "route",
+                "outbound": "风控",
+                "package_name": [
+                    "com.paypal.android.p2pmobile",
+                    "com.instagram.android",
+                    "com.facebook.katana",
+                    "com.whatsapp",
+                    "com.google.android.apps.googlevoice",
+                    "com.talkatone.android",
+                    "com.amazon.mShop.android.shopping"
+                  ]
             },
             {
                 "action": "route",
@@ -752,14 +859,28 @@
                 "rule_set": [
                     "PayPal",
                     "GoogleVoice",
-                    "TikTok",
                     "Facebook",
                     "Facebook_IP",
+                    "Instagram",
+                    "Whatsapp",
+                    "Whatsapp_IP",
                     "Talkatone",
                     "Talkatone_IP",
                     "Amazon",
-                    "Amazon_IP"
+                    "Amazon_IP",
+                    "eBay",
+                    "Oracle",
+                    "TikTok"
                 ]
+            },
+            {
+                "action": "route",
+                "outbound": "💬 AI",
+                "package_name": [
+                    "com.openai.chatgpt",
+                    "com.anthropic.claude",
+                    "com.google.android.apps.bard"
+                  ]
             },
             {
                 "action": "route",
@@ -772,8 +893,6 @@
                     "Copilot",
                     "Copilot_IP",
                     "AI-diy"
-                    
-                    
                 ]
             },
             {
@@ -800,17 +919,21 @@
                 "rule_set": [
                     "GitHub",
                     "Twitter",
-                    "Pixiv",
                     "Twitter_IP",
                     "Cloudflare",
-                    "Cloudflare_IP"
+                    "Cloudflare_IP",
+                    "Pixiv",
+                    "Discord",
+                    "Wikipedia"
                 ]
             },
             {
                 "action": "route",
                 "rule_set": [
                     "Google",
-                    "Google_IP"
+                    "Google_IP",
+                    "GoogleFCM",
+                  "GoogleFCM_IP"
                 ],
                 "outbound": "📢 谷歌服务"
             },
@@ -869,7 +992,7 @@
         "default_domain_resolver": {
             "server": "Local-DNS",
             "rewrite_tll": 60,
-            "client_subnet": "221.130.0.0/15"
+            "client_subnet": ""
         }
     },
     "dns": {
@@ -887,7 +1010,7 @@
                 "tag": "Remote-Resolver",
                 "type": "tls",
                 "server": "1.1.1.1",
-                "server_port": 843,
+                "server_port": 853,
                 "detour": "Proxy"
             },
             {
@@ -896,15 +1019,13 @@
                 "server": "223.5.5.5",
                 "server_port": 443,
                 "path": "/dns-query",
-                "domain_resolver": "Local-Resolver",
-                "detour": "Direct"
+                "domain_resolver": "Local-Resolver"
             },
             {
                 "tag": "Local-Resolver",
                 "type": "tcp",
                 "server": "114.114.114.114",
-                "server_port": 53,
-                "detour": "Direct"
+                "server_port": 53
             },
             {
                 "tag": "Area-DNS",
@@ -936,15 +1057,24 @@
                     "AAAA"
                 ],
                 "rule_set": [
+                    "Google",
+                    "GoogleFCM",
                     "PayPal",
                     "Crypto",
                     "Bybit",
+                    "Kraken",
                     "Safepal",
                     "Binance",
+                    "Bitget",
+                    "OKX",
                     "GoogleVoice",
                     "Facebook",
+                    "Instagram",
+                    "Whatsapp",
                     "Talkatone",
                     "Amazon",
+                    "eBay",
+                    "Oracle",
                     "OpenAI",
                     "Claude",
                     "Gemini",
@@ -959,7 +1089,10 @@
                     "GlobalMedia",
                     "Netflix",
                     "Cloudflare",
-                    "Google"
+                    "Notion",
+                    "Discord",
+                    "Wikipedia"
+                    
                 ]
             },
             {
@@ -987,7 +1120,7 @@
         "disable_expire": false,
         "independent_cache": false,
         "reverse_mapping": false,
-        "client_subnet": "221.130.0.0/15",
+        "client_subnet": "",
         "strategy": "ipv4_only"
     }
 }
