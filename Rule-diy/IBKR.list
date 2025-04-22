@@ -18,5 +18,5 @@ DOMAIN-SUFFIX,ibkr.com
 DOMAIN-SUFFIX,ibllc.com
 DOMAIN-SUFFIX,ibkrguides.com
 DOMAIN,interactivebrokers.api.madcapcentral.com
-KEYWORD,ibkr
-KEYWORD,interactivebrokers
+HOST-KEYWORD,ibkr
+HOST-KEYWORD,interactivebrokers
