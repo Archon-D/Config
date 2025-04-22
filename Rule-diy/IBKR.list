@@ -1,6 +1,8 @@
 #name IBKR
-#DOMAIN-SUFFIX: 14
-#TOTAL: 14
+#DOMAIN-SUFFIX: 15
+#DOMAIN: 1
+#DOMAIN-KEYWORD: 2
+#TOTAL: 18
 
 DOMAIN-SUFFIX,interactivebrokers.com
 DOMAIN-SUFFIX,interactivebrokers.ca
