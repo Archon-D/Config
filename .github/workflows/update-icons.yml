@@ -20,51 +20,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Create script directory
-        run: mkdir -p scripts
-
-      - name: Create update script
-        run: |
-          cat << 'EOF' > scripts/update-icon-json.js
-          // 👇脚本内容在这里粘贴
-          const fs = require('fs');
-          const path = require('path');
-
-          const ICON_FOLDER = path.join(__dirname, '../icon/icons');
-          const JSON_PATH = path.join(__dirname, '../icon/icon.json');
-
-          const REPO = process.env.GITHUB_REPOSITORY;
-          const BRANCH = process.env.GITHUB_REF_NAME || 'main';
-
-          function generateIconList() {
-            const files = fs.readdirSync(ICON_FOLDER).filter(file => /\.(png|jpg|jpeg|svg)$/i.test(file));
-
-            const icons = files.map(file => {
-              const name = path.parse(file).name;
-              const url = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/icon/icons/${file}`;
-              return { names: name, url };
-            });
-
-            return icons;
-          }
-
-          function updateJsonFile(icons) {
-            let data = {
-              name: "图标",
-              description: "",
-              icons: icons
-            };
-
-            fs.writeFileSync(JSON_PATH, JSON.stringify(data, null, 2), 'utf8');
-            console.log(`✅ Updated ${JSON_PATH} with ${icons.length} icons.`);
-          }
-
-          const icons = generateIconList();
-          updateJsonFile(icons);
-          EOF
-
       - name: Run update script
-        run: node scripts/update-icon-json.js
+        run: node icon/update-icon-json.js  # ✅ 改这里
 
       - name: Commit and push if icon.json changed
         run: |
