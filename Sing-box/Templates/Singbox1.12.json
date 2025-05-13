@@ -10,7 +10,7 @@
             "external_controller": "127.0.0.1:20123",
             "external_ui": "",
             "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip",
-            "external_ui_download_detour": "Proxy",
+            "external_ui_download_detour": "Direct",
             "secret": "ID_g637rrjj",
             "default_mode": "rule",
             "access_control_allow_origin": [
@@ -76,35 +76,15 @@
             "interrupt_exist_connections": true,
             "outbounds": []
         },
-        {
-            "tag": "💬 AI",
+       {
+            "tag": "🎯 EMBY",
             "type": "selector",
             "interrupt_exist_connections": true,
-            "default": "静态住宅",
+            "default": "经济节点",
             "outbounds": [
-                "静态住宅",
-                "🇸🇬 狮城HQ",
-                "🇺🇲 美国HQ",
-                "🇯🇵 日本HQ"
-            ]
-        },
-        {
-            "tag": "风控",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "default": "静态住宅",
-            "outbounds": [
-                "静态住宅",
-                "🇸🇬 狮城HQ",
-                "🇺🇲 美国HQ",
-                "🇯🇵 日本HQ"
-            ]
-        },
-        {
-            "tag": "加密货币",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "outbounds": [
+                "Direct",
+                "经济节点",
+                "🎥 国际媒体"
             ]
         },
         {
@@ -151,6 +131,13 @@
             ]
         },
         {
+            "tag": "加密货币",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "outbounds": [
+            ]
+        },
+        {
             "tag": "📢 谷歌服务",
             "type": "selector",
             "interrupt_exist_connections": true,
@@ -192,21 +179,35 @@
             ]
         },
         {
-            "tag": "🎯 EMBY",
+            "tag": "💬 AI",
             "type": "selector",
             "interrupt_exist_connections": true,
-            "default": "经济节点",
+            "default": "静态住宅",
             "outbounds": [
-                "Direct",
-                "经济节点",
-                "🎥 国际媒体"
+                "静态住宅",
+                "🇸🇬 狮城HQ",
+                "🇺🇲 美国HQ",
+                "🇯🇵 日本HQ"
+            ]
+        },
+        {
+            "tag": "风控",
+            "type": "selector",
+            "interrupt_exist_connections": true,
+            "default": "静态住宅",
+            "outbounds": [
+                "静态住宅",
+                "🇭🇰 香港节点",
+                "🇸🇬 狮城HQ",
+                "🇺🇲 美国HQ",
+                "🇯🇵 日本HQ"
             ]
         },
         {
             "tag": "🎮 游戏平台",
             "type": "selector",
             "interrupt_exist_connections": true,
-            "default": "🇭🇰 香港节点",
+            "default": "Direct",
             "outbounds": [
                 "Direct",
                 "Game",
@@ -337,10 +338,10 @@
                 "rules": [
                     {
                         "domain": [
-                            
+
                         ],
                         "domain_suffix": [
-                            
+
                         ]
                     }
                 ]
@@ -351,10 +352,10 @@
                 "rules": [
                     {
                         "domain": [
-                            
+
                         ],
                         "domain_suffix": [
-                            
+
                         ]
                     }
                 ]
@@ -365,7 +366,6 @@
                 "rules": [
                     {
                         "ip_cidr": [
-                            
                         ]
                     }
                 ]
@@ -374,420 +374,406 @@
                 "tag": "PayPal",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/PayPal.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/PayPal.srs",
                 "download_detour": "Direct"
             },
             {
+                "tag": "Rakuten",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Rakuten.srs",
+                "download_detour": "Direct"
+            },
+            {
+                "tag": "Cryptocurrency",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Cryptocurrency.srs",
+                "download_detour": "Direct"
+            },
+          {
                 "tag": "Crypto",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cryptocurrency.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Crypto.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Bybit",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Bybit.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Bybit.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Kraken",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Kraken.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Kraken.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Safepal",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Safepal.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Safepal.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Binance",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Binance.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Binance.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Bitget",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Bitget.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Bitget.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "OKX",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OKX.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/OKX.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "OpenAI",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OpenAI.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/OpenAI.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "OpenAI_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/OpenAI_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/OpenAI_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Claude",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Claude.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Claude.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Gemini",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Gemini.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Gemini.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Copilot",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Copilot.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Copilot.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Copilot_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Copilot_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Copilot_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "AI-diy",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/AI.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/AI.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Amazon",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Amazon.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Amazon.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Amazon_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Amazon_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Amazon_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Facebook",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Facebook.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Facebook.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Facebook_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Facebook_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Facebook_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Instagram",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Instagram.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Instagram.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Whatsapp",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Whatsapp.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Whatsapp.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Whatsapp_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Whatsapp_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Whatsapp_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "TikTok",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/TikTok.srs",
-                "download_detour": "Direct"
-            },
-            {
-                "tag": "Talkatone",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone.srs",
-                "download_detour": "Direct"
-            },
-            {
-                "tag": "Talkatone_reject",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone_reject.srs",
-                "download_detour": "Direct"
-            },
-            {
-                "tag": "Talkatone_IP",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Talkatone_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/TikTok.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Oracle",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Oracle.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Oracle.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "eBay",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/eBay.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/eBay.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "GoogleVoice",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GoogleVoice.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/GoogleVoice.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Telegram",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Telegram.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Telegram.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Telegram_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Telegram_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Telegram_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "GitHub",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GitHub.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/GitHub.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Twitter",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Twitter.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Twitter.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Twitter_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Twitter_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Twitter_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Pixiv",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Pixiv.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Pixiv.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Cloudflare",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cloudflare.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Cloudflare.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Notion",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Notion.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Notion.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Discord",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Discord.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Discord.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Wikipedia",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Wikipedia.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Wikipedia.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Cloudflare_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Cloudflare_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Cloudflare_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "GlobalMedia",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GlobalMedia.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/GlobalMedia.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Netflix",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Netflix.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Netflix.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Netflix_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Netflix_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Netflix_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Google",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Google.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Google.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Google_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Google_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Google_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "GoogleFCM",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GoogleFCM.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/GoogleFCM.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "GoogleFCM_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/GoogleFCM_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/GoogleFCM_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Apple",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Apple.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Apple.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Apple_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Apple_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Apple_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Microsoft",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Microsoft.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Microsoft.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Steam",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Steam.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Steam.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Direct-diy",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Direct.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Direct.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "ChinaDomain",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/China_domain.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/China_domain.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "ChinaMax",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/ChinaMax.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/ChinaMax.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "ChinaMax_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/ChinaMax_ip_cidr.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/ChinaMax_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Privacy",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Privacy.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Privacy.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Advertising",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/AdvertisingLite.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/AdvertisingLite.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Advertising_IP",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/AdvertisingLite_ip_cidr.srs",
-                "download_detour": "Direct"
-            },
-            {
-                "tag": "Advertising_diy",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/My-Config/refs/heads/main/Sing-box/rule/Advertising_diy.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/AdvertisingLite_ip_cidr.srs",
                 "download_detour": "Direct"
             },
             {
                 "tag": "Block-diy",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/rule/Block.srs",
+                "url": "https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Sing-box/Rules/Block.srs",
                 "download_detour": "Direct"
             }
         ],
@@ -833,6 +819,7 @@
                 "rule_set": [
                     "Bybit",
                     "Crypto",
+                    "Cryptocurrency",
                     "Safepal",
                     "Binance",
                     "Bitget",
@@ -858,14 +845,13 @@
                 "outbound": "风控",
                 "rule_set": [
                     "PayPal",
+                    "Rakuten",
                     "GoogleVoice",
                     "Facebook",
                     "Facebook_IP",
                     "Instagram",
                     "Whatsapp",
                     "Whatsapp_IP",
-                    "Talkatone",
-                    "Talkatone_IP",
                     "Amazon",
                     "Amazon_IP",
                     "eBay",
@@ -971,7 +957,6 @@
                     "Privacy",
                     "Advertising",
                     "Advertising_IP",
-                    "Advertising_diy",
                     "Block-diy"
                 ]
             },
@@ -1001,7 +986,7 @@
                 "tag": "Remote-DNS",
                 "type": "https",
                 "server": "dns.google",
-                "server_port": 443,
+                
                 "path": "/dns-query",
                 "domain_resolver": "Remote-Resolver",
                 "detour": "Proxy"
@@ -1060,7 +1045,9 @@
                     "Google",
                     "GoogleFCM",
                     "PayPal",
+                    "Rakuten",
                     "Crypto",
+                    "Cryptocurrency",
                     "Bybit",
                     "Kraken",
                     "Safepal",
@@ -1071,7 +1058,6 @@
                     "Facebook",
                     "Instagram",
                     "Whatsapp",
-                    "Talkatone",
                     "Amazon",
                     "eBay",
                     "Oracle",
