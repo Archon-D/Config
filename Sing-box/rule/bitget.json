@@ -2,11 +2,15 @@
   "rules": [
     {
       "domain_suffix": [
+        "ada.support",
         "bgstatic.com",
         "bitget.com",
         "bitget.org",
         "bitgetimg.com",
         "engagelab.com",
+        "gdrichem.com",
+        "gm816.com",
+        "gurenla.cc",
         "gurenla.com",
         "theengagelab.com"
       ]
