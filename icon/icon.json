@@ -1,7 +1,11 @@
 {
-  "name":
-  "description":
+  "name": "图标",
+  "description": "",
   "icons":[
+    {
+      "names":
+      "url":
+    },
     {
       "names":
       "url":
