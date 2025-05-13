@@ -1,9 +1,9 @@
 name: Update icon.json
 
-# on:
-#   push:
-#     paths:
-#       - 'icon/icons/**'
+on:
+  push:
+    paths:
+      - 'icon/icons/**'
 
 jobs:
   update-json:
