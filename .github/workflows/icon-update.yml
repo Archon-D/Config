@@ -1,7 +1,0 @@
-name: Update icon.json
-
-on:
-  push:
-    paths:
-      - 'data/**'  # 根据你要监控的文件夹修改
-
