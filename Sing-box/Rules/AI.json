@@ -1,0 +1,17 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "aistudio.google.com",
+        "www.bing.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "coze.com",
+        "sora.com"
+      ]
+    }
+  ],
+  "version": 1
+}

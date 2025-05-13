@@ -1,0 +1,35 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "interactivebrokers.api.madcapcentral.com"
+      ]
+    },
+    {
+      "domain_keyword": [
+        "ibkr",
+        "interactivebrokers"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "ibkr.com",
+        "ibkr.com.cn",
+        "ibkrguides.com",
+        "ibllc.com",
+        "interactivebrokers.au",
+        "interactivebrokers.ca",
+        "interactivebrokers.co.in",
+        "interactivebrokers.co.jp",
+        "interactivebrokers.co.uk",
+        "interactivebrokers.com",
+        "interactivebrokers.com.hk",
+        "interactivebrokers.com.sg",
+        "interactivebrokers.eu",
+        "interactivebrokers.hu",
+        "interactivebrokers.ie"
+      ]
+    }
+  ],
+  "version": 1
+}
