@@ -1,14 +1,14 @@
 {
   "name": "图标",
   "description": "",
-  "icons":[
+  "icons": [
     {
-      "names":
-      "url":
+      "names": "1",
+      "url": "https://raw.githubusercontent.com/Archon-D/Config/main/icon/icons/1.jpg"
     },
     {
-      "names":
-      "url":
+      "names": "2",
+      "url": "https://raw.githubusercontent.com/Archon-D/Config/main/icon/icons/2.jpg"
     }
   ]
 }
