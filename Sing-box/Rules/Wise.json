@@ -1,0 +1,17 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "sdk.fra-01.braze.eu"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "singular.net",
+        "transferwise.com",
+        "wise.com"
+      ]
+    }
+  ],
+  "version": 1
+}
