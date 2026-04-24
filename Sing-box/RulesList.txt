@@ -2,6 +2,7 @@
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rules/Direct.list
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rules/Block.list
 https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rules/China_domain.list
+https://raw.githubusercontent.com/Archon-D/Config/refs/heads/main/Rules/Bank/Wise.list
 
 #其他规则
 #直连
