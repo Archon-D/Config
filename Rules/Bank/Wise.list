@@ -3,7 +3,7 @@
 #DOMAIN-SUFFIX: 3
 #TOTAL: 4
 
-DOMAIN-SUFFIX, wise.com
-DOMAIN-SUFFIX, singular.net
-DOMAIN-SUFFIX, transferwise.com
-DOMAIN, sdk.fra-01.braze.eu
+DOMAIN-SUFFIX,wise.com
+DOMAIN-SUFFIX,singular.net
+DOMAIN-SUFFIX,transferwise.com
+DOMAIN,sdk.fra-01.braze.eu
