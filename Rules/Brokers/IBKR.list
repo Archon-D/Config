@@ -1,8 +1,7 @@
 #name IBKR
 #DOMAIN-SUFFIX: 15
-#DOMAIN: 1
-#DOMAIN-KEYWORD: 2
-#TOTAL: 18
+#DOMAIN: 6
+#TOTAL: 21
 
 DOMAIN-SUFFIX,interactivebrokers.com
 DOMAIN-SUFFIX,interactivebrokers.ca
@@ -20,5 +19,8 @@ DOMAIN-SUFFIX,ibkr.com
 DOMAIN-SUFFIX,ibllc.com
 DOMAIN-SUFFIX,ibkrguides.com
 DOMAIN,interactivebrokers.api.madcapcentral.com
-DOMAIN-KEYWORD,ibkr
-DOMAIN-KEYWORD,interactivebrokers
+DOMAIN,www.ibkr.info
+DOMAIN,ibkrcampus.com
+DOMAIN,ibkrcampus.eu
+DOMAIN,account.ibkram.com
+DOMAIN,widgets.tipranks.com
