@@ -1,8 +1,8 @@
 # NAME: Schwab
 # UPDATED: 2026-09-20
-# DOMAIN-KEYWORD: 0
-# DOMAIN-SUFFIX: 4
-# TOTAL: 4
+# DOMAIN: 5
+# DOMAIN-SUFFIX: 10
+# TOTAL: 15
 DOMAIN-SUFFIX,schwab.com
 DOMAIN-SUFFIX,schwabcdn.com
 DOMAIN-SUFFIX,aboutschwab.com
@@ -10,3 +10,11 @@ DOMAIN-SUFFIX,tdameritrade.com
 DOMAIN-SUFFIX,schwabbank.com
 DOMAIN-SUFFIX,schwaballiance.com
 DOMAIN-SUFFIX,schwabbank-ssb.com
+DOMAIN-SUFFIX,schwabapi.com
+DOMAIN-SUFFIX,thinkorswim.com
+DOMAIN-SUFFIX,schwabcloud.com
+DOMAIN,www.schwabimg.com
+DOMAIN,d1rzmco44al6hn.cloudfront.net
+DOMAIN,content.uplynk.com
+DOMAIN,cdn.appdynamics.com
+DOMAIN,api.transmitsecurity.io
