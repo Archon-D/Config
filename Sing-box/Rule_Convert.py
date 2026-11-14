@@ -530,7 +530,12 @@ def resolve_names(urls: list[str], mode: str = "legacy") -> list[tuple[str, str]
     """
     namer = legacy_name if mode == "legacy" else derive_name
     plan = [(url, namer(url)) for url in urls]
+    ip_suffix = "_ip_cidr" if mode == "legacy" else "_ip"
     taken = {name for _, name in plan}
+
+    def variants(name: str) -> set[str]:
+        """一个源可能写出的全部文件名（主集合 + 拆出来的 + 可选的正则集合）。"""
+        return {name, f"{name}{ip_suffix}", f"{name}_domain", f"{name}_url_regex"}
 
     grouped: dict[str, list[int]] = {}
     for i, (_, name) in enumerate(plan):
@@ -551,6 +556,21 @@ def resolve_names(urls: list[str], mode: str = "legacy") -> list[tuple[str, str]
             print(f"同名处理：{url}\n"
                   f"          -> {new}.json（{name}.json 仍由 {winner} 提供）",
                   file=sys.stderr)
+
+    # 第二层：派生名也不能撞。比如 A 会写出 foo_ip_cidr，而 RulesList 里恰好还有个
+    # foo_ip_cidr.conf，两者会在磁盘上互相覆盖（并发下还不确定谁赢）。这里按列表顺序
+    # 预留名字，撞了就整源改名，保证每个产物文件只属于一个源。
+    reserved: set[str] = set()
+    all_names = {name for _, name in plan}
+    for i, (url, name) in enumerate(plan):
+        if variants(name) & reserved:
+            base, n = f"{path_token(url)}_{name}", 2
+            while (variants(base) & reserved) or (base in all_names and base != name):
+                base, n = f"{path_token(url)}_{name}-{n}", n + 1
+            print(f"派生名冲突：{url}\n          -> {base}（否则会与其它源的 *_ip/_domain 撞名）",
+                  file=sys.stderr)
+            plan[i] = (url, base)
+        reserved |= variants(plan[i][1])
     return plan
 
 
