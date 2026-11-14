@@ -16,11 +16,11 @@ surge2singbox —— 把 Surge / Clash / 纯域名 / sing-box 规则列表转换
 行为要点：
   * 纯标准库（无 pandas / pyyaml / requests），逐行解析：逗号规则 / 裸域名 / .suffix /
     *.wildcard / payload 列表 / 已有 rule-set JSON 都能吃。
-  * 域名类和 IP 类规则分文件：sing-box 的 dns.rules 只能用域名类集合，IP 只能在路由阶段用。
-      <name>.json      域名类（domain / suffix / keyword / regex + process / port）
-      <name>_ip.json   IP 类（ip_cidr / source_ip_cidr）
-    源本身是 IP 列表（URL 含 /ip/ 或名字以 _ip/_cidr 结尾）时反过来：IP 留原名，域名加 _domain。
-    只有一类规则时只出一个 <name>.json。--no-split-ip 可强制合并。
+  * 一个源 = 一个集合：域名、IP、进程、端口全写进同一个 rule-set（默认）。
+    加 --split-ip 才会按"域名类 / IP 类"拆成两个文件（DNS 阶段只想用域名规则时才有必要）。
+  * 重名在转换前统一处理：同名（basename 相同）的源**全部**加上 URL 上一级目录前缀，
+    domainset/cdn.conf + non_ip/cdn.conf -> domainset_cdn + non_ip_cdn，不挑谁留下。
+  * skk 在每个组里塞的演练域名 7h15.ru1353t...skk.moe 默认排除（--exclude-domain 可加更多）。
   * URL-REGEX 降级为域名正则并留在原集合（--separate-url-regex 可拆出去）；
     每次降级记 lossy，不算丢弃。
   * 不静默失败：抓取失败、无法转换的类型、非法的值全部记录到 <name>.dropped.txt 和 report.json；
@@ -100,6 +100,30 @@ ITEM_ORDER = [
     "port", "port_range", "source_port", "source_port_range",
 ]
 IP_ITEMS = {"ip_cidr", "source_ip_cidr"}
+DOMAIN_ITEMS = {"domain", "domain_suffix", "domain_keyword", "domain_regex"}
+
+# skk 在每个规则组里塞的"水印"域名（纯 IP 组也有），对分流没有意义，还会把纯 IP 组
+# 污染成"域名 + IP"混合组。实测同一批文件里就有 5 种写法：
+#   7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe / 7h15_ru1353t_...（下划线版）
+#   7h1s_rul35et_i5_mad3_by_5ukk4w-ruleset.skk.moe / th1s_rule5et_1s_m4d3_by_....
+#   this_ruleset_is_made_by_sukkaw.ruleset.skk.moe
+# 它们全都在 skk.moe 下，所以直接按域名后缀识别，作者以后换措辞也兜得住。
+PLACEHOLDER_DOMAINS = {
+    "7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe",
+    "7h15_ru1353t_1s_m4d3_by_5ukk4w.skk.moe",
+}
+# 用"整段标签命中"而不是子串匹配，免得误伤 health1st.com 这类真域名。
+# 注意不能按 *.skk.moe 整体排除：ruleset.skk.moe、cdn.skk.moe、latency-test.skk.moe
+# 这些是规则集的镜像/测速节点，是真正的规则。
+PLACEHOLDER_LABELS = {
+    "7h15", "7h1s", "th1s", "5ukk4w", "sukkaw", "m4d3", "mad3", "rul35et", "rule5et",
+}
+
+
+def is_placeholder(domain: str) -> bool:
+    if domain in PLACEHOLDER_DOMAINS:
+        return True
+    return any(label in PLACEHOLDER_LABELS for label in re.split(r"[._-]", domain))
 
 COMMENT_PREFIX = ("#", "//", ";", "!")
 # 从 URL 路径里剥掉的噪音目录
@@ -250,6 +274,8 @@ class SetBuilder:
     wildcard_greedy: bool = False
     url_regex_mode: str = "host"
     items: dict[str, set[str]] = field(default_factory=lambda: {k: set() for k in ITEM_ORDER})
+    excluded: set[str] = field(default_factory=lambda: set(PLACEHOLDER_DOMAINS))
+    extra_excluded: Iterable[str] = ()      # --exclude-domain 追加的（已归一化）
     dropped: list[tuple[str, str]] = field(default_factory=list)   # (reason, raw)
     url_regex_items: set[str] = field(default_factory=set)         # URL-REGEX 降级出来的项
     parsed: int = 0      # 读到的规则条数
@@ -258,6 +284,12 @@ class SetBuilder:
 
     # -- 收集 ------------------------------------------------------------
     def _add(self, item: str, value: str) -> None:
+        # 占位/演练域名：既不是真规则，也不该让纯 IP 组变成混合组
+        if item in ("domain", "domain_suffix") and (
+            is_placeholder(value) or value in self.excluded or value in self.extra_excluded
+        ):
+            self._drop("excluded:placeholder-domain", f"{item}:{value}")
+            return
         self._line_hit = True
         self.items[item].add(value)
 
@@ -519,47 +551,55 @@ def path_token(url: str) -> str:
     return _sanitize(dirs[-1]) if dirs else "dup"
 
 
-def resolve_names(urls: list[str], mode: str = "legacy") -> list[tuple[str, str]]:
+def resolve_names(
+    urls: list[str],
+    mode: str = "legacy",
+    split_ip: bool = False,
+    separate_url_regex: bool = False,
+) -> list[tuple[str, str]]:
     """
-    给每条链接定产物名。
+    在下拉/转换之前就把产物名定好，重名一律加 URL 的上一级目录前缀来区分。
 
     legacy（默认，与原脚本一致）：basename 前段，如 reject.conf -> reject。
-    但原脚本遇到同名是后写覆盖前写（59 个源里有 5 组，共丢 7,615 条规则），
-    这里改成：最后一条保留原名（和旧产物名一致，config 不用改），
-    前面的改成 <路径段>_<原名>（domainset/cdn.conf -> domainset_cdn），谁都不丢。
+    撞名时**所有**同名的源都加前缀，不挑"谁留下"：
+        domainset/cdn.conf + non_ip/cdn.conf
+            -> domainset_cdn + non_ip_cdn
+    这样名字是对称的，也不会出现"某次运行后 cdn.json 悄悄换了个源"。
     """
     namer = legacy_name if mode == "legacy" else derive_name
     plan = [(url, namer(url)) for url in urls]
     ip_suffix = "_ip_cidr" if mode == "legacy" else "_ip"
-    taken = {name for _, name in plan}
 
     def variants(name: str) -> set[str]:
-        """一个源可能写出的全部文件名（主集合 + 拆出来的 + 可选的正则集合）。"""
-        return {name, f"{name}{ip_suffix}", f"{name}_domain", f"{name}_url_regex"}
+        """一个源可能写出的全部文件名（主集合 + 拆分出来的 + 可选的正则集合）。"""
+        out = {name}
+        if split_ip:
+            out |= {f"{name}{ip_suffix}", f"{name}_domain"}
+        if separate_url_regex:
+            out.add(f"{name}_url_regex")
+        return out
 
     grouped: dict[str, list[int]] = {}
     for i, (_, name) in enumerate(plan):
         grouped.setdefault(name, []).append(i)
 
+    # 第一层：同 basename 的源，全部加路径段前缀
     for name, idxs in grouped.items():
         if len(idxs) < 2:
             continue
-        winner = plan[idxs[-1]][0]
-        for i in idxs[:-1]:
+        print(f"检测到重名：{name}（{len(idxs)} 个源），全部加 URL 上一级目录区分：",
+              file=sys.stderr)
+        for i in idxs:
             url = plan[i][0]
-            base = f"{path_token(url)}_{name}"
-            new, n = base, 2
-            while new in taken:
-                new, n = f"{base}-{n}", n + 1
-            taken.add(new)
-            plan[i] = (url, new)
-            print(f"同名处理：{url}\n"
-                  f"          -> {new}.json（{name}.json 仍由 {winner} 提供）",
-                  file=sys.stderr)
+            base, n = f"{path_token(url)}_{name}", 2
+            while base == name or base in grouped:
+                base, n = f"{path_token(url)}_{name}-{n}", n + 1
+            plan[i] = (url, base)
+            print(f"  {url}\n      -> {base}.json", file=sys.stderr)
 
     # 第二层：派生名也不能撞。比如 A 会写出 foo_ip_cidr，而 RulesList 里恰好还有个
-    # foo_ip_cidr.conf，两者会在磁盘上互相覆盖（并发下还不确定谁赢）。这里按列表顺序
-    # 预留名字，撞了就整源改名，保证每个产物文件只属于一个源。
+    # foo_ip_cidr.conf，两者会在磁盘上互相覆盖（并发下连谁赢都不确定）。
+    # 按列表顺序预留名字，撞了就整源改名，保证一个产物文件只属于一个源。
     reserved: set[str] = set()
     all_names = {name for _, name in plan}
     for i, (url, name) in enumerate(plan):
@@ -594,6 +634,7 @@ class Result:
     seconds: float = 0.0
     merged_ip: int = 0
     lossy: int = 0          # 已保留但语义变宽（URL-REGEX 降级）
+    skipped: bool = False   # 解析出来 0 条可用规则（如纯 IP-ASN 源）
     warning: str = ""
 
 
@@ -681,12 +722,11 @@ def write_outputs(
     # 想分流只能拆文件，靠规则顺序生效）。
     url_rx = frozenset(builder.url_regex_items) if separate_url_regex else frozenset()
 
-    # 域名类规则和 IP 规则必须分开：sing-box 的 DNS 阶段只能用域名类 rule-set，
-    # IP 规则只能在路由阶段生效。命名固定，不看两边条数多少：
-    #   <name>.json        域名类（domain/suffix/keyword/regex + process_name/port）
-    #   <name>_ip.json     IP 类（ip_cidr / source_ip_cidr）
-    #   <name>_url_regex.json  URL-REGEX 降级来的正则（仅 --separate-url-regex 时才有）
-    # 源里只有 IP 规则时只出一个 <name>.json，不会产生名字带上双 _ip 的空文件。
+    # 默认一个源就一个集合：域名 + IP + 进程 + 端口全在一起，config 里引用一个 tag 就够。
+    # --split-ip 时才按用途拆开（DNS 阶段只能用域名类 rule-set，IP 只能在路由阶段生效）：
+    #   <name>.json            域名类（domain/suffix/keyword/regex + process/port）
+    #   <name>_ip_cidr.json    IP 类（ip_cidr / source_ip_cidr）      --names modern 时为 _ip
+    #   <name>_url_regex.json  URL-REGEX 降级来的正则（仅 --separate-url-regex）
     # 唯一例外：源本身是 IP 列表（URL 路径里有 `/ip/` 段，或名字以 `_ip`/`_cidr` 结尾），
     # 那 IP 规则留在原名下、域名部分加 _domain，避免出现 xxx_ip_ip.json。
     # legacy 命名（IP 后缀是 _ip_cidr）不翻转，保持"主=域名、IP 加 _ip_cidr"的老布局。
@@ -705,9 +745,11 @@ def write_outputs(
     if url_rx:                       # 单独文件里只放这批降级来的正则
         sets.append((f"{name}_url_regex", builder.build(["domain_regex"], only=url_rx)))
 
+    wrote_any = False
     for set_name, doc in sets:
         if not doc["rules"]:
             continue
+        wrote_any = True
         json_path = out_dir / f"{set_name}.json"
         # version 在前、item 按 ITEM_ORDER 排列（与 skk 官方产物观感一致），
         # 确定性由排序好的列表保证，不依赖 sort_keys
@@ -727,6 +769,21 @@ def write_outputs(
             compile_rule_set(singbox, json_path, srs_path)
             # 编译器可能合并相邻 CIDR，合并条数单独记
             result.merged_ip += verify_rule_set(singbox, srs_path, doc["rules"][0])
+            result.files.append(str(srs_path))
+            result.srs_bytes += srs_path.stat().st_size
+
+    if not wrote_any:
+        # 源里没有一个可转换的规则（如纯 IP-ASN 列表）：仍写出一个空集合，
+        # 这样 sing-box config 里已有的引用不会因为文件消失而启动失败。
+        empty = {"version": builder.rule_version, "rules": []}
+        json_path = out_dir / f"{name}.json"
+        json_path.write_text(json.dumps(empty, ensure_ascii=False, indent=2) + "\n",
+                             encoding="utf-8")
+        result.files.append(str(json_path))
+        result.json_bytes += json_path.stat().st_size
+        if singbox:
+            srs_path = json_path.with_suffix(".srs")
+            compile_rule_set(singbox, json_path, srs_path)
             result.files.append(str(srs_path))
             result.srs_bytes += srs_path.stat().st_size
 
@@ -755,6 +812,7 @@ def process_one(
             rule_version=args.rule_version,
             wildcard_greedy=args.wildcard_greedy,
             url_regex_mode=args.url_regex,
+            extra_excluded={d for d in (normalize_domain(x) for x in args.exclude_domain) if d},
         )
         parse_document(text, builder)
         result.parsed = builder.parsed
@@ -762,13 +820,16 @@ def process_one(
         path = "/" + urlsplit(url).path.strip("/") + "/"
         ip_source = bool(re.search(r"/(ip|ipv6|cidr)/", path, re.I))
         write_outputs(
-            builder, name, out_dir, not args.no_split_ip, args.separate_url_regex,
+            builder, name, out_dir, args.split_ip, args.separate_url_regex,
             ip_source, None if args.no_compile else args.singbox, result,
             ip_suffix="_ip_cidr" if args.names == "legacy" else "_ip",
         )
         result.kept = sum(n for counts in result.parts.values() for n in counts.values())
         if result.kept == 0:
-            raise RuntimeError("没有解析出任何可用规则")
+            # 不是失败：像 telegram_asn 这种纯 IP-ASN 源，sing-box 本来就没有对应 item
+            result.skipped = True
+            reasons = ", ".join(f"{k}×{v}" for k, v in sorted(result.dropped.items())) or "空文件"
+            result.warning = f"没有可转换的规则（{reasons}），已写出空集合"
         if result.dropped:
             result.warning = "部分规则未转换或已降级（见 .dropped.txt）"
         result.ok = True
@@ -810,7 +871,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--retries", type=int, default=2, help="抓取重试次数")
     ap.add_argument("--rule-version", type=int, default=2, choices=(1, 2, 3),
                     help="输出 rule-set 的 version 字段(默认 2，兼容 1.8+)")
-    ap.add_argument("--no-split-ip", action="store_true", help="域名与 IP 不拆成两个文件")
+    ap.add_argument("--split-ip", action="store_true",
+                    help="把 IP 类规则拆成单独的 _ip/_ip_cidr 集合（默认不拆，全放一个集合）")
+    ap.add_argument("--exclude-domain", action="append", default=[], metavar="DOMAIN",
+                    help="额外排除的域名（可重复；默认已排除 skk 的演练域名）")
     ap.add_argument("--no-compile", action="store_true", help="只写 json，不编译 .srs")
     ap.add_argument("--wildcard-greedy", action="store_true",
                     help="DOMAIN-WILDCARD 的 * 匹配任意字符(默认只匹配一个 label)")
@@ -854,7 +918,7 @@ def main(argv: list[str] | None = None) -> int:
     out_dir = Path(args.out) if args.out else DEFAULT_OUT
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    plan = resolve_names(urls, args.names)
+    plan = resolve_names(urls, args.names, args.split_ip, args.separate_url_regex)
 
     if not args.quiet:
         print(f"共 {len(plan)} 条链接，输出到 {out_dir}/，并发 {args.jobs}\n")
@@ -867,7 +931,7 @@ def main(argv: list[str] | None = None) -> int:
         for fut in concurrent.futures.as_completed(futures):
             res = fut.result()
             results.append(res)
-            flag = "OK  " if res.ok else "FAIL"
+            flag = "SKIP" if res.skipped else ("OK  " if res.ok else "FAIL")
             detail = (
                 f"{human(res.parsed):>8} 条 -> 保留 {human(res.kept):>8}"
                 f"  json {res.json_bytes/1024:>8.1f}K  srs {res.srs_bytes/1024:>8.1f}K"
@@ -875,7 +939,9 @@ def main(argv: list[str] | None = None) -> int:
             )
             if not args.quiet or not res.ok:
                 print(f"[{flag}] {res.name:38} {detail}")
-            if not res.ok:
+            if res.skipped:
+                print(f"       {res.warning}")
+            elif not res.ok:
                 print(f"       {res.error}")
             elif not args.quiet:
                 hard = {k: v for k, v in res.dropped.items() if not k.startswith("lossy:")}
@@ -895,10 +961,12 @@ def main(argv: list[str] | None = None) -> int:
     results.sort(key=lambda r: order.get(r.name, 0))
 
     failed = [r for r in results if not r.ok]
+    skipped = [r for r in results if r.skipped]
     total_kept = sum(r.kept for r in results)
     total_lossy = sum(r.lossy for r in results)
     total_dropped = sum(sum(r.dropped.values()) for r in results) - total_lossy
-    print(f"\n汇总：成功 {len(results) - len(failed)}/{len(results)}，"
+    print(f"\n汇总：成功 {len(results) - len(failed) - len(skipped)}/{len(results)}"
+          f"{f'，跳过 {len(skipped)}（无可转换规则）' if skipped else ''}，"
           f"保留 {human(total_kept)} 条，丢弃 {human(total_dropped)} 条"
           f"{f'，降级保留 {human(total_lossy)} 条' if total_lossy else ''}"
           f"{'（明细见各 .dropped.txt）' if total_dropped or total_lossy else ''}")
@@ -920,6 +988,7 @@ def main(argv: list[str] | None = None) -> int:
                 "sets": [
                     {
                         "url": r.url, "name": r.name, "ok": r.ok, "error": r.error,
+                        "skipped": r.skipped, "warning": r.warning,
                         "parsed": r.parsed, "kept": r.kept,
                         "counts": r.counts, "parts": r.parts,
                         "dropped": r.dropped, "files": r.files,
