@@ -1,0 +1,18 @@
+{
+  "rules": [
+    {
+      "domain": [
+        "tmobilees.mpeasylink.com"
+      ]
+    },
+    {
+      "domain_suffix": [
+        "liveperson.net",
+        "online-metrix.net",
+        "quantummetric.com",
+        "t-mobile.com"
+      ]
+    }
+  ],
+  "version": 1
+}

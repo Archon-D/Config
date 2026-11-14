@@ -6,6 +6,11 @@
       ]
     },
     {
+      "domain_regex": [
+        "^https?:\/\/www\.amazon\.com\/(Amazon-Video|gp\/video)\/"
+      ]
+    },
+    {
       "domain_suffix": [
         "a2z.com",
         "aboutamazon.cn",

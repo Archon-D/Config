@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {
+      "domain_suffix": [
+        "polymarket.com"
+      ]
+    }
+  ],
+  "version": 1
+}
