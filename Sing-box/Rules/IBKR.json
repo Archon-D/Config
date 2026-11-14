@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "rules": [
+    {
+      "domain": [
+        "account.ibkram.com",
+        "ibkrcampus.com",
+        "ibkrcampus.eu",
+        "interactivebrokers.api.madcapcentral.com",
+        "widgets.tipranks.com",
+        "www.ibkr.info"
+      ],
+      "domain_suffix": [
+        "ibkr.com",
+        "ibkr.com.cn",
+        "ibkrguides.com",
+        "ibllc.com",
+        "interactivebrokers.au",
+        "interactivebrokers.ca",
+        "interactivebrokers.co.in",
+        "interactivebrokers.co.jp",
+        "interactivebrokers.co.uk",
+        "interactivebrokers.com",
+        "interactivebrokers.com.hk",
+        "interactivebrokers.com.sg",
+        "interactivebrokers.eu",
+        "interactivebrokers.hu",
+        "interactivebrokers.ie"
+      ]
+    }
+  ]
+}
