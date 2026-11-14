@@ -1,3 +1,403 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+surge2singbox —— 把 Surge / Clash / 纯域名 / sing-box 规则列表转换成 sing-box rule-set。
+
+用法：
+    python3 Rule_Convert.py                       # 读 ./RulesList.txt，产物写到 ./out
+    python3 Rule_Convert.py --singbox bin/sing-box --jobs 8 --out out
+    python3 Rule_Convert.py --no-compile          # 只出 json，不调 sing-box
+    python3 Rule_Convert.py --names modern        # 换成 skk_/owner_ 前缀的新命名
+
+默认读 <脚本目录>/RulesList.txt，产物写 <脚本目录>/Rules/；--names legacy（默认）
+沿用原脚本的 basename 文件名与 _ip_cidr 后缀，便于直接替换旧脚本。
+    python3 -m unittest discover -s tests    # 离线单元测试
+
+行为要点：
+  * 纯标准库（无 pandas / pyyaml / requests），逐行解析：逗号规则 / 裸域名 / .suffix /
+    *.wildcard / payload 列表 / 已有 rule-set JSON 都能吃。
+  * 域名类和 IP 类规则分文件：sing-box 的 dns.rules 只能用域名类集合，IP 只能在路由阶段用。
+      <name>.json      域名类（domain / suffix / keyword / regex + process / port）
+      <name>_ip.json   IP 类（ip_cidr / source_ip_cidr）
+    源本身是 IP 列表（URL 含 /ip/ 或名字以 _ip/_cidr 结尾）时反过来：IP 留原名，域名加 _domain。
+    只有一类规则时只出一个 <name>.json。--no-split-ip 可强制合并。
+  * URL-REGEX 降级为域名正则并留在原集合（--separate-url-regex 可拆出去）；
+    每次降级记 lossy，不算丢弃。
+  * 不静默失败：抓取失败、无法转换的类型、非法的值全部记录到 <name>.dropped.txt 和 report.json；
+    编译后回读 .srs 逐项校验。有链接失败退出码 1，--strict 时有真丢弃也退出 1。
+  * 输出确定（列表排序去重），同名不同源不会互相覆盖。
+"""
+from __future__ import annotations
+
+import argparse
+import concurrent.futures
+import ipaddress
+import json
+import re
+import subprocess
+import sys
+import tempfile
+import time
+import urllib.request
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Iterable, Iterator
+from urllib.parse import urlsplit
+
+# 默认路径相对脚本自身，而不是 CWD —— 在 CI 里怎么 cd 都不会错
+SCRIPT_DIR = Path(__file__).resolve().parent
+DEFAULT_RULES_LIST = SCRIPT_DIR / "RulesList.txt"
+DEFAULT_OUT = SCRIPT_DIR / "Rules"
+
+USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+
+# ---------------------------------------------------------------------------
+# 类型映射表
+# ---------------------------------------------------------------------------
+# 值：
+#   "domain" / "domain_suffix" / ...  直接落成该 item
+#   WILDCARD   需要转成正则
+#   URL_REGEX  需要专门处理（sing-box 无法匹配 URL）
+#   UNSUPPORTED sing-box rule-set 没有对应 item
+TYPE_MAP: dict[str, str] = {
+    # 域名
+    "DOMAIN": "domain", "HOST": "domain", "domain": "domain",
+    "DOMAIN-SUFFIX": "domain_suffix", "HOST-SUFFIX": "domain_suffix",
+    "domain_suffix": "domain_suffix", "DOMAIN-SET": "domain_suffix",
+    "DOMAIN-KEYWORD": "domain_keyword", "HOST-KEYWORD": "domain_keyword",
+    "domain_keyword": "domain_keyword",
+    "DOMAIN-REGEX": "domain_regex", "domain_regex": "domain_regex",
+    "DOMAIN-WILDCARD": "__wildcard__",
+    "URL-REGEX": "__url_regex__",
+    # IP
+    "IP-CIDR": "ip_cidr", "IP-CIDR6": "ip_cidr", "IP6-CIDR": "ip_cidr",
+    "ip_cidr": "ip_cidr", "SRC-IP-CIDR": "source_ip_cidr",
+    "source_ip_cidr": "source_ip_cidr",
+    # 端口
+    "DST-PORT": "port", "DEST-PORT": "port", "port": "port",
+    "SRC-PORT": "source_port", "SOURCE-PORT": "source_port",
+    "source_port": "source_port",
+    # 进程
+    "PROCESS-NAME": "process_name", "process_name": "process_name",
+    "PROCESS-PATH": "process_path", "process_path": "process_path",
+    # 无对应 item
+    "USER-AGENT": "__unsupported__", "IP-ASN": "__unsupported__",
+    "GEOIP": "__unsupported__", "RULE-SET": "__unsupported__",
+    "FINAL": "__unsupported__", "MATCH": "__unsupported__",
+    "AND": "__unsupported__", "OR": "__unsupported__", "NOT": "__unsupported__",
+    "SCRIPT": "__unsupported__", "CELLULAR-RADIO": "__unsupported__",
+    "PROTOCOL": "__unsupported__", "DEVICE-NAME": "__unsupported__",
+}
+
+# 输出时 item 的固定顺序，保证确定性
+ITEM_ORDER = [
+    "domain", "domain_suffix", "domain_keyword", "domain_regex",
+    "ip_cidr", "source_ip_cidr",
+    "process_name", "process_path", "package_name",
+    "port", "port_range", "source_port", "source_port_range",
+]
+IP_ITEMS = {"ip_cidr", "source_ip_cidr"}
+
+COMMENT_PREFIX = ("#", "//", ";", "!")
+# 从 URL 路径里剥掉的噪音目录
+NOISE_SEGMENTS = {
+    "rule", "rules", "surge", "list", "lists", "refs", "heads",
+    "master", "main", "config", "ios_rule_script", "List",
+}
+ANDROID_ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z0-9_]+)+$")
+
+
+# ---------------------------------------------------------------------------
+# 抓取
+# ---------------------------------------------------------------------------
+def fetch_text(url: str, timeout: float, retries: int) -> str:
+    """抓取文本；支持 http(s)、file:// 和本地路径。失败抛 RuntimeError。"""
+    last: Exception | None = None
+    for attempt in range(retries + 1):
+        try:
+            if url.startswith(("http://", "https://")):
+                req = urllib.request.Request(
+                    url, headers={"User-Agent": USER_AGENT, "Accept": "text/plain,*/*"}
+                )
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    status = getattr(resp, "status", 200)
+                    if status != 200:
+                        raise RuntimeError(f"HTTP {status}")
+                    return resp.read().decode("utf-8-sig", "replace")
+            path = url[7:] if url.startswith("file://") else url
+            return Path(path).read_text(encoding="utf-8-sig", errors="replace")
+        except Exception as exc:  # 这里必须捕，但错误会往上抛，不吞
+            last = exc
+            if attempt < retries:
+                time.sleep(1.5 * (attempt + 1))
+    raise RuntimeError(f"{type(last).__name__}: {last}")
+
+
+# ---------------------------------------------------------------------------
+# 单条规则的归一化
+# ---------------------------------------------------------------------------
+_WILDCARD_ESCAPE = re.compile(r"([.^$+{}\[\]\\|()])")
+
+
+def glob_to_regex(pattern: str, greedy: bool) -> str:
+    """Surge DOMAIN-WILDCARD -> sing-box domain_regex。'*' 默认只吃一个 label。"""
+    out = []
+    for ch in pattern:
+        if ch == "*":
+            out.append(".*" if greedy else "[^.]*")
+        elif ch == "?":
+            out.append(".")
+        else:
+            out.append(_WILDCARD_ESCAPE.sub(r"\\\1", ch))
+    return "^" + "".join(out) + "$"
+
+
+SCHEME_RE = re.compile(r"^(?:\(?https?\??\)?|\(?wss?\??\)?):(?:\/{0,2})", re.I)
+
+
+def url_regex_to_domain(expr: str) -> str | None:
+    r"""
+    URL 正则 -> 域名正则（有损：路径部分丢掉，匹配范围变宽）。
+
+    做法：去掉锚点和 scheme，取到第一个 '/' 之前的部分当作 host 正则，两端加 ^$。
+    host 段本来就是正则（如 `(.+)\.gvt\d\.com`），原样保留交给 Go RE2 匹配。
+    """
+    s = expr.strip()
+    s = re.sub(r"\\/", "/", s)              # \/ -> /
+    s = s.lstrip("^")
+    s = SCHEME_RE.sub("", s, count=1).lstrip("/")
+    s = re.split(r"(?<!\\)/", s, maxsplit=1)[0]   # 取 host 段
+    s = s.rstrip(".")
+    if not s or "$" in s or "^" in s or "//" in s:
+        return None
+    # 挡掉"什么都能匹配"的退化正则：.* 或 [^/]+ 之类去掉元字符后什么都不剩，
+    # 拿它当域名正则会把全部域名都命中，比不转换危险得多。
+    probe = s.replace("\\.", ".")
+    probe = re.sub(r"\\[A-Za-z]", "", probe)
+    probe = re.sub(r"[\[\](){}^$*+?|/]", "", probe)
+    if "." not in probe or len(re.sub(r"[^A-Za-z0-9.-]", "", probe)) < 3:
+        return None
+    try:
+        re.compile("^" + s + "$")            # 先用 Python 的 re 挡掉明显的语法错
+    except re.error:
+        return None
+    return "^" + s + "$"
+
+
+def normalize_domain(value: str) -> str | None:
+    v = value.strip().strip("'\"").strip()
+    v = re.sub(r"^[a-z]+://", "", v, flags=re.I).split("/", 1)[0]
+    # 各家的前缀写法：+.example.com / .example.com / example.com.
+    v = v.strip().lstrip("+.").rstrip(".").lower()
+    if not v or len(v) > 253:
+        return None
+    if any(c in v for c in " \t,;/*?=@\"'"):
+        return None
+    if not v.isascii():            # IDN -> punycode
+        try:
+            v = v.encode("idna").decode("ascii")
+        except Exception:
+            return None
+    labels = v.split(".")
+    if any(not lab or len(lab) > 63 for lab in labels):
+        return None
+    if not re.fullmatch(r"[a-z0-9._\-]+", v):
+        return None
+    return v
+
+
+def normalize_cidr(value: str) -> str | None:
+    v = value.strip().strip("'\"").strip()
+    try:
+        return str(ipaddress.ip_network(v, strict=False))
+    except ValueError:
+        return None
+
+
+def normalize_port(value: str) -> tuple[str, str] | None:
+    v = value.strip().strip("'\"")
+    if not v:
+        return None
+    if ":" in v or "-" in v:
+        parts = re.split(r"[:-]", v, maxsplit=1)
+        try:
+            lo, hi = int(parts[0]), int(parts[1])
+        except (ValueError, IndexError):
+            return None
+        if not (0 < lo <= hi <= 65535):
+            return None
+        return "port_range", f"{lo}:{hi}"
+    try:
+        p = int(v)
+    except ValueError:
+        return None
+    if not (0 < p <= 65535):
+        return None
+    return "port", str(p)
+
+
+# ---------------------------------------------------------------------------
+# 转换统计
+# ---------------------------------------------------------------------------
+@dataclass
+class SetBuilder:
+    """收集一条链接里的所有规则。"""
+
+    rule_version: int = 2
+    wildcard_greedy: bool = False
+    url_regex_mode: str = "host"
+    items: dict[str, set[str]] = field(default_factory=lambda: {k: set() for k in ITEM_ORDER})
+    dropped: list[tuple[str, str]] = field(default_factory=list)   # (reason, raw)
+    url_regex_items: set[str] = field(default_factory=set)         # URL-REGEX 降级出来的项
+    parsed: int = 0      # 读到的规则条数
+    consumed: int = 0    # 至少产出一条 item 的条数
+    _line_hit: bool = False
+
+    # -- 收集 ------------------------------------------------------------
+    def _add(self, item: str, value: str) -> None:
+        self._line_hit = True
+        self.items[item].add(value)
+
+    def _drop(self, reason: str, raw: str) -> None:
+        self.dropped.append((reason, raw[:300]))
+
+    def add_rule(self, raw: str, rtype: str, payload: str) -> None:
+        """rtype 是原始类型名，payload 是逗号后的第一个字段。"""
+        self.parsed += 1
+        self._line_hit = False
+        self._dispatch(raw, rtype, payload)
+        self.consumed += self._line_hit
+
+    def _dispatch(self, raw: str, rtype: str, payload: str) -> None:
+        item = TYPE_MAP.get(rtype) or TYPE_MAP.get(rtype.upper())
+
+        if item is None:
+            # 没见过的类型：可能是裸域名被误判成 "type,value"
+            self._drop(f"unknown-type:{rtype}", raw)
+            return
+
+        if item == "__unsupported__":
+            self._drop(f"unsupported:{rtype.upper()}", raw)
+            return
+
+        if item == "__url_regex__":
+            if self.url_regex_mode == "drop":
+                self._drop("unsupported:URL-REGEX", raw)
+                return
+            conv = url_regex_to_domain(payload)
+            if conv:
+                self._add("domain_regex", conv)
+                self.url_regex_items.add(conv)
+                # lossy 前缀 = 已保留但语义变宽，单独计数，不算真丢弃
+                self._drop("lossy:URL-REGEX->domain_regex", raw)
+            else:
+                self._drop("unsupported:URL-REGEX(cannot-reduce)", raw)
+            return
+
+        if item == "__wildcard__":
+            dom = payload.strip().strip("'\"")
+            if not dom:
+                self._drop("invalid:empty", raw)
+                return
+            self._add("domain_regex", glob_to_regex(dom.lower(), self.wildcard_greedy))
+            return
+
+        if item == "ip_cidr" or item == "source_ip_cidr":
+            cidr = normalize_cidr(payload)
+            if cidr is None:
+                self._drop(f"invalid:{item}", raw)
+            else:
+                self._add(item, cidr)
+            return
+
+        if item in ("port", "source_port"):
+            got = normalize_port(payload)
+            if got is None:
+                self._drop(f"invalid:{item}", raw)
+                return
+            kind, val = got
+            if item == "source_port":                 # 源端口别落进 port
+                kind = "source_port_range" if kind == "port_range" else "source_port"
+            self._add(kind, val)
+            return
+
+        if item == "domain_regex":
+            regex = payload.strip().strip("'\"")
+            if regex:
+                self._add("domain_regex", regex)
+            else:
+                self._drop("invalid:domain_regex", raw)
+            return
+
+        if item in ("process_name", "process_path"):
+            name = payload.strip().strip("'\"")
+            if not name:
+                self._drop(f"invalid:{item}", raw)
+                return
+            self._add(item, name)
+            # Android App ID 形态同时给 package_name，跨平台都能命中
+            if item == "process_name" and ANDROID_ID_RE.match(name):
+                self._add("package_name", name)
+            return
+
+        # 剩下的都是域名类
+        dom = normalize_domain(payload)
+        if dom is None:
+            self._drop(f"invalid:{item}", raw)
+        else:
+            self._add(item, dom)
+
+    def add_bare(self, token: str) -> None:
+        """无逗号的裸条目：按内容推断。"""
+        self.parsed += 1
+        self._line_hit = False
+        self._dispatch_bare(token)
+        self.consumed += self._line_hit
+
+    def _dispatch_bare(self, token: str) -> None:
+        v = token.strip().strip("'\"").strip()
+        if not v:
+            return
+        if v[0] in "+.":
+            dom = normalize_domain(v.lstrip("+."))
+            if dom:
+                self._add("domain_suffix", dom)
+            else:
+                self._drop("invalid:domain_suffix", token)
+            return
+        if "*" in v or "?" in v:
+            self._add("domain_regex", glob_to_regex(v.lower(), self.wildcard_greedy))
+            return
+        if "/" in v:
+            cidr = normalize_cidr(v)
+            if cidr:
+                self._add("ip_cidr", cidr)
+            else:
+                self._drop("invalid:ip_cidr", token)
+            return
+        try:
+            ipaddress.ip_address(v)
+        except ValueError:
+            dom = normalize_domain(v)
+            if dom:
+                self._add("domain", dom)     # 裸域名 = 精确匹配（与 skk 官方 sing-box 输出一致）
+            else:
+                self._drop("invalid:domain", token)
+            return
+        self._add("ip_cidr", str(ipaddress.ip_network(v, strict=False)))
+
+    # -- 输出 ------------------------------------------------------------
+    def has(self, items: Iterable[str]) -> bool:
+        return any(self.items[i] for i in items)
+
+    def build(
+        self,
+        items: Iterable[str],
+        only: frozenset[str] | set[str] | None = None,
+        drop: frozenset[str] | set[str] = frozenset(),
     ) -> dict:
         """items：要哪些 item 字段；only/drop：对取值再筛一层。"""
         rule: dict[str, list] = {}
@@ -16,6 +416,8 @@
             else:
                 rule[key] = sorted(vals)
         return {"version": self.rule_version, "rules": [rule] if rule else []}
+
+
 # ---------------------------------------------------------------------------
 # 解析文档
 # ---------------------------------------------------------------------------
@@ -31,6 +433,8 @@ def iter_rule_tokens(text: str) -> Iterator[str]:
         if not line:
             continue
         yield line
+
+
 def parse_document(text: str, builder: SetBuilder) -> None:
     """识别文档格式并灌进 builder。"""
     stripped = text.lstrip()
@@ -52,6 +456,7 @@ def parse_document(text: str, builder: SetBuilder) -> None:
                     else:
                         builder._drop(f"unsupported:ruleset-item:{key}", json.dumps(rule))
             return
+
     for line in iter_rule_tokens(text):
         if "," in line:
             rtype, rest = line.split(",", 1)
@@ -60,19 +465,26 @@ def parse_document(text: str, builder: SetBuilder) -> None:
             builder.add_rule(line, rtype.strip(), payload.strip())
         else:
             builder.add_bare(line)
+
+
 # ---------------------------------------------------------------------------
 # 命名
 # ---------------------------------------------------------------------------
 EXT_RE = re.compile(r"\.(list|json|conf|txt|yaml|yml|dat)$", re.I)
+
+
 def legacy_name(url: str) -> str:
     """原脚本的命名：basename(link).split('.')[0]。--names legacy 用它保持文件名不变。"""
     return url.split("/")[-1].split(".")[0] or "set"
+
+
 def derive_name(url: str) -> str:
     """skk + 路径 -> skk_domainset_reject；owner + 路径 -> blackmatrix7_Google。"""
     parts = urlsplit(url)
     host = (parts.hostname or "").lower()
     segs = [s for s in parts.path.split("/") if s]
     noise = {n.lower() for n in NOISE_SEGMENTS}
+
     if not host:                    # 本地文件：只用文件名
         return _sanitize(EXT_RE.sub("", segs[-1]) if segs else "set")
     if host.endswith("skk.moe"):
@@ -86,22 +498,31 @@ def derive_name(url: str) -> str:
         prefix = host.split(".")[0]
     else:
         prefix = "local"
+
     kept = [s for s in segs if s.lower() not in noise] or segs or ["set"]
     last = kept[-1]
     stem = EXT_RE.sub("", last)
     dirs = [d for d in kept[:-1] if d.lower() not in (stem.lower(), prefix.lower())]
+
     return _sanitize("_".join([prefix] + dirs + [stem]))
+
+
 def _sanitize(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "-", name).strip("-_.-") or "set"
+
+
 def path_token(url: str) -> str:
     """URL 里能区分同名的路径段：domainset/cdn.conf -> domainset。"""
     segs = [s for s in urlsplit(url).path.split("/") if s]
     noise = {n.lower() for n in NOISE_SEGMENTS}
     dirs = [s for s in segs[:-1] if s.lower() not in noise]
     return _sanitize(dirs[-1]) if dirs else "dup"
+
+
 def resolve_names(urls: list[str], mode: str = "legacy") -> list[tuple[str, str]]:
     """
     给每条链接定产物名。
+
     legacy（默认，与原脚本一致）：basename 前段，如 reject.conf -> reject。
     但原脚本遇到同名是后写覆盖前写（59 个源里有 5 组，共丢 7,615 条规则），
     这里改成：最后一条保留原名（和旧产物名一致，config 不用改），
@@ -110,9 +531,11 @@ def resolve_names(urls: list[str], mode: str = "legacy") -> list[tuple[str, str]
     namer = legacy_name if mode == "legacy" else derive_name
     plan = [(url, namer(url)) for url in urls]
     taken = {name for _, name in plan}
+
     grouped: dict[str, list[int]] = {}
     for i, (_, name) in enumerate(plan):
         grouped.setdefault(name, []).append(i)
+
     for name, idxs in grouped.items():
         if len(idxs) < 2:
             continue
@@ -129,6 +552,8 @@ def resolve_names(urls: list[str], mode: str = "legacy") -> list[tuple[str, str]
                   f"          -> {new}.json（{name}.json 仍由 {winner} 提供）",
                   file=sys.stderr)
     return plan
+
+
 # ---------------------------------------------------------------------------
 # 单条链接的处理
 # ---------------------------------------------------------------------------
@@ -150,6 +575,8 @@ class Result:
     merged_ip: int = 0
     lossy: int = 0          # 已保留但语义变宽（URL-REGEX 降级）
     warning: str = ""
+
+
 def compile_rule_set(singbox: str, src: Path, dst: Path) -> None:
     proc = subprocess.run(
         [singbox, "rule-set", "compile", "-o", str(dst), str(src)],
@@ -159,6 +586,8 @@ def compile_rule_set(singbox: str, src: Path, dst: Path) -> None:
         raise RuntimeError(f"sing-box compile 失败: {(proc.stderr or proc.stdout).strip()[:300]}")
     if not dst.exists() or dst.stat().st_size == 0:
         raise RuntimeError("sing-box compile 没产生 .srs")
+
+
 def _collect_items(doc: dict) -> dict[str, list[str]]:
     """decompile 出来单元素列表会退化成标量，这里统一成列表。"""
     got: dict[str, list[str]] = {}
@@ -167,6 +596,8 @@ def _collect_items(doc: dict) -> dict[str, list[str]]:
             vals = val if isinstance(val, list) else [val]
             got.setdefault(key, []).extend(str(v) for v in vals)
     return got
+
+
 def verify_rule_set(singbox: str, srs: Path, expected: dict[str, list]) -> int:
     """回读 .srs，确认规则没有在编译阶段丢失。返回被编译器合并掉的 CIDR 条数。"""
     with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
@@ -182,6 +613,7 @@ def verify_rule_set(singbox: str, srs: Path, expected: dict[str, list]) -> int:
         got = _collect_items(json.loads(tmp_path.read_text()))
     finally:
         tmp_path.unlink(missing_ok=True)
+
     for key, want in expected.items():
         have = got.get(key, [])
         if key in IP_ITEMS:
@@ -205,6 +637,8 @@ def verify_rule_set(singbox: str, srs: Path, expected: dict[str, list]) -> int:
                     f"{f'，多出 {len(extra)} 条 {extra[:3]}' if extra else ''}"
                 )
     return merged
+
+
 def write_outputs(
     builder: SetBuilder,
     name: str,
@@ -219,12 +653,14 @@ def write_outputs(
     out_dir.mkdir(parents=True, exist_ok=True)
     domain_items = [i for i in ITEM_ORDER if i not in IP_ITEMS]
     ip_items = [i for i in ITEM_ORDER if i in IP_ITEMS]
+
     has_domain = builder.has(domain_items)
     has_ip = builder.has(ip_items)
     # URL-REGEX 降级出来的正则单独成集：可以在 route.rules 里排在主集合之前，
     # 让"精确的那几条"走另一套策略，剩下的照旧（sing-box 的 rule-set 内部是 OR，
     # 想分流只能拆文件，靠规则顺序生效）。
     url_rx = frozenset(builder.url_regex_items) if separate_url_regex else frozenset()
+
     # 域名类规则和 IP 规则必须分开：sing-box 的 DNS 阶段只能用域名类 rule-set，
     # IP 规则只能在路由阶段生效。命名固定，不看两边条数多少：
     #   <name>.json        域名类（domain/suffix/keyword/regex + process_name/port）
@@ -248,6 +684,7 @@ def write_outputs(
         sets.append((name, builder.build(domain_items + ip_items, drop=url_rx)))
     if url_rx:                       # 单独文件里只放这批降级来的正则
         sets.append((f"{name}_url_regex", builder.build(["domain_regex"], only=url_rx)))
+
     for set_name, doc in sets:
         if not doc["rules"]:
             continue
@@ -264,6 +701,7 @@ def write_outputs(
             result.counts = counts
         result.files.append(str(json_path))
         result.json_bytes += json_path.stat().st_size
+
         if singbox:
             srs_path = json_path.with_suffix(".srs")
             compile_rule_set(singbox, json_path, srs_path)
@@ -271,6 +709,7 @@ def write_outputs(
             result.merged_ip += verify_rule_set(singbox, srs_path, doc["rules"][0])
             result.files.append(str(srs_path))
             result.srs_bytes += srs_path.stat().st_size
+
     if builder.dropped:
         dump = out_dir / f"{name}.dropped.txt"
         with dump.open("w", encoding="utf-8") as fh:
@@ -280,6 +719,8 @@ def write_outputs(
         for reason, _ in builder.dropped:
             result.dropped[reason] = result.dropped.get(reason, 0) + 1
         result.lossy = sum(n for r, n in result.dropped.items() if r.startswith("lossy:"))
+
+
 def process_one(
     url: str,
     name: str,
@@ -315,6 +756,8 @@ def process_one(
         result.error = f"{type(exc).__name__}: {exc}"
     result.seconds = time.time() - started
     return result
+
+
 # ---------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------
@@ -329,8 +772,12 @@ def read_rules_list(path: Path) -> list[str]:
             seen.add(line)
             urls.append(line)
     return urls
+
+
 def human(n: int) -> str:
     return f"{n:,}"
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Surge/Clash 规则 -> sing-box rule-set")
     ap.add_argument("--rules-list", default=None,
@@ -358,6 +805,7 @@ def main(argv: list[str] | None = None) -> int:
                     help="产物命名：legacy=basename 前段 + _ip_cidr（与原脚本一致，默认）；"
                          "modern=skk_/owner_ 前缀 + _ip")
     args = ap.parse_args(argv)
+
     # 默认相对脚本自身：脚本旁边的 RulesList.txt -> 脚本旁边的 Rules/ 目录
     rules_path = Path(args.rules_list) if args.rules_list else DEFAULT_RULES_LIST
     if not rules_path.exists():
@@ -367,6 +815,7 @@ def main(argv: list[str] | None = None) -> int:
     if not urls:
         print("链接列表是空的", file=sys.stderr)
         return 2
+
     singbox = None
     if not args.no_compile:
         exe = args.singbox
@@ -381,9 +830,12 @@ def main(argv: list[str] | None = None) -> int:
             args.no_compile = True
         if not args.no_compile:
             singbox = exe
+
     out_dir = Path(args.out) if args.out else DEFAULT_OUT
     out_dir.mkdir(parents=True, exist_ok=True)
+
     plan = resolve_names(urls, args.names)
+
     if not args.quiet:
         print(f"共 {len(plan)} 条链接，输出到 {out_dir}/，并发 {args.jobs}\n")
     results: list[Result] = []
@@ -418,8 +870,10 @@ def main(argv: list[str] | None = None) -> int:
                     detail = "，".join(
                         f"{n}({sum(c.values())})" for n, c in res.parts.items())
                     print(f"       拆分为: {detail}")
+
     order = {name: i for i, (_, name) in enumerate(plan)}
     results.sort(key=lambda r: order.get(r.name, 0))
+
     failed = [r for r in results if not r.ok]
     total_kept = sum(r.kept for r in results)
     total_lossy = sum(r.lossy for r in results)
@@ -432,6 +886,7 @@ def main(argv: list[str] | None = None) -> int:
         print("失败链接：")
         for r in failed:
             print(f"  - {r.url}\n    {r.error}")
+
     report_path = Path(args.report) if args.report else out_dir / "report.json"
     report_path.write_text(
         json.dumps(
@@ -460,11 +915,14 @@ def main(argv: list[str] | None = None) -> int:
         encoding="utf-8",
     )
     print(f"报告：{report_path}")
+
     if failed:
         return 1
     if args.strict and total_dropped:
         print("--strict：存在被丢弃的规则", file=sys.stderr)
         return 1
     return 0
+
+
 if __name__ == "__main__":
     sys.exit(main())
