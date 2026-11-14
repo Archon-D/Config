@@ -100,6 +100,19 @@ ITEM_ORDER = [
     "port", "port_range", "source_port", "source_port_range",
 ]
 IP_ITEMS = {"ip_cidr", "source_ip_cidr"}
+
+# 同一个规则对象里的不同"匹配维度"之间是 AND（实测：域名 + process_name 永远不命中），
+# 所以每个维度必须单独成一个对象，对象之间才是 OR。四个域名类字段彼此是 OR，可以合并。
+ITEM_GROUPS: list[tuple[str, ...]] = [
+    ("domain", "domain_suffix", "domain_keyword", "domain_regex"),
+    ("ip_cidr",),
+    ("source_ip_cidr",),
+    ("process_name",),
+    ("process_path",),
+    ("package_name",),
+    ("port", "port_range"),
+    ("source_port", "source_port_range"),
+]
 DOMAIN_ITEMS = {"domain", "domain_suffix", "domain_keyword", "domain_regex"}
 
 # skk 在每个规则组里塞的"水印"域名（纯 IP 组也有），对分流没有意义，还会把纯 IP 组
@@ -166,16 +179,40 @@ def fetch_text(url: str, timeout: float, retries: int) -> str:
 _WILDCARD_ESCAPE = re.compile(r"([.^$+{}\[\]\\|()])")
 
 
-def glob_to_regex(pattern: str, greedy: bool) -> str:
-    """Surge DOMAIN-WILDCARD -> sing-box domain_regex。'*' 默认只吃一个 label。"""
+def glob_to_regex(pattern: str, single_label: bool = False) -> str:
+    """Surge DOMAIN-WILDCARD -> sing-box domain_regex。
+
+    Surge 官方语义（manual.nssurge.com/rules/domain.html）：`*` 匹配任意个字符
+    （含零个）且**跨过点**，`?` 匹配一个字符，支持 `[...]` 字符组。
+    所以默认 `*` -> `.*`；`single_label=True` 时退化成 `[^.]*`（只吃一个 label）。
+    """
+    star = "[^.]*" if single_label else ".*"
     out = []
-    for ch in pattern:
+    i = 0
+    while i < len(pattern):
+        ch = pattern[i]
         if ch == "*":
-            out.append(".*" if greedy else "[^.]*")
+            out.append(star)
+            i += 1
         elif ch == "?":
             out.append(".")
+            i += 1
+        elif ch == "[":
+            end = pattern.find("]", i + 1)
+            if end == -1:                      # 未闭合的 [ 当字面量
+                out.append(r"\[")
+                i += 1
+                continue
+            body = pattern[i + 1:end]
+            if body.startswith("!"):           # Surge/glob 的取反写法
+                body = "^" + body[1:]
+            elif body.startswith("^"):         # 字面量 ^，别让正则当成取反
+                body = "\\" + body
+            out.append("[" + body + "]")
+            i = end + 1
         else:
             out.append(_WILDCARD_ESCAPE.sub(r"\\\1", ch))
+            i += 1
     return "^" + "".join(out) + "$"
 
 
@@ -271,7 +308,7 @@ class SetBuilder:
     """收集一条链接里的所有规则。"""
 
     rule_version: int = 2
-    wildcard_greedy: bool = False
+    wildcard_single_label: bool = False
     url_regex_mode: str = "host"
     items: dict[str, set[str]] = field(default_factory=lambda: {k: set() for k in ITEM_ORDER})
     excluded: set[str] = field(default_factory=lambda: set(PLACEHOLDER_DOMAINS))
@@ -334,7 +371,7 @@ class SetBuilder:
             if not dom:
                 self._drop("invalid:empty", raw)
                 return
-            self._add("domain_regex", glob_to_regex(dom.lower(), self.wildcard_greedy))
+            self._add("domain_regex", glob_to_regex(dom.lower(), self.wildcard_single_label))
             return
 
         if item == "ip_cidr" or item == "source_ip_cidr":
@@ -401,7 +438,7 @@ class SetBuilder:
                 self._drop("invalid:domain_suffix", token)
             return
         if "*" in v or "?" in v:
-            self._add("domain_regex", glob_to_regex(v.lower(), self.wildcard_greedy))
+            self._add("domain_regex", glob_to_regex(v.lower(), self.wildcard_single_label))
             return
         if "/" in v:
             cidr = normalize_cidr(v)
@@ -431,23 +468,34 @@ class SetBuilder:
         only: frozenset[str] | set[str] | None = None,
         drop: frozenset[str] | set[str] = frozenset(),
     ) -> dict:
-        """items：要哪些 item 字段；only/drop：对取值再筛一层。"""
-        rule: dict[str, list] = {}
-        for key in ITEM_ORDER:
-            if key not in items or not self.items[key]:
-                continue
-            vals = self.items[key]
-            if only is not None:
-                vals = vals & only
-            elif drop:
-                vals = vals - drop
-            if not vals:
-                continue
-            if key in ("port", "source_port"):
-                rule[key] = sorted(int(v) for v in vals)   # sing-box 要求 uint16
-            else:
-                rule[key] = sorted(vals)
-        return {"version": self.rule_version, "rules": [rule] if rule else []}
+        """
+        items：要哪些 item 字段；only/drop：对取值再筛一层。
+
+        一个维度一个规则对象：对象内部是 AND，对象之间是 OR。
+        同一对象里塞域名 + process_name 会让整条规则永远不命中（sing-box 用进程名做
+        额外条件），所以按 ITEM_GROUPS 拆开，集合内部的语义才是"任一命中即算"。
+        """
+        allowed = set(items)
+        rules: list[dict] = []
+        for group in ITEM_GROUPS:
+            rule: dict[str, list] = {}
+            for key in group:
+                if key not in allowed or not self.items[key]:
+                    continue
+                vals = self.items[key]
+                if only is not None:
+                    vals = vals & only
+                elif drop:
+                    vals = vals - drop
+                if not vals:
+                    continue
+                if key in ("port", "source_port"):
+                    rule[key] = sorted(int(v) for v in vals)   # sing-box 要求 uint16
+                else:
+                    rule[key] = sorted(vals)
+            if rule:
+                rules.append(rule)
+        return {"version": self.rule_version, "rules": rules}
 
 
 # ---------------------------------------------------------------------------
@@ -757,7 +805,10 @@ def write_outputs(
             json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
-        counts = {k: len(v) for k, v in doc["rules"][0].items()}
+        counts: dict[str, int] = {}
+        for rule_obj in doc["rules"]:
+            for k, v in rule_obj.items():
+                counts[k] = counts.get(k, 0) + len(v)
         result.parts[set_name] = counts
         if set_name == name:
             result.counts = counts
@@ -768,7 +819,9 @@ def write_outputs(
             srs_path = json_path.with_suffix(".srs")
             compile_rule_set(singbox, json_path, srs_path)
             # 编译器可能合并相邻 CIDR，合并条数单独记
-            result.merged_ip += verify_rule_set(singbox, srs_path, doc["rules"][0])
+            result.merged_ip += verify_rule_set(
+                singbox, srs_path,
+                {k: v for rule_obj in doc["rules"] for k, v in rule_obj.items()})
             result.files.append(str(srs_path))
             result.srs_bytes += srs_path.stat().st_size
 
@@ -810,7 +863,7 @@ def process_one(
         text = fetch_text(url, args.timeout, args.retries)
         builder = SetBuilder(
             rule_version=args.rule_version,
-            wildcard_greedy=args.wildcard_greedy,
+            wildcard_single_label=args.wildcard_single_label,
             url_regex_mode=args.url_regex,
             extra_excluded={d for d in (normalize_domain(x) for x in args.exclude_domain) if d},
         )
@@ -876,8 +929,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--exclude-domain", action="append", default=[], metavar="DOMAIN",
                     help="额外排除的域名（可重复；默认已排除 skk 的演练域名）")
     ap.add_argument("--no-compile", action="store_true", help="只写 json，不编译 .srs")
+    ap.add_argument("--wildcard-single-label", action="store_true",
+                    help="DOMAIN-WILDCARD 的 * 只匹配一个 label（默认按 Surge 官方语义跨点匹配）")
     ap.add_argument("--wildcard-greedy", action="store_true",
-                    help="DOMAIN-WILDCARD 的 * 匹配任意字符(默认只匹配一个 label)")
+                    help="已废弃：现在默认就是跨点匹配，保留只为兼容旧命令")
     ap.add_argument("--url-regex", choices=("host", "drop"), default="host",
                     help="URL-REGEX 处理方式：host=降级为域名正则并保留(默认)，drop=丢弃并记录")
     ap.add_argument("--separate-url-regex", action="store_true",
