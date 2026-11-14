@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "rules": [
+    {
+      "domain": [
+        "graph.facebook.com"
+      ],
+      "domain_suffix": [
+        "bintray.com",
+        "whatsapp.biz",
+        "whatsapp.com",
+        "whatsapp.net"
+      ],
+      "domain_keyword": [
+        "whatsapp"
+      ]
+    }
+  ]
+}
