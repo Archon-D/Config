@@ -79,8 +79,8 @@ https://ruleset.skk.moe/List/non_ip/direct.conf
 # AI—IP
 https://ruleset.skk.moe/List/ip/ai.conf
 # > Telegram-IP
-https://ruleset.skk.moe/List/ip/telegram.conf,Telegram
+https://ruleset.skk.moe/List/ip/telegram.conf
 https://ruleset.skk.moe/List/ip/telegram_asn.conf
 # > Domestic-IP
-https://ruleset.skk.moe/List/ip/domestic.conf,DIRECT
-https://ruleset.skk.moe/List/ip/china_ip.conf,DIRECT
+https://ruleset.skk.moe/List/ip/domestic.conf
+https://ruleset.skk.moe/List/ip/china_ip.conf
