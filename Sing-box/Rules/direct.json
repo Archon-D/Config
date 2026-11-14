@@ -189,7 +189,9 @@
         "sciencedirect",
         "wanfangdata",
         "westlawchina"
-      ],
+      ]
+    },
+    {
       "process_name": [
         "BaiduNetdisk_mac",
         "BitComet",

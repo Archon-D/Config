@@ -37,7 +37,7 @@
         "undefined"
       ],
       "domain_regex": [
-        "^f-log[^.]*\\.grammarly\\.io$"
+        "^f-log.*\\.grammarly\\.io$"
       ]
     }
   ]

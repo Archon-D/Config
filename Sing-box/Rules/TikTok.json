@@ -41,10 +41,14 @@
       "domain_keyword": [
         "musical.ly",
         "tiktok"
-      ],
+      ]
+    },
+    {
       "process_name": [
         "com.zhiliaoapp.musically"
-      ],
+      ]
+    },
+    {
       "package_name": [
         "com.zhiliaoapp.musically"
       ]

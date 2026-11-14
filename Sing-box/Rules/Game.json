@@ -561,7 +561,9 @@
         "steambroadcast",
         "steamstore",
         "steamuserimages"
-      ],
+      ]
+    },
+    {
       "ip_cidr": [
         "103.10.124.0/23",
         "103.28.54.0/24",

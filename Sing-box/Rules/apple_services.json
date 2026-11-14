@@ -19,10 +19,14 @@
         "me.com",
         "organicfruitapps.com",
         "push-apple.com.akadns.net"
-      ],
+      ]
+    },
+    {
       "ip_cidr": [
         "17.0.0.0/8"
-      ],
+      ]
+    },
+    {
       "process_name": [
         "CoreLocationAgent",
         "WeatherWidget",
@@ -32,7 +36,9 @@
         "findmydevice-user-agent",
         "fmfd",
         "mapspushd"
-      ],
+      ]
+    },
+    {
       "package_name": [
         "com.apple.Maps",
         "com.apple.geod"
