@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "rules": [
+    {
+      "domain_suffix": [
+        "lbctrl.com",
+        "lbkrs.com",
+        "longbridgeapp.com",
+        "wbrks.com"
+      ]
+    }
+  ]
+}

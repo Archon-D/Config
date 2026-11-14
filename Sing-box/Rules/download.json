@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "rules": [
+    {
+      "domain": [
+        "7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe"
+      ],
+      "domain_regex": [
+        "^(.+)\\.gvt\\d\\.com$",
+        "^[^.]*\\.s3\\.[^.]*\\.backblazeb2\\.com$",
+        "^cdn-[^.]*\\.comaps\\.app$",
+        "^cdn-[^.]*\\.comaps\\.tech$",
+        "^cdn-[^.]*\\.organicmaps\\.app$",
+        "^dl-[^.]*\\.mypikpak\\.com$",
+        "^download[^.]*\\.mediafire\\.com$",
+        "^ftp\\...\\.debian\\.org$",
+        "^ftp\\...\\.freebsd\\.org$",
+        "^s3\\.[^.]*\\.backblazeb2\\.com$"
+      ]
+    }
+  ]
+}
