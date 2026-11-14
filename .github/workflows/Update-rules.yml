@@ -1,50 +1,64 @@
 name: Update Singbox rules
-
 on:
   push:
     branches: [ main ]
     paths:
-      - 'Sing-box/RulesList.txt'  
+      - 'Sing-box/RulesList.txt'
+      - 'Sing-box/Rule_Convert.py'
   workflow_dispatch:
   schedule:
     - cron: '0 12 * * 1'
-
+# 默认 GITHUB_TOKEN 可能只有读权限，push 需要显式给写权限
+permissions:
+  contents: write
+# 避免计划任务和手动触发同时跑，push 互相打回
+concurrency:
+  group: singbox-rules
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: "Setup sing-box"
-      env:
-        SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.11.10/sing-box_1.11.10_linux_amd64.deb"
-      run: |
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup sing-box
+        env:
+          SING_BOX_DEB_URL: https://github.com/SagerNet/sing-box/releases/download/v1.11.10/sing-box_1.11.10_linux_amd64.deb
+        run: |
           set -Eeuo pipefail
-          wget -O sing-box.deb $SING_BOX_DEB_URL
+          wget -q -O sing-box.deb "$SING_BOX_DEB_URL"
           sudo dpkg -i sing-box.deb
-    - name: Set up Python3
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pandas requests pyyaml
-    - name: Run script
-      run: python ../Rule_Convert.py
-      working-directory: ./Sing-box/Rules/
-    - name: Commit and push config.json
-      run: |
-        git config --global user.email "action@github.com"
-        git config --global user.name "GitHub Action"
-        git add ./Sing-box/Rules/*.json
-        git add ./Sing-box/Rules/*.srs
-
-        # 检查是否有文件被修改
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-          exit 0
-        else
-          git commit -m "Update rules"
+          sing-box version
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # 脚本只用标准库，原来那步 `pip install pandas requests pyyaml` 已经不需要了
+      - name: Run script
+        # 默认读 Sing-box/RulesList.txt，产物写到 Sing-box/Rules/（路径相对脚本自身，不依赖 cwd）
+        # report 放到 RUNNER_TEMP，避免每次时间戳变化都产生一次无意义的提交
+        run: |
+          set -Eeuo pipefail
+          python Sing-box/Rule_Convert.py --report "$RUNNER_TEMP/rules-report.json"
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rules-report
+          path: |
+            ${{ runner.temp }}/rules-report.json
+            Sing-box/Rules/*.dropped.txt
+          if-no-files-found: ignore
+      - name: Commit and push rules
+        run: |
+          set -Eeuo pipefail
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          # 只提交 json/srs；report.json 与 *.dropped.txt 不进仓库
+          git add -A 'Sing-box/Rules/*.json' 'Sing-box/Rules/*.srs'
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Update sing-box rules"
           git push
-        fi
